@@ -23,6 +23,7 @@ const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
@@ -302,7 +303,7 @@ module.exports = function(webpackEnv) {
               options: {
                 formatter: require.resolve('react-dev-utils/eslintFormatter'),
                 eslintPath: require.resolve('eslint'),
-                
+
               },
               loader: require.resolve('eslint-loader'),
             },
@@ -335,7 +336,7 @@ module.exports = function(webpackEnv) {
                 customize: require.resolve(
                   'babel-preset-react-app/webpack-overrides'
                 ),
-                
+
                 plugins: [
                   [
                     require.resolve('babel-plugin-named-asset-import'),
@@ -376,7 +377,7 @@ module.exports = function(webpackEnv) {
                 ],
                 cacheDirectory: true,
                 cacheCompression: isEnvProduction,
-                
+
                 // If an error happens in a package, it's possible to be
                 // because it was compiled. Thus, we don't want the browser
                 // debugger to show the original code. Instead, the code
@@ -497,6 +498,29 @@ module.exports = function(webpackEnv) {
             : undefined
         )
       ),
+      new WebpackPwaManifest({
+        'inject': true,
+        'fingerprints': false,
+        'ios': false,
+        'publicPath': null,
+        'includeDirectory': true,
+        'filename': 'manifest.json',
+        'name': 'PWA App',
+        'short_name': 'PWA',
+        'description': 'Game PWA',
+        'orientation': 'portrait',
+        'display': 'standalone',
+        'start_url': '/',
+        'background_color': '#ffffff',
+        'theme_color': '#ffffff',
+        'icons': [
+          {
+            src: path.resolve('src/images/favicon.png'),
+            sizes: [96, 128, 144, 192, 256, 384, 512], // 144, 192, 512 sizes are required
+            ios: false,
+          },
+        ],
+      }),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       isEnvProduction &&
