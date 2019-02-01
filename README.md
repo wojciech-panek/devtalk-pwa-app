@@ -1,2 +1,3 @@
 # devtalk-pwa-app
-PWA Game
+
+Simple application using the functionality of PWA
