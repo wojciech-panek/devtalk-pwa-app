@@ -18,6 +18,7 @@ export class App extends PureComponent {
 
   componentDidMount() {
     this.props.setLanguage(this.getLanguage(this.props));
+    navigator.serviceWorker.register('sw.index.js');
   }
 
   componentDidUpdate(prevProps) {
