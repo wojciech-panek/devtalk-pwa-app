@@ -8,7 +8,7 @@ export const { Types: LocalesTypes, Creators: LocalesActions } = createActions({
 
 const LocalesRecord = new Record({
   language: null,
-});
+}, 'LocalesRecord');
 
 export const INITIAL_STATE = new LocalesRecord({});
 

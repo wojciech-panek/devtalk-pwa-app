@@ -1,11 +1,23 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import createSagaMiddleware from 'redux-saga';
-import createReducer from './reducers';
+import * as localForage from 'localforage';
+import immutableTransform from 'redux-persist-transform-immutable';
+import { persistStore, persistCombineReducers } from 'redux-persist';
+
+import autoMergeLevel2Immutable from '../shared/utils/autoMergeLevel2Immutable';
+import createReducer, { records } from './reducers';
 import rootSaga from './sagas';
 
 
 const sagaMiddleware = createSagaMiddleware();
+
+const persistConfig = {
+  transforms: [immutableTransform({ records })],
+  key: 'root',
+  storage: localForage,
+  stateReconciler: autoMergeLevel2Immutable,
+};
 
 export default function configureStore(initialState = {}) {
   const middlewares = [
@@ -30,14 +42,18 @@ export default function configureStore(initialState = {}) {
     ]);
   }
 
+  const persistedReducer = persistCombineReducers(persistConfig, createReducer());
+
   const store = createStore(
-    createReducer(),
-    fromJS(initialState),
+    persistedReducer,
+    initialState,
     compose(
       applyMiddleware(...middlewares),
       ...enhancers,
     )
   );
+
+  const persistor = persistStore(store);
 
   sagaMiddleware.run(rootSaga);
 
@@ -50,5 +66,5 @@ export default function configureStore(initialState = {}) {
     });
   }
 
-  return store;
+  return { store, persistor };
 }

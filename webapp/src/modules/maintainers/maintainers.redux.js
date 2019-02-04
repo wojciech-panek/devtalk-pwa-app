@@ -10,7 +10,7 @@ export const { Types: MaintainersTypes, Creators: MaintainersActions } = createA
 
 const MaintainersRecord = new Record({
   items: List(),
-});
+}, 'MaintainersRecord');
 
 export const INITIAL_STATE = new MaintainersRecord({});
 

@@ -6,6 +6,7 @@ import '@babel/polyfill';
 
 // Import all the third party stuff
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import { Router } from 'react-router';
 import FontFaceObserver from 'fontfaceobserver';
 import 'normalize.css/normalize.css';
@@ -31,7 +32,7 @@ openSansObserver.load().then(() => {
 // Optionally, this could be changed to leverage a created history
 // e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
 const initialState = {};
-const store = configureStore(initialState);
+const { store, persistor } = configureStore(initialState);
 
 
 if (process.env.NODE_ENV === 'development') {
@@ -55,9 +56,11 @@ const render = () => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={browserHistory}>
-        <NextApp />
-      </Router>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router history={browserHistory}>
+          <NextApp />
+        </Router>
+      </PersistGate>
     </Provider>,
     document.getElementById('app')
   );
