@@ -6,7 +6,7 @@ export const { Types: LocalesTypes, Creators: LocalesActions } = createActions({
   setLanguage: ['language'],
 }, { prefix: 'LOCALES_' });
 
-const LocalesRecord = new Record({
+export const LocalesRecord = new Record({
   language: null,
 }, 'LocalesRecord');
 

@@ -3,7 +3,7 @@ import { fromJS } from 'immutable';
 import createSagaMiddleware from 'redux-saga';
 import * as localForage from 'localforage';
 import immutableTransform from 'redux-persist-transform-immutable';
-import { persistStore, persistCombineReducers } from 'redux-persist';
+import { persistStore, persistReducer } from 'redux-persist';
 
 import autoMergeLevel2Immutable from '../shared/utils/autoMergeLevel2Immutable';
 import createReducer, { records } from './reducers';
@@ -42,7 +42,7 @@ export default function configureStore(initialState = {}) {
     ]);
   }
 
-  const persistedReducer = persistCombineReducers(persistConfig, createReducer());
+  const persistedReducer = persistReducer(persistConfig, createReducer());
 
   const store = createStore(
     persistedReducer,

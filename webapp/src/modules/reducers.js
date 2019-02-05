@@ -1,14 +1,15 @@
-import { reducer as localesReducer } from './locales/locales.redux';
-import { reducer as maintainersReducer } from './maintainers/maintainers.redux';
+import { combineReducers } from 'redux';
+import { reducer as localesReducer, LocalesRecord } from './locales/locales.redux';
+import { reducer as maintainersReducer, MaintainersRecord } from './maintainers/maintainers.redux';
 //<-- IMPORT MODULE REDUCER -->
 
 export const records = [
-  maintainersReducer,
-  localesReducer,
+  MaintainersRecord,
+  LocalesRecord,
 ];
 
 export default function createReducer() {
-  return ({
+  return combineReducers({
     maintainers: maintainersReducer,
     locales: localesReducer,
     //<-- INJECT MODULE REDUCER -->

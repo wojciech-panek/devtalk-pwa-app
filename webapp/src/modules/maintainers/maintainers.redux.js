@@ -8,7 +8,7 @@ export const { Types: MaintainersTypes, Creators: MaintainersActions } = createA
   fetchError: ['payload'],
 }, { prefix: 'MAINTAINERS_' });
 
-const MaintainersRecord = new Record({
+export const MaintainersRecord = new Record({
   items: List(),
 }, 'MaintainersRecord');
 
