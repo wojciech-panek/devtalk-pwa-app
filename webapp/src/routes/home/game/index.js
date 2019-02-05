@@ -25,10 +25,10 @@ export class Game {
     this.stage.addChild(this.exampleDot.stage);
     this.ticker.add(this.handleTick);
 
-    this.animateDot();
+    this.animateElementScale(this.exampleDot.stage);
   }
 
-  animateDot = () => new TWEEN.Tween(this.exampleDot.stage.transform.scale)
+  animateElementScale = (stage) => new TWEEN.Tween(stage.transform.scale)
     .to({ x: 2, y: 2 }, 3000)
     .easing(TWEEN.Easing.Quadratic.Out)
     .repeat(Infinity)
