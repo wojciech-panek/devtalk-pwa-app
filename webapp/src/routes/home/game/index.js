@@ -1,6 +1,5 @@
 import { Application } from 'pixi.js';
-import TWEEN from '@tweenjs/tween.js';
-import { Dot } from './elements/dot';
+import { Background } from './elements/background';
 
 export class Game {
   constructor({ htmlElement }) {
@@ -16,25 +15,11 @@ export class Game {
 
     this.htmlElement.append(this._app.renderer.view);
 
-    this.exampleDot = new Dot({
-      x: this.width / 2,
-      y: this.height / 2,
-      r: 100,
-    });
+    this.background = new Background({ width: this.width, height: this.height });
 
-    this.stage.addChild(this.exampleDot.stage);
-    this.ticker.add(this.handleTick);
-
-    this.animateElementScale(this.exampleDot.stage);
+    this.stage.addChild(this.background.stage);
   }
 
-  animateElementScale = (stage) => new TWEEN.Tween(stage.transform.scale)
-    .to({ x: 2, y: 2 }, 3000)
-    .easing(TWEEN.Easing.Quadratic.Out)
-    .repeat(Infinity)
-    .start();
-
-  handleTick = () => TWEEN.update();
 
   get htmlElement() {
     return this._htmlElement;
