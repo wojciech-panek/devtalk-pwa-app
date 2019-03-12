@@ -1,5 +1,5 @@
 import { Texture, Sprite } from 'pixi.js';
-import background from '../../../../images/game/background.png';
+import background from '../../../../images/game/environment/background.png';
 
 export class Background {
   constructor({ width, height }) {
