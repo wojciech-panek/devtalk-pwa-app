@@ -1,5 +1,6 @@
 import { Application } from 'pixi.js';
 import { Background } from './elements/background';
+import { Warehouse } from "./elements/warehouse";
 
 export class Game {
   constructor({ htmlElement }) {
@@ -16,8 +17,10 @@ export class Game {
     this.htmlElement.append(this._app.renderer.view);
 
     this.background = new Background({ width: this.width, height: this.height });
+    this.warehouse = new Warehouse({ rendererWidth: this.width, rendererHeight: this.height, scale: 1/3 });
 
     this.stage.addChild(this.background.stage);
+    this.stage.addChild(this.warehouse.stage);
   }
 
 
