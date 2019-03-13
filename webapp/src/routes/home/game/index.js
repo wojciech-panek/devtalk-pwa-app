@@ -25,7 +25,7 @@ export class Game {
     this.stage.interactive = true;
     this.stage.addChild(this.background.stage);
     this.stage.addChild(this.warehouse.stage);
-    this.fenceGroup.fenceArray.map(el => this.stage.addChild(el.stage));
+    this.stage.addChild(this.fenceGroup.stage);
   }
 
   get htmlElement() {
