@@ -1,6 +1,8 @@
 import { Application } from 'pixi.js';
 import { Background } from './elements/background';
-import { Warehouse } from "./elements/warehouse";
+import { Warehouse } from './elements/warehouse';
+import { FenceGroup } from './elements/fenceGroup';
+
 
 export class Game {
   constructor({ htmlElement }) {
@@ -17,12 +19,14 @@ export class Game {
     this.htmlElement.append(this._app.renderer.view);
 
     this.background = new Background({ width: this.width, height: this.height });
-    this.warehouse = new Warehouse({ rendererWidth: this.width, rendererHeight: this.height, scale: 1/3 });
+    this.warehouse = new Warehouse({ rendererWidth: this.width, rendererHeight: this.height });
+    this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
 
+    this.stage.interactive = true;
     this.stage.addChild(this.background.stage);
     this.stage.addChild(this.warehouse.stage);
+    this.stage.addChild(this.fenceGroup.stage);
   }
-
 
   get htmlElement() {
     return this._htmlElement;
