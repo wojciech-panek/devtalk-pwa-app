@@ -1,5 +1,5 @@
 import { Container } from 'pixi.js';
-import { DrawRectangle } from './drawRectangle';
+import { RectangleBox } from './rectangleBox';
 import { Character } from './character';
 import { InterfaceText } from './interfaceText';
 
@@ -7,7 +7,7 @@ export class CharacterBar {
   constructor({ rendererWidth }) {
     this._stage = new Container();
 
-    this.characterRectangle = new DrawRectangle({ x: 40, y: 6, width: rendererWidth / 2 - 50, height: 39 });
+    this.characterRectangle = new RectangleBox({ x: 40, y: 6, width: rendererWidth / 2 - 50, height: 39 });
     this.characterFace = new Character({ x: 10, y: 0 });
     this.userNameText = new InterfaceText({
       text: 'FARMER',

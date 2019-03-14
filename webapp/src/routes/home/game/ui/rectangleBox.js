@@ -1,7 +1,7 @@
 import { Graphics } from 'pixi.js';
 import { UI_RADIUS } from '../game.constans';
 
-export class DrawRectangle {
+export class RectangleBox {
   constructor({ x, y, width, height }) {
     this._stage = new Graphics();
 

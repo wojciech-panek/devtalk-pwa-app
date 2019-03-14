@@ -1,5 +1,5 @@
 import { Container } from 'pixi.js';
-import { DrawRectangle } from './drawRectangle';
+import { RectangleBox } from './rectangleBox';
 import { Coin } from './coin';
 import { InterfaceText } from './interfaceText';
 
@@ -7,7 +7,7 @@ export class CoinsBar {
   constructor({ rendererWidth }) {
     this._stage = new Container();
 
-    this.coinsRectangle = new DrawRectangle({
+    this.coinsRectangle = new RectangleBox({
       x: rendererWidth / 2 + 10,
       y: 6,
       width: rendererWidth / 2 - 20,
