@@ -2,7 +2,7 @@ import { Texture, Sprite } from 'pixi.js';
 import background from '../../../../images/game/environment/warehouse.png';
 
 export class Warehouse {
-  constructor({ rendererWidth, rendererHeight }) {
+  constructor({ rendererWidth }) {
     this._texture = Texture.from(background);
     this._stage = new Sprite(this.texture);
 
