@@ -20,9 +20,9 @@ export class Game {
     this.htmlElement.append(this._app.renderer.view);
 
     this.background = new Background({ width: this.width, height: this.height });
-    this.warehouse = new Warehouse({ rendererWidth: this.width, rendererHeight: this.height });
+    this.warehouse = new Warehouse({ rendererWidth: this.width });
     this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
-    this.userInterface = new UserInterface({ rendererWidth: this.width, rendererHeight: this.height });
+    this.userInterface = new UserInterface({ rendererWidth: this.width });
 
     this.stage.interactive = true;
     this.stage.addChild(this.background.stage);

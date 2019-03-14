@@ -4,7 +4,7 @@ import { Character } from './character';
 import { InterfaceText } from './interfaceText';
 
 export class CharacterBar {
-  constructor({ rendererWidth, rendererHeight }) {
+  constructor({ rendererWidth }) {
     this._stage = new Container();
 
     this.characterRectangle = new DrawRectangle({ x: 40, y: 6, width: rendererWidth / 2 - 50, height: 39 });
@@ -17,7 +17,8 @@ export class CharacterBar {
       font: 'Arial Black',
       fontSize: 12,
       fontWeight: 'normal',
-      fillColor: '0x6B4B3A' });
+      fillColor: '0x6B4B3A',
+    });
     this.userLevelText = new InterfaceText({
       text: 'LEVEL 1',
       anchorX: 0,
@@ -26,10 +27,15 @@ export class CharacterBar {
       font: 'Arial',
       fontSize: 11,
       fontWeight: 'bold',
-      fillColor: '0xAF6C41' });
+      fillColor: '0xAF6C41',
+    });
 
-    this.stage.addChild(this.characterRectangle.stage, this.characterFace.stage, this.userNameText.stage, this.userLevelText.stage);
-
+    this.stage.addChild(
+      this.characterRectangle.stage,
+      this.characterFace.stage,
+      this.userNameText.stage,
+      this.userLevelText.stage,
+    );
   }
 
   get stage() {
