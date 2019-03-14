@@ -11,10 +11,10 @@ export class InterfaceText {
   }
 
   setTextStyle = (font, fontSize, fontWeight, fillColor) => ({
-      fontFamily: `${font}`,
-      fontSize: fontSize,
-      fontWeight: `${fontWeight}`,
-      fill: `${fillColor}`,
+    fontFamily: `${font}`,
+    fontSize: fontSize,
+    fontWeight: `${fontWeight}`,
+    fill: `${fillColor}`,
   });
 
   get stage() {
