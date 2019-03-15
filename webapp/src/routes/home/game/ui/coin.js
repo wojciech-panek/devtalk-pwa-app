@@ -1,10 +1,10 @@
 import { Texture, AnimatedSprite } from 'pixi.js';
 import { times } from 'ramda';
 
-import coin1 from '../../../../images/game/environment/sprites/coin-sprite-1.png';
-import coin2 from '../../../../images/game/environment/sprites/coin-sprite-2.png';
-import coin3 from '../../../../images/game/environment/sprites/coin-sprite-3.png';
-import coin4 from '../../../../images/game/environment/sprites/coin-sprite-4.png';
+import coin1 from '../../../../images/game/environment/sprites/coin/coin-sprite-1.png';
+import coin2 from '../../../../images/game/environment/sprites/coin/coin-sprite-2.png';
+import coin3 from '../../../../images/game/environment/sprites/coin/coin-sprite-3.png';
+import coin4 from '../../../../images/game/environment/sprites/coin/coin-sprite-4.png';
 
 
 const delayFrames = times(() => coin1, 20);
