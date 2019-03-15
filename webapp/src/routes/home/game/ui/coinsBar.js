@@ -31,7 +31,6 @@ export class CoinsBar {
       anchorY: 0,
       x: rendererWidth - 49,
       y: 18,
-      font: 'Arial',
       fontSize: 12,
       fontWeight: 'bold',
       fillColor: '0xAF6C41',

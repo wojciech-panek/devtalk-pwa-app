@@ -26,7 +26,6 @@ export class CharacterBar {
       anchorY: 0,
       x: 80,
       y: 26,
-      font: 'Arial',
       fontSize: 11,
       fontWeight: 'bold',
       fillColor: '0xAF6C41',

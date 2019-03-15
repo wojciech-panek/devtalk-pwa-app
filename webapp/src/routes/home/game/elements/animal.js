@@ -83,10 +83,6 @@ export class Animal {
     return this._stage;
   }
 
-  get texture() {
-    return this._texture;
-  }
-
   get positionNum() {
     return this._positionNum;
   }

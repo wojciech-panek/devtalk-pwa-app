@@ -17,7 +17,6 @@ export class AnimalLevel {
       anchorY: 0.5,
       x: 0,
       y: 0,
-      font: 'Arial',
       fontSize: 11,
       fontWeight: 'bold',
       fillColor: '0x6B4B3A',

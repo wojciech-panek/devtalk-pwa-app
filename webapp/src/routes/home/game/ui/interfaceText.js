@@ -1,7 +1,7 @@
 import { Text, TextStyle } from 'pixi.js';
 
 export class InterfaceText {
-  constructor({ text, anchorX, anchorY, x, y, font, fontSize, fontWeight, fillColor, uppercase }) {
+  constructor({ text, anchorX, anchorY, x, y, font = 'Arial', fontSize, fontWeight, fillColor, uppercase }) {
     this._style = new TextStyle(this.setTextStyle(font, fontSize, fontWeight, fillColor, uppercase));
     this._stage = new Text(text, this.style);
 
