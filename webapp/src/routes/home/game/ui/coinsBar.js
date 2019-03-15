@@ -17,6 +17,7 @@ export class CoinsBar {
     this.coinsText = new InterfaceText({
       text: 'COINS',
       anchorX: 0,
+      anchorY: 0,
       x: rendererWidth / 2 + 20,
       y: 18,
       font: 'Arial Black',
@@ -27,6 +28,7 @@ export class CoinsBar {
     this.coinsAmountText = new InterfaceText({
       text: '123456',
       anchorX: 1,
+      anchorY: 0,
       x: rendererWidth - 49,
       y: 18,
       font: 'Arial',
