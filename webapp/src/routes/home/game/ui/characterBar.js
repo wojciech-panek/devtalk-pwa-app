@@ -12,6 +12,7 @@ export class CharacterBar {
     this.userNameText = new InterfaceText({
       text: 'FARMER',
       anchorX: 0,
+      anchorY: 0,
       x: 80,
       y: 11,
       font: 'Arial Black',
@@ -22,9 +23,9 @@ export class CharacterBar {
     this.userLevelText = new InterfaceText({
       text: 'LEVEL 1',
       anchorX: 0,
+      anchorY: 0,
       x: 80,
       y: 26,
-      font: 'Arial',
       fontSize: 11,
       fontWeight: 'bold',
       fillColor: '0xAF6C41',
