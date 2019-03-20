@@ -48,7 +48,8 @@ const foodTextures = {
 };
 
 export class Animal {
-  constructor({ rendererWidth, rendererHeight, type, foodType, positionNumber, amount, level }) {
+  constructor({ rendererWidth, rendererHeight, type, foodType, positionNumber, amount, level, foodAmount,
+    foodMaxAmount }) {
     this._stage = new Container();
     this._positionNum = this.getPositionNumber(positionNumber);
 
@@ -71,12 +72,27 @@ export class Animal {
 
     this.level = new AnimalLevel({ level: level, flip: !this.isEven(positionNumber) });
     this.animalHead = new AnimalHead({ type: textures[type], flip: !this.isEven(positionNumber) });
+
     this.foodItem = new FoodItem({
       type: foodTextures[foodType],
-      x: this.isEven(positionNumber) ? 40 : -80,
-      y: -20,
+      x: this.isEven(positionNumber) ? 38 : -82,
+      y: -18,
     });
-    this.stage.addChild(this.level.stage, this.amount.stage, this.animalHead.stage, this.foodItem.stage);
+
+    this.foodAmount = new InterfaceText({
+      text: `${foodAmount}/${foodMaxAmount}`,
+      anchorX: 0.5,
+      anchorY: 0.5,
+      x: this.isEven(positionNumber) ? 60 : -60,
+      y: 30,
+      font: 'Arial Black',
+      fontSize: 8,
+      fontWeight: 'bold',
+      fillColor: '0xFFFFFF',
+    });
+
+    this.stage.addChild(this.level.stage, this.amount.stage, this.animalHead.stage, this.foodItem.stage,
+      this.foodAmount.stage);
   }
 
   getPositionNumber = positionNumber => {

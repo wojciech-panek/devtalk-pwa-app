@@ -5,6 +5,7 @@ import { Background } from './elements/background';
 import { Warehouse } from './elements/warehouse';
 import { UserInterface } from './ui/userInterface';
 import { FenceGroup } from './elements/fenceGroup';
+import { FoodFenceGroup } from './elements/foodFenceGroup';
 import { Animal } from './elements/animal';
 import { Launcher } from '../../../shared/components/launcher';
 
@@ -47,6 +48,7 @@ export class Game {
     this.background = new Background({ width: this.width, height: this.height });
     this.warehouse = new Warehouse({ rendererWidth: this.width });
     this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
+    this.foodFenceGroup = new FoodFenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
     this.userInterface = new UserInterface({ rendererWidth: this.width, state: this.state });
 
     const animals = this.state.fields.map(({ position: positionNumber, ...other }) => new Animal({
@@ -60,6 +62,7 @@ export class Game {
     this.stage.addChild(this.background.stage);
     this.stage.addChild(this.warehouse.stage);
     this.stage.addChild(this.fenceGroup.stage);
+    this.stage.addChild(this.foodFenceGroup.stage);
     this.stage.addChild(this.userInterface.stage);
     animals.forEach((field) => {
       this.stage.addChild(field.stage);
