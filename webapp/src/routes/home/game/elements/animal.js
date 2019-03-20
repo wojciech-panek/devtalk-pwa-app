@@ -76,7 +76,7 @@ export class Animal {
     this.foodItem = new FoodItem({
       type: foodTextures[foodType],
       x: this.isEven(positionNumber) ? 38 : -82,
-      y: -18,
+      y: -22,
     });
 
     this.foodAmount = new InterfaceText({
