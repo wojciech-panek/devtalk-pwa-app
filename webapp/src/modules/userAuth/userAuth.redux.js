@@ -5,7 +5,7 @@ export const {
   Types: UserAuthTypes,
   Creators: UserAuthActions,
 } = createActions({
-  setUserData: ['user'],
+  setUserData: ['uid', 'isAnonymous'],
   clearUserData: null,
   signOut: null,
   signInViaGoogle: null,
@@ -21,8 +21,9 @@ const INITIAL_STATE = new UserAuthRecord();
 
 const clearUserData = () => INITIAL_STATE;
 
-const setUserData = (state, { user }) => state.merge({
-  ...user,
+const setUserData = (state, { uid, isAnonymous }) => state.merge({
+  uid,
+  isAnonymous,
 });
 
 export const reducer = createReducer(INITIAL_STATE, {

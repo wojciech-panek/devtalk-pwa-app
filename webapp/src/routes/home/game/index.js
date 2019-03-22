@@ -41,7 +41,7 @@ export class Game {
       },
     });
 
-    this.stage.addChild(this.launcher);
+    this.stage.addChild(this.launcher.stage);
   }
 
   showGame() {
@@ -76,7 +76,7 @@ export class Game {
 
   updateGame({ anonymousPlayer }) {
     if (!anonymousPlayer) {
-      this.stage.removeChild(this.launcher);
+      this.stage.removeChild(this.launcher.stage);
       this.showGame();
     }
   }

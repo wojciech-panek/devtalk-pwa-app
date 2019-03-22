@@ -51,7 +51,7 @@ function* listenForFirebaseAuth() {
 
       if (authenticated) {
         const { uid, isAnonymous } = user;
-        yield put(UserAuthActions.setUserData({ uid, isAnonymous }));
+        yield put(UserAuthActions.setUserData(uid, isAnonymous));
       }
     }
   } catch (error) {

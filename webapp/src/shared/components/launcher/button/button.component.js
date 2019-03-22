@@ -3,12 +3,12 @@ import { Text, Sprite, Texture, Container } from 'pixi.js';
 import button from '../../../../images/game/ui/button.png';
 
 
-class Button extends Container {
+class Button {
   constructor({ text, onClick }) {
-    super();
-    this.interactive = true;
-    this.buttonMode = true;
-    this.on('pointerdown', onClick);
+    this._stage = new Container();
+    this.stage.interactive = true;
+    this.stage.buttonMode = true;
+    this.stage.on('pointerdown', onClick);
 
     this.buttonTexture = Texture.from(button);
     this.box = new Sprite(this.buttonTexture);
@@ -21,7 +21,7 @@ class Button extends Container {
     });
     this.text.anchor.set(0.5);
 
-    this.addChild(this.box, this.text);
+    this.stage.addChild(this.box, this.text);
   }
 
   boxSetup() {
@@ -36,6 +36,10 @@ class Button extends Container {
       self.box.height = this.height;
     };
     img.src = image;
+  }
+
+  get stage() {
+    return this._stage;
   }
 }
 

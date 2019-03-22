@@ -6,10 +6,10 @@ import Button from './button';
 import Background from './background';
 
 
-export class Launcher extends Container {
+export class Launcher {
   constructor({ loginViaGoogle, containerSize }) {
-    super();
-    this.containerSize = containerSize;
+    this._stage = new Container();
+    this._containerSize = containerSize;
     this.loginButton = new Button({
       text: 'Login via Google',
       onClick: loginViaGoogle,
@@ -19,7 +19,7 @@ export class Launcher extends Container {
     });
     this.setupElements();
 
-    this.addChild(this.background, this.loginButton);
+    this.stage.addChild(this.background.stage, this.loginButton.stage);
 
     this.addLogo();
   }
@@ -34,14 +34,22 @@ export class Launcher extends Container {
     logo.x = this.containerSize.width / 2;
     logo.y = 30;
 
-    this.addChild(logo);
+    this.stage.addChild(logo);
   }
 
   setupElements() {
     const { width, height } = this.containerSize;
-    this.loginButton.x = width / 2;
-    this.loginButton.y = height / 2;
-    this.background.width = width;
-    this.background.height = height;
+    this.loginButton.stage.x = width / 2;
+    this.loginButton.stage.y = height / 2;
+    this.background.stage.width = width;
+    this.background.stage.height = height;
+  }
+
+  get stage() {
+    return this._stage;
+  }
+
+  get containerSize() {
+    return this._containerSize;
   }
 }
