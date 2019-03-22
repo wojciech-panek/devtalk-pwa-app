@@ -1,14 +1,17 @@
 import { Application } from 'pixi.js';
+import { ifElse, equals } from 'ramda';
+
 import { Background } from './elements/background';
 import { Warehouse } from './elements/warehouse';
 import { UserInterface } from './ui/userInterface';
 import { FenceGroup } from './elements/fenceGroup';
 import { Animal } from './elements/animal';
 import { ANIMALS } from './game.constans';
+import { Launcher } from '../../../shared/components/launcher';
 
 
 export class Game {
-  constructor({ htmlElement }) {
+  constructor({ htmlElement, anonymousPlayer, loginViaGoogle }) {
     this._htmlElement = htmlElement;
     this._app = new Application({
       transparent: true,
@@ -18,9 +21,30 @@ export class Game {
       width: this.width,
       height: this.height,
     });
+    this._loginViaGoogle = loginViaGoogle;
 
     this.htmlElement.append(this._app.renderer.view);
 
+    ifElse(
+      equals(true),
+      () => this.showLauncher(),
+      () => this.showGame()
+    )(anonymousPlayer);
+  }
+
+  showLauncher() {
+    this.launcher = new Launcher({
+      loginViaGoogle: this.loginViaGoogle,
+      containerSize: {
+        width: this.width,
+        height: this.height,
+      },
+    });
+
+    this.stage.addChild(this.launcher);
+  }
+
+  showGame() {
     this.background = new Background({ width: this.width, height: this.height });
     this.warehouse = new Warehouse({ rendererWidth: this.width });
     this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
@@ -50,6 +74,13 @@ export class Game {
     this.stage.addChild(this.chicken.stage, this.chick.stage);
   }
 
+  updateGame({ anonymousPlayer }) {
+    if (!anonymousPlayer) {
+      this.stage.removeChild(this.launcher);
+      this.showGame();
+    }
+  }
+
   get htmlElement() {
     return this._htmlElement;
   }
@@ -64,6 +95,10 @@ export class Game {
 
   get stage() {
     return this._app.stage;
+  }
+
+  get loginViaGoogle() {
+    return this._loginViaGoogle;
   }
 
   get ticker() {

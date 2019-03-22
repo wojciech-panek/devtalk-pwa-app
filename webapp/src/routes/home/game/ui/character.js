@@ -32,7 +32,7 @@ export class Character {
     character2,
     character2,
     character2,
-    character3
+    character3,
   ].map(texture => Texture.from(texture));
 
   get stage() {

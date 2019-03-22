@@ -7,17 +7,15 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'ramda';
 
 import { Home } from './home.component';
-import { MaintainersActions, selectMaintainersItems } from '../../modules/maintainers';
-import { selectLocalesLanguage } from '../../modules/locales';
+import { selectUserIsAnonymous, UserAuthActions } from '../../modules/userAuth';
 
 
 const mapStateToProps = createStructuredSelector({
-  items: selectMaintainersItems,
-  language: selectLocalesLanguage,
+  isUserAnonymous: selectUserIsAnonymous,
 });
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  fetchMaintainers: MaintainersActions.fetch,
+  signInViaGoogle: UserAuthActions.signInViaGoogle,
 }, dispatch);
 
 export default compose(
