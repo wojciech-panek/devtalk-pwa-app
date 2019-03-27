@@ -23,7 +23,7 @@ export class Home extends PureComponent {
     if (!isUserAnonymous && prevProps.gameData.size === 0 && gameData.size > 0) {
       this.game.updateGame({
         anonymousPlayer: isUserAnonymous,
-        game: gameData.toJS(),
+        state: gameData.toJS(),
       });
     }
   }
@@ -35,7 +35,7 @@ export class Home extends PureComponent {
       htmlElement: this.pixiWrapperRef.current,
       anonymousPlayer: isUserAnonymous,
       loginViaGoogle: signInViaGoogle,
-      game: gameData.toJS(),
+      state: gameData.toJS(),
     });
   };
 

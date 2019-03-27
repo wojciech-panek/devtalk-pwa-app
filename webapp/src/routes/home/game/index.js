@@ -10,7 +10,7 @@ import { Launcher } from '../../../shared/components/launcher';
 
 
 export class Game {
-  constructor({ htmlElement, anonymousPlayer, loginViaGoogle, game }) {
+  constructor({ htmlElement, anonymousPlayer, loginViaGoogle, state }) {
     this._htmlElement = htmlElement;
     this._app = new Application({
       transparent: true,
@@ -21,7 +21,7 @@ export class Game {
       height: this.height,
     });
     this._loginViaGoogle = loginViaGoogle;
-    this._game = game;
+    this._state = state;
 
     this.htmlElement.append(this._app.renderer.view);
     this.launcher = new Launcher({
@@ -47,9 +47,9 @@ export class Game {
     this.background = new Background({ width: this.width, height: this.height });
     this.warehouse = new Warehouse({ rendererWidth: this.width });
     this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
-    this.userInterface = new UserInterface({ rendererWidth: this.width, game: this.game });
+    this.userInterface = new UserInterface({ rendererWidth: this.width, state: this.state });
 
-    const animals = this.game.fields.map(({ position: positionNumber, ...other }) => new Animal({
+    const animals = this.state.fields.map(({ position: positionNumber, ...other }) => new Animal({
       rendererWidth: this.width,
       rendererHeight: this.height,
       positionNumber,
@@ -66,8 +66,8 @@ export class Game {
     });
   }
 
-  updateGame({ anonymousPlayer, game }) {
-    this.game = game;
+  updateGame({ anonymousPlayer, state }) {
+    this.state = state;
 
     if (!anonymousPlayer) {
       this.stage.removeChild(this.launcher.stage);
@@ -95,12 +95,12 @@ export class Game {
     return this._loginViaGoogle;
   }
 
-  set game(value) {
-    this._game = value;
+  set state(value) {
+    this._state = value;
   }
 
-  get game() {
-    return this._game;
+  get state() {
+    return this._state;
   }
 
   get ticker() {
