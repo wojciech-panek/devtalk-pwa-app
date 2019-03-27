@@ -6,12 +6,11 @@ import { Warehouse } from './elements/warehouse';
 import { UserInterface } from './ui/userInterface';
 import { FenceGroup } from './elements/fenceGroup';
 import { Animal } from './elements/animal';
-import { ANIMALS } from './game.constans';
 import { Launcher } from '../../../shared/components/launcher';
 
 
 export class Game {
-  constructor({ htmlElement, anonymousPlayer, loginViaGoogle }) {
+  constructor({ htmlElement, anonymousPlayer, loginViaGoogle, game }) {
     this._htmlElement = htmlElement;
     this._app = new Application({
       transparent: true,
@@ -22,6 +21,7 @@ export class Game {
       height: this.height,
     });
     this._loginViaGoogle = loginViaGoogle;
+    this._game = game;
 
     this.htmlElement.append(this._app.renderer.view);
 
@@ -33,7 +33,7 @@ export class Game {
   }
 
   showLauncher() {
-    this.launcher = new Launcher({
+    const launcher = new Launcher({
       loginViaGoogle: this.loginViaGoogle,
       containerSize: {
         width: this.width,
@@ -41,42 +41,39 @@ export class Game {
       },
     });
 
-    this.stage.addChild(this.launcher.stage);
+    this.stage.addChild(launcher);
   }
 
   showGame() {
     this.background = new Background({ width: this.width, height: this.height });
     this.warehouse = new Warehouse({ rendererWidth: this.width });
     this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
-    this.userInterface = new UserInterface({ rendererWidth: this.width });
-    this.chicken = new Animal({
+    this.userInterface = new UserInterface({ rendererWidth: this.width, game: this.game });
+
+    const animals = this.game.fields.map(({ type, position, amount, level }) => new Animal({
       rendererWidth: this.width,
       rendererHeight: this.height,
-      type: ANIMALS.chicken,
-      positionNumber: 1,
-      amount: 10,
-      level: 10,
-    });
-    this.chick = new Animal({
-      rendererWidth: this.width,
-      rendererHeight: this.height,
-      type: ANIMALS.chick,
-      positionNumber: 2,
-      amount: 2,
-      level: 2,
-    });
+      positionNumber: position,
+      type,
+      amount,
+      level,
+    }));
 
     this.stage.interactive = true;
     this.stage.addChild(this.background.stage);
     this.stage.addChild(this.warehouse.stage);
     this.stage.addChild(this.fenceGroup.stage);
     this.stage.addChild(this.userInterface.stage);
-    this.stage.addChild(this.chicken.stage, this.chick.stage);
+    animals.map((field) => {
+      this.stage.addChild(field.stage);
+    });
   }
 
-  updateGame({ anonymousPlayer }) {
+  updateGame({ anonymousPlayer, game }) {
+    this.game = game;
+
     if (!anonymousPlayer) {
-      this.stage.removeChild(this.launcher.stage);
+      this.stage.removeChild(this.launcher);
       this.showGame();
     }
   }
@@ -99,6 +96,14 @@ export class Game {
 
   get loginViaGoogle() {
     return this._loginViaGoogle;
+  }
+
+  set game(value) {
+    this._game = value;
+  }
+
+  get game() {
+    return this._game;
   }
 
   get ticker() {

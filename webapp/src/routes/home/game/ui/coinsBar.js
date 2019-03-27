@@ -4,7 +4,7 @@ import { Coin } from './coin';
 import { InterfaceText } from './interfaceText';
 
 export class CoinsBar {
-  constructor({ rendererWidth }) {
+  constructor({ rendererWidth, coins = 0 }) {
     this._stage = new Container();
 
     this.coinsRectangle = new RectangleBox({
@@ -26,7 +26,7 @@ export class CoinsBar {
       fillColor: '0x6B4B3A',
     });
     this.coinsAmountText = new InterfaceText({
-      text: '123456',
+      text: coins,
       anchorX: 1,
       anchorY: 0,
       x: rendererWidth - 49,

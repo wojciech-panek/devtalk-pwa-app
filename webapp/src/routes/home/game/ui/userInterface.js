@@ -3,13 +3,13 @@ import { CharacterBar } from './characterBar';
 import { CoinsBar } from './coinsBar';
 
 export class UserInterface {
-  constructor({ rendererWidth }) {
+  constructor({ rendererWidth, game }) {
     this._stage = new Container();
 
     this.stage.y = 10;
 
-    this.characterBar = new CharacterBar({ rendererWidth: rendererWidth });
-    this.coinsBar = new CoinsBar({ rendererWidth: rendererWidth });
+    this.characterBar = new CharacterBar({ rendererWidth: rendererWidth, level: game.level });
+    this.coinsBar = new CoinsBar({ rendererWidth: rendererWidth, coins: game.coins });
 
     this.stage.addChild(this.characterBar.stage, this.coinsBar.stage);
   }

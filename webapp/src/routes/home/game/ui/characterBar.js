@@ -4,7 +4,7 @@ import { Character } from './character';
 import { InterfaceText } from './interfaceText';
 
 export class CharacterBar {
-  constructor({ rendererWidth }) {
+  constructor({ rendererWidth, level = 0 }) {
     this._stage = new Container();
 
     this.characterRectangle = new RectangleBox({ x: 40, y: 6, width: rendererWidth / 2 - 50, height: 39 });
@@ -21,7 +21,7 @@ export class CharacterBar {
       fillColor: '0x6B4B3A',
     });
     this.userLevelText = new InterfaceText({
-      text: 'LEVEL 1',
+      text: `LEVEL ${level}`,
       anchorX: 0,
       anchorY: 0,
       x: 80,
