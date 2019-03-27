@@ -28,8 +28,8 @@ export class Launcher {
     const logoAsset = Texture.from(gameLogo);
     const logo = new Sprite(logoAsset);
 
-    logo.width = 399 / 2;
-    logo.height = 137 / 2;
+    logo.width = 400 / 2;
+    logo.height = 350 / 2;
     logo.anchor.set(0.5, 0);
     logo.x = this.containerSize.width / 2;
     logo.y = 30;
