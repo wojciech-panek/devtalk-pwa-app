@@ -1,4 +1,4 @@
-import { ANIMALS } from '../../routes/home/game/game.constans';
+import { ANIMALS, FOOD } from '../../routes/home/game/game.constans';
 
 export const GAME_COLLECTION = 'games';
 export const NEW_GAME_DATA = {
@@ -7,6 +7,7 @@ export const NEW_GAME_DATA = {
   fields: [
     {
       type: ANIMALS.chicken,
+      foodType: FOOD.egg,
       position: 1,
       amount: 1,
       level: 1,
