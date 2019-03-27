@@ -24,6 +24,13 @@ export class Game {
     this._game = game;
 
     this.htmlElement.append(this._app.renderer.view);
+    this.launcher = new Launcher({
+      loginViaGoogle: this.loginViaGoogle,
+      containerSize: {
+        width: this.width,
+        height: this.height,
+      },
+    });
 
     ifElse(
       equals(true),
@@ -33,15 +40,7 @@ export class Game {
   }
 
   showLauncher() {
-    const launcher = new Launcher({
-      loginViaGoogle: this.loginViaGoogle,
-      containerSize: {
-        width: this.width,
-        height: this.height,
-      },
-    });
-
-    this.stage.addChild(launcher);
+    this.stage.addChild(this.launcher.stage);
   }
 
   showGame() {
@@ -73,7 +72,7 @@ export class Game {
     this.game = game;
 
     if (!anonymousPlayer) {
-      this.stage.removeChild(this.launcher);
+      this.stage.removeChild(this.launcher.stage);
       this.showGame();
     }
   }
