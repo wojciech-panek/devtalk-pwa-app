@@ -11,6 +11,7 @@ function* signInViaGoogle() {
   try {
     const googleProvider = new firebase.auth.GoogleAuthProvider();
     const { user: { uid, isAnonymous } } = yield firebase.auth().signInWithPopup(googleProvider);
+
     yield put(UserAuthActions.setUserData(uid, isAnonymous));
   } catch (error) {
     yield reportError(error);

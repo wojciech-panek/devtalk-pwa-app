@@ -7,11 +7,14 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'ramda';
 
 import { Home } from './home.component';
-import { selectUserIsAnonymous, UserAuthActions } from '../../modules/userAuth';
+import { selectUserIsAnonymous, selectUserUid, UserAuthActions } from '../../modules/userAuth';
+import { selectUserGame } from '../../modules/game';
 
 
 const mapStateToProps = createStructuredSelector({
   isUserAnonymous: selectUserIsAnonymous,
+  userUid: selectUserUid,
+  gameData: selectUserGame,
 });
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
