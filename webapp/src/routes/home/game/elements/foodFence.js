@@ -13,13 +13,13 @@ export class FoodFence {
     this.stage.x = position.x;
     this.stage.y = position.y;
     if (this.isEven(column)) {
-      this.flipHorizontally(this.stage);
+      this.constructor.flipHorizontally(this.stage);
     }
   }
 
-  isEven = num => num % 2;
+  isEven = num => num % 2 === 0;
 
-  flipHorizontally(sprite) {
+  static flipHorizontally(sprite) {
     sprite.scale.x *= -1;
   }
 

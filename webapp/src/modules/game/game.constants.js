@@ -1,4 +1,4 @@
-import { ANIMALS, FOOD } from '../../routes/home/game/game.constans';
+import { ANIMALS, FOOD } from '../../routes/home/game/game.constants';
 
 export const GAME_COLLECTION = 'games';
 export const NEW_GAME_DATA = {

@@ -1,6 +1,6 @@
 import { Container } from 'pixi.js';
 
-import { FENCES_INITIAL_Y, FENCES_ROWS, ANIMALS, FOOD } from '../game.constans';
+import { FENCES_INITIAL_Y, FENCES_ROWS, ANIMALS, FOOD } from '../game.constants';
 import { AnimalLevel } from './animalLevel';
 import { AnimalHead } from './animalHead';
 import { FoodItem } from './foodItem';

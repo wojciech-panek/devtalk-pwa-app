@@ -1,5 +1,5 @@
 import { Container } from 'pixi.js';
-import { FENCES_COLUMNS, FENCES_ROWS, FENCES_INITIAL_Y } from '../game.constans';
+import { FENCES_COLUMNS, FENCES_ROWS, FENCES_INITIAL_Y } from '../game.constants';
 import { Fence } from './fence';
 
 
