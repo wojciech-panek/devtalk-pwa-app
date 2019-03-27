@@ -49,13 +49,11 @@ export class Game {
     this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
     this.userInterface = new UserInterface({ rendererWidth: this.width, game: this.game });
 
-    const animals = this.game.fields.map(({ type, position, amount, level }) => new Animal({
+    const animals = this.game.fields.map(({ position: positionNumber, ...other }) => new Animal({
       rendererWidth: this.width,
       rendererHeight: this.height,
-      positionNumber: position,
-      type,
-      amount,
-      level,
+      positionNumber,
+      ...other,
     }));
 
     this.stage.interactive = true;
@@ -63,7 +61,7 @@ export class Game {
     this.stage.addChild(this.warehouse.stage);
     this.stage.addChild(this.fenceGroup.stage);
     this.stage.addChild(this.userInterface.stage);
-    animals.map((field) => {
+    animals.forEach((field) => {
       this.stage.addChild(field.stage);
     });
   }

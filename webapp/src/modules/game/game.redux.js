@@ -19,9 +19,7 @@ export const GameRecord = new Record({
 
 export const INITIAL_STATE = new GameRecord();
 
-const setGameData = (state, { data }) => state.merge({
-  data: fromJS(data),
-});
+const setGameData = (state, { data }) => state.set('data', fromJS(data));
 
 export const reducer = createReducer(INITIAL_STATE, {
   [GameTypes.SET_GAME_DATA]: setGameData,
