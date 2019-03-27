@@ -4,6 +4,7 @@ import launchBackground from '../../../images/game/launch.jpg';
 import gameLogo from '../../../images/game/game-logo.png';
 import Button from './button';
 import Background from './background';
+import { isInStandaloneMode } from '../../../theme/media';
 
 
 export class Launcher {
@@ -51,5 +52,9 @@ export class Launcher {
 
   get containerSize() {
     return this._containerSize;
+  }
+
+  get isPWA() {
+    return isInStandaloneMode();
   }
 }

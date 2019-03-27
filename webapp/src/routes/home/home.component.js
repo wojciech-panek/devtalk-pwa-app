@@ -1,5 +1,6 @@
 import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
+import { Map } from 'immutable';
 
 import { Game } from './game';
 import { Container, GameWrapper } from './home.styles';
@@ -10,7 +11,8 @@ export class Home extends PureComponent {
     isUserAnonymous: PropTypes.bool.isRequired,
     userUid: PropTypes.string,
     signInViaGoogle: PropTypes.func.isRequired,
-    gameData: PropTypes.object.isRequired,
+    callPwaPrompt: PropTypes.func.isRequired,
+    gameData: PropTypes.instanceOf(Map).isRequired,
   };
 
   componentDidMount() {
@@ -26,6 +28,7 @@ export class Home extends PureComponent {
         state: gameData.toJS(),
       });
     }
+
   }
 
   startGame = () => {
