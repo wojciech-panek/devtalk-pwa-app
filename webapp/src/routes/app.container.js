@@ -18,7 +18,7 @@ const mapStateToProps = createStructuredSelector({
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
   setLanguage: LocalesActions.setLanguage,
   startup: StartupActions.startup,
-  saveEventReference: PwaActions.saveEventReference,
+  startListeningForPwaEvent: PwaActions.startListeningForPwaEvent,
 }, dispatch);
 
 export default compose(

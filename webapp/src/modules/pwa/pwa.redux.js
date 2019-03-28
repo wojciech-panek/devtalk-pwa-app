@@ -4,6 +4,8 @@ import { Record } from 'immutable';
 
 export const { Types: PwaTypes, Creators: PwaActions } = createActions({
   saveEventReference: ['event'],
+  startListeningForPwaEvent: [],
+  stopListeningForPwaEvent: [],
   clearPwaData: null,
   callPrompt: null,
 }, { prefix: 'PWA_' });

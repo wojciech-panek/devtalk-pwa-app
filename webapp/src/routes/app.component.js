@@ -17,14 +17,14 @@ export class App extends PureComponent {
     match: PropTypes.object.isRequired,
     setLanguage: PropTypes.func.isRequired,
     startup: PropTypes.func.isRequired,
-    saveEventReference: PropTypes.func.isRequired,
+    startListeningForPwaEvent: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     this.props.startup();
     this.props.setLanguage(this.getLanguage(this.props));
     runtime.register();
-    window.addEventListener(PWA_EVENT, this.handlePwaEvent);
+    this.props.startListeningForPwaEvent();
   }
 
   componentDidUpdate(prevProps) {
@@ -34,16 +34,16 @@ export class App extends PureComponent {
   }
 
   componentWillUnmount() {
-    window.removeEventListener(PWA_EVENT, this.handlePwaEvent);
+    // window.removeEventListener(PWA_EVENT, this.handlePwaEvent);
   }
 
   getLanguage = (props) => props.match.params.lang || DEFAULT_LOCALE;
 
-  handlePwaEvent = (event) => {
-    event.preventDefault();
-    console.warn('event:', event);
-    this.props.saveEventReference(event);
-  };
+  // handlePwaEvent = (event) => {
+  //   event.preventDefault();
+  //   console.warn('event:', event);
+  //   this.props.saveEventReference(event);
+  // };
 
   render() {
     if (!this.props.language) {
