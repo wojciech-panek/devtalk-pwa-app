@@ -35,16 +35,9 @@ function* startListeningForPwaEvent() {
       yield take(PwaTypes.CALL_PROMPT);
 
       if (event) {
-        event.prompt();
-        event.userChoice
-          .then(function (choiceResult) {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('User accepted the A2HS prompt');
-            } else {
-              console.log('User dismissed the A2HS prompt');
-            }
-            event = null;
-          });
+        yield event.prompt();
+        const x = yield event.userChoice;
+        console.log(x);
       }
     }
   } catch (e) {
