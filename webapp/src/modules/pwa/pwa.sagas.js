@@ -1,32 +1,9 @@
-import { put, takeLatest, all, select, take, fork } from 'redux-saga/effects';
+import { put, takeLatest, all, take, fork } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import reportError from '../../shared/utils/reportError';
-import { PwaTypes, PwaActions, selectPwaEvent } from './';
-import { PWA_EVENT } from '../../theme/media';
+import { PwaTypes, PwaActions, PWA_EVENT } from './';
 
-//
-// function* callPrompt() {
-//   try {
-//     const pwaEvent = yield select(selectPwaEvent);
-//
-//     if (pwaEvent) {
-//       pwaEvent.prompt();
-//       // Wait for the user to respond to the prompt
-//       const choiceResult = yield pwaEvent.userChoice;
-//
-//       if (choiceResult.outcome === 'accepted') {
-//         console.log('User accepted the A2HS prompt');
-//       } else {
-//         console.log('User dismissed the A2HS prompt');
-//       }
-//       yield put(PwaActions.clearPwaData);
-//     }
-//   } catch (error) {
-//     /* istanbul ignore next */
-//     yield reportError(error);
-//   }
-// }
 
 const createPwaEventChannel = () => eventChannel(emit => {
   const eventHandler = event => emit(event);
@@ -48,6 +25,7 @@ function* startListeningForPwaEvent() {
 
   while (true) { // eslint-disable-line
     const event = yield take(channel);
+    event.preventDefault();
     console.warn('event:', event);
     yield put(PwaActions.pwaEventReceived());
     yield take(PwaTypes.CALL_PROMPT);
@@ -61,12 +39,9 @@ export function* watchPwa() {
   try {
     yield all([
       takeLatest(PwaTypes.START_LISTENING_FOR_PWA_EVENT, startListeningForPwaEvent),
-      // takeLatest(PwaTypes.CALL_PROMPT, callPrompt),
     ]);
   } catch(error) {
     /* istanbul ignore next */
     reportError(error);
   }
 }
-
-// window.addEventListener(PWA_EVENT, this.handlePwaEvent);

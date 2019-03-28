@@ -80,6 +80,10 @@ export class Game {
     }
   }
 
+  updateLauncher({ canShowPromptButton }) {
+    this.launcher.showInstallButton(canShowPromptButton);
+  }
+
   get htmlElement() {
     return this._htmlElement;
   }

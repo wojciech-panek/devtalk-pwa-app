@@ -11,20 +11,17 @@ export class Launcher {
   constructor({ loginViaGoogle, callPwaPrompt, containerSize }) {
     this._stage = new Container();
     this._containerSize = containerSize;
+    this._callPwaPrompt = callPwaPrompt;
     this.loginButton = new Button({
       text: 'Login via Google',
       onClick: loginViaGoogle,
-    });
-    this.installButton = new Button({
-      text: 'Install application',
-      onClick: callPwaPrompt,
     });
     this.background = new Background({
       image: launchBackground,
     });
     this.setupElements();
 
-    this.stage.addChild(this.background.stage, this.loginButton.stage, this.installButton.stage);
+    this.stage.addChild(this.background.stage, this.loginButton.stage);
 
     this.addLogo();
   }
@@ -46,10 +43,23 @@ export class Launcher {
     const { width, height } = this.containerSize;
     this.loginButton.stage.x = width / 2;
     this.loginButton.stage.y = height / 2;
-    this.installButton.stage.x = width / 2;
-    this.installButton.stage.y = height / 2 + 50;
     this.background.stage.width = width;
     this.background.stage.height = height;
+  }
+
+  showInstallButton(show) {
+    if (show) {
+      const { width, height } = this.containerSize;
+      const installButton = new Button({
+        text: 'Install application',
+        onClick: this.callPwaPrompt,
+      });
+
+      installButton.stage.x = width / 2;
+      installButton.stage.y = height / 2 + 70;
+
+      this.stage.addChild(installButton.stage);
+    }
   }
 
   get stage() {
@@ -58,6 +68,10 @@ export class Launcher {
 
   get containerSize() {
     return this._containerSize;
+  }
+
+  get callPwaPrompt() {
+    return this._callPwaPrompt;
   }
 
   get isPWA() {

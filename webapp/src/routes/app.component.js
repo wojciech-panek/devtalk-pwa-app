@@ -6,7 +6,6 @@ import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
 import { translationMessages, DEFAULT_LOCALE } from '../i18n';
 import { GlobalStyle } from '../theme/global';
-import { PWA_EVENT } from '../theme/media';
 import messages from './app.messages';
 
 
@@ -33,17 +32,7 @@ export class App extends PureComponent {
     }
   }
 
-  componentWillUnmount() {
-    // window.removeEventListener(PWA_EVENT, this.handlePwaEvent);
-  }
-
   getLanguage = (props) => props.match.params.lang || DEFAULT_LOCALE;
-
-  // handlePwaEvent = (event) => {
-  //   event.preventDefault();
-  //   console.warn('event:', event);
-  //   this.props.saveEventReference(event);
-  // };
 
   render() {
     if (!this.props.language) {

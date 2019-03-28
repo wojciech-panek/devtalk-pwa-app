@@ -1,8 +1,6 @@
 import { css } from 'styled-components';
 
 
-export const PWA_EVENT = 'beforeinstallprompt';
-
 export const sizes = {
   desktopFull: 1920,
   desktopWide: 1440,

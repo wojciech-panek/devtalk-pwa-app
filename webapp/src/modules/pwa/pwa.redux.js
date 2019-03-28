@@ -3,7 +3,6 @@ import { Record } from 'immutable';
 
 
 export const { Types: PwaTypes, Creators: PwaActions } = createActions({
-  saveEventReference: ['event'],
   startListeningForPwaEvent: [],
   stopListeningForPwaEvent: [],
   pwaEventReceived: [],
@@ -11,26 +10,17 @@ export const { Types: PwaTypes, Creators: PwaActions } = createActions({
   callPrompt: null,
 }, { prefix: 'PWA_' });
 
-const PwaRecord = {
-  event: {},
+const PwaRecord = new Record({
   canShowPromptButton: false,
-};
+}, 'pwa');
 
-export const INITIAL_STATE = PwaRecord;
+export const INITIAL_STATE = new PwaRecord();
 
 const clearPwaData = () => INITIAL_STATE;
-
-const saveEventReference = (state, { event }) => {
-  console.warn('PwaActions event:', PwaActions);
-  state.event = event;
-  console.warn('state:', state);
-  return state;
-};
 
 const pwaEventReceived = (state) => ({ ...state, canShowPromptButton: true });
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [PwaTypes.SAVE_EVENT_REFERENCE]: saveEventReference,
   [PwaTypes.CLEAR_PWA_DATA]: clearPwaData,
   [PwaTypes.PWA_EVENT_RECEIVED]: pwaEventReceived,
 });

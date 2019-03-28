@@ -9,6 +9,7 @@ import { Container, GameWrapper } from './home.styles';
 export class Home extends PureComponent {
   static propTypes = {
     isUserAnonymous: PropTypes.bool.isRequired,
+    canShowPromptButton: PropTypes.bool.isRequired,
     userUid: PropTypes.string,
     signInViaGoogle: PropTypes.func.isRequired,
     callPwaPrompt: PropTypes.func.isRequired,
@@ -20,12 +21,18 @@ export class Home extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { isUserAnonymous, gameData } = this.props;
+    const { isUserAnonymous, canShowPromptButton, gameData } = this.props;
 
     if (!isUserAnonymous && prevProps.gameData.size === 0 && gameData.size > 0) {
       this.game.updateGame({
         anonymousPlayer: isUserAnonymous,
         state: gameData.toJS(),
+      });
+    }
+
+    if (!prevProps.canShowPromptButton && canShowPromptButton) {
+      this.game.updateLauncher({
+        canShowPromptButton,
       });
     }
 

@@ -7,3 +7,8 @@ export const selectPwaEvent = createSelector(
   selectPwaDomain,
   (state) => state.event,
 );
+
+export const selectCanShowPromptButton = createSelector(
+  selectPwaDomain,
+  (state) => state.canShowPromptButton,
+);
