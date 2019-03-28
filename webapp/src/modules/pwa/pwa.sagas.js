@@ -29,7 +29,7 @@ function* startListeningForPwaEvent() {
     while (true) { // eslint-disable-line
       let event = yield take(channel);
       // Prevent Chrome 67 and earlier from automatically showing the prompt
-      // event.preventDefault();
+      event.preventDefault();
 
       yield put(PwaActions.pwaEventReceived());
       yield take(PwaTypes.CALL_PROMPT);
