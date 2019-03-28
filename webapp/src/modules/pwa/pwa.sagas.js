@@ -15,7 +15,6 @@ function* closePwaEventChannel(channel) {
   while (true) {
     yield take(PwaTypes.STOP_LISTENING_FOR_PWA_EVENT);
     channel.close();
-    console.warn('closePwaEventChannel');
   }
 }
 

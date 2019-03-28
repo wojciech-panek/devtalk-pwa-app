@@ -8,7 +8,6 @@ import { compose } from 'ramda';
 import { App } from './app.component';
 import { LocalesActions, selectLocalesLanguage } from '../modules/locales';
 import { StartupActions } from '../modules/startup';
-import { PwaActions } from '../modules/pwa';
 
 
 const mapStateToProps = createStructuredSelector({
@@ -18,7 +17,6 @@ const mapStateToProps = createStructuredSelector({
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
   setLanguage: LocalesActions.setLanguage,
   startup: StartupActions.startup,
-  startListeningForPwaEvent: PwaActions.startListeningForPwaEvent,
 }, dispatch);
 
 export default compose(

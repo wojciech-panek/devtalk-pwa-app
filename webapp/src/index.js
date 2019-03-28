@@ -14,6 +14,7 @@ import './theme/global';
 import configureStore from './modules/store';
 import UnsupportedBrowserDetection from './shared/utils/unsupportedBrowserDetection';
 import browserHistory from './shared/utils/history';
+import { PWA_EVENT } from './modules/pwa';
 
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
@@ -26,6 +27,9 @@ openSansObserver.load().then(() => {
 }, () => {
   document.body.classList.remove('fontLoaded');
 });
+
+
+window.addEventListener(PWA_EVENT, (e) => e.preventDefault());
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
