@@ -6,7 +6,9 @@ import { PwaTypes, PwaActions, PWA_EVENT } from './';
 
 
 const createPwaEventChannel = () => eventChannel(emit => {
-  const eventHandler = event => emit(event);
+  const eventHandler = event => setTimeout(() => {
+    emit(event);
+  });
   window.addEventListener(PWA_EVENT, eventHandler);
   return () => window.removeEventListener(PWA_EVENT, eventHandler);
 });
@@ -19,18 +21,30 @@ function* closePwaEventChannel(channel) {
 }
 
 function* startListeningForPwaEvent() {
-  const channel = createPwaEventChannel();
+  const channel = yield createPwaEventChannel();
 
   yield fork(closePwaEventChannel, channel);
 
   while (true) { // eslint-disable-line
-    const event = yield take(channel);
+    let event = yield take(channel);
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
     event.preventDefault();
+
     yield put(PwaActions.pwaEventReceived());
     yield take(PwaTypes.CALL_PROMPT);
 
-    event.prompt();
-    yield put(PwaActions.stopListeningForPwaEvent());
+    if (event) {
+      event.prompt();
+      event.userChoice
+        .then(function (choiceResult) {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+          } else {
+            console.log('User dismissed the A2HS prompt');
+          }
+          event = null;
+        });
+    }
   }
 }
 
