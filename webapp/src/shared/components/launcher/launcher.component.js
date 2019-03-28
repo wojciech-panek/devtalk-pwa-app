@@ -8,19 +8,23 @@ import { isInStandaloneMode } from '../../../theme/media';
 
 
 export class Launcher {
-  constructor({ loginViaGoogle, containerSize }) {
+  constructor({ loginViaGoogle, callPwaPrompt, containerSize }) {
     this._stage = new Container();
     this._containerSize = containerSize;
     this.loginButton = new Button({
       text: 'Login via Google',
       onClick: loginViaGoogle,
     });
+    this.installButton = new Button({
+      text: 'Install application',
+      onClick: callPwaPrompt,
+    });
     this.background = new Background({
       image: launchBackground,
     });
     this.setupElements();
 
-    this.stage.addChild(this.background.stage, this.loginButton.stage);
+    this.stage.addChild(this.background.stage, this.loginButton.stage, this.installButton.stage);
 
     this.addLogo();
   }
@@ -42,6 +46,8 @@ export class Launcher {
     const { width, height } = this.containerSize;
     this.loginButton.stage.x = width / 2;
     this.loginButton.stage.y = height / 2;
+    this.installButton.stage.x = width / 2;
+    this.installButton.stage.y = height / 2 + 50;
     this.background.stage.width = width;
     this.background.stage.height = height;
   }

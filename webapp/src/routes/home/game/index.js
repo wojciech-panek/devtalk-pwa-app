@@ -11,7 +11,7 @@ import { Launcher } from '../../../shared/components/launcher';
 
 
 export class Game {
-  constructor({ htmlElement, anonymousPlayer, loginViaGoogle, state }) {
+  constructor({ htmlElement, anonymousPlayer, loginViaGoogle, callPwaPrompt, state }) {
     this._htmlElement = htmlElement;
     this._app = new Application({
       transparent: true,
@@ -22,11 +22,13 @@ export class Game {
       height: this.height,
     });
     this._loginViaGoogle = loginViaGoogle;
+    this._callPwaPrompt = callPwaPrompt;
     this._state = state;
 
     this.htmlElement.append(this._app.renderer.view);
     this.launcher = new Launcher({
       loginViaGoogle: this.loginViaGoogle,
+      callPwaPrompt: this.callPwaPrompt,
       containerSize: {
         width: this.width,
         height: this.height,
@@ -96,6 +98,10 @@ export class Game {
 
   get loginViaGoogle() {
     return this._loginViaGoogle;
+  }
+
+  get callPwaPrompt() {
+    return this._callPwaPrompt;
   }
 
   set state(value) {

@@ -32,13 +32,14 @@ export class Home extends PureComponent {
   }
 
   startGame = () => {
-    const { isUserAnonymous, signInViaGoogle, gameData } = this.props;
+    const { isUserAnonymous, signInViaGoogle, callPwaPrompt, gameData } = this.props;
 
     this.game = new Game({
       htmlElement: this.pixiWrapperRef.current,
       anonymousPlayer: isUserAnonymous,
       loginViaGoogle: signInViaGoogle,
       state: gameData.toJS(),
+      callPwaPrompt,
     });
   };
 
