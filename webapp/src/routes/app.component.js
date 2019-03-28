@@ -17,6 +17,7 @@ export class App extends PureComponent {
     match: PropTypes.object.isRequired,
     setLanguage: PropTypes.func.isRequired,
     startup: PropTypes.func.isRequired,
+    saveEventReference: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -40,8 +41,8 @@ export class App extends PureComponent {
 
   handlePwaEvent = (event) => {
     event.preventDefault();
-    // Stash the event so it can be triggered later.
-    callback(event);
+    console.warn('event:', event);
+    this.props.saveEventReference(event);
   };
 
   render() {

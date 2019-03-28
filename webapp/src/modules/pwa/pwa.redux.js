@@ -8,16 +8,18 @@ export const { Types: PwaTypes, Creators: PwaActions } = createActions({
   callPrompt: null,
 }, { prefix: 'PWA_' });
 
-const PwaRecord = new Record({
+const PwaRecord = {
   event: {},
-});
+};
 
-export const INITIAL_STATE = new PwaRecord();
+export const INITIAL_STATE = PwaRecord;
 
 const clearPwaData = () => INITIAL_STATE;
 
 const saveEventReference = (state, { event }) => {
+  console.warn('PwaActions event:', PwaActions);
   state.event = event;
+  console.warn('state:', state);
   return state;
 };
 
