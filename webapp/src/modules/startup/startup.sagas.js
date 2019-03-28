@@ -1,9 +1,26 @@
-import { takeLatest, all } from 'redux-saga/effects';
+import { takeLatest, all, put } from 'redux-saga/effects';
 import firebase from 'firebase/app';
+import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
 import { StartupTypes } from '../startup';
+import { PwaActions } from '../pwa';
+import reportError from '../../shared/utils/reportError';
 
-function* initializeFirebaseApp() {
+
+function* callOtherActions() {
+  try {
+    yield put(PwaActions.startListeningForPwaEvent());
+  } catch (error) {
+    /* istanbul ignore next */
+    reportError(error);
+  }
+}
+
+function registerServiceWorker() {
+  runtime.register();
+}
+
+function initializeFirebaseApp() {
   firebase.initializeApp({
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -17,5 +34,7 @@ function* initializeFirebaseApp() {
 export function* watchStartup() {
   yield all([
     takeLatest(StartupTypes.STARTUP, initializeFirebaseApp),
+    takeLatest(StartupTypes.STARTUP, registerServiceWorker),
+    takeLatest(StartupTypes.STARTUP, callOtherActions),
   ]);
 }

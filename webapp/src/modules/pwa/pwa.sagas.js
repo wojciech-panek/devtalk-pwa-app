@@ -15,6 +15,7 @@ function* closePwaEventChannel(channel) {
   while (true) {
     yield take(PwaTypes.STOP_LISTENING_FOR_PWA_EVENT);
     channel.close();
+    console.warn('closePwaEventChannel');
   }
 }
 
@@ -26,7 +27,6 @@ function* startListeningForPwaEvent() {
   while (true) { // eslint-disable-line
     const event = yield take(channel);
     event.preventDefault();
-    console.warn('event:', event);
     yield put(PwaActions.pwaEventReceived());
     yield take(PwaTypes.CALL_PROMPT);
 
@@ -40,7 +40,7 @@ export function* watchPwa() {
     yield all([
       takeLatest(PwaTypes.START_LISTENING_FOR_PWA_EVENT, startListeningForPwaEvent),
     ]);
-  } catch(error) {
+  } catch (error) {
     /* istanbul ignore next */
     reportError(error);
   }

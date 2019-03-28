@@ -30,12 +30,11 @@ export class Home extends PureComponent {
       });
     }
 
-    if (!prevProps.canShowPromptButton && canShowPromptButton) {
+    if (!prevProps.canShowPromptButton && canShowPromptButton && isUserAnonymous) {
       this.game.updateLauncher({
         canShowPromptButton,
       });
     }
-
   }
 
   startGame = () => {
