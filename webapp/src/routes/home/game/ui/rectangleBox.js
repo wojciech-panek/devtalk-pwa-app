@@ -1,5 +1,5 @@
 import { Graphics } from 'pixi.js';
-import { UI_RADIUS } from '../game.constans';
+import { UI_RADIUS } from '../game.constants';
 
 export class RectangleBox {
   constructor({ x, y, width, height }) {

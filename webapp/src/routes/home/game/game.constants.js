@@ -17,3 +17,15 @@ export const ANIMALS = {
   moose: 'moose',
   pig: 'pig',
 };
+
+export const FOOD = {
+  beef: 'beef',
+  cheese: 'cheese',
+  chicken: 'chicken',
+  duck: 'duck',
+  egg: 'egg',
+  frame: 'frame',
+  ham: 'ham',
+  milk: 'milk',
+  moose: 'moose',
+};

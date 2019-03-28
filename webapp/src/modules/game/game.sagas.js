@@ -5,7 +5,7 @@ import reportError from '../../shared/utils/reportError';
 import { createSaga } from '../utils/entityRegistry';
 import { selectUserUid, UserAuthTypes } from '../userAuth';
 import { GameTypes, GameActions } from './game.redux';
-import { GAME_COLLECTION, NEW_GAME_DATA } from './game.constans';
+import { GAME_COLLECTION, NEW_GAME_DATA } from './game.constants';
 
 
 const registrySaga = createSaga({
