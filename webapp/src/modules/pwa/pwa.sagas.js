@@ -44,6 +44,7 @@ function* startListeningForPwaEvent() {
               console.log('User dismissed the A2HS prompt');
             }
           });
+        yield put(PwaActions.pwaPromptUserChoice());
       }
     }
   } catch (e) {

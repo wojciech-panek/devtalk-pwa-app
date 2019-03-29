@@ -16,6 +16,7 @@ export class Launcher {
       text: 'Login via Google',
       onClick: loginViaGoogle,
     });
+    this.installButtonContainer = new Container();
     this.background = new Background({
       image: launchBackground,
     });
@@ -49,16 +50,24 @@ export class Launcher {
 
   showInstallButton(show) {
     if (show) {
-      const { width, height } = this.containerSize;
-      const installButton = new Button({
-        text: 'Install application',
-        onClick: this.callPwaPrompt,
-      });
+      console.warn('this.installButtonContainer.children:', this.installButtonContainer.children);
+      if (this.installButtonContainer.children.length > 0) {
+        const { width, height } = this.containerSize;
+        const installButton = new Button({
+          text: 'Install application',
+          onClick: this.callPwaPrompt,
+        });
 
-      installButton.stage.x = width / 2;
-      installButton.stage.y = height / 2 + 70;
+        installButton.stage.x = width / 2;
+        installButton.stage.y = height / 2 + 70;
 
-      this.stage.addChild(installButton.stage);
+        this.installButtonContainer.addChild(installButton);
+      }
+      this.installButtonContainer.visible = true;
+      this.stage.addChild(this.installButtonContainer);
+    } else {
+      console.warn('this.installButtonContainer.children in else:', this.installButtonContainer.children);
+      this.installButtonContainer.visible = false;
     }
   }
 
