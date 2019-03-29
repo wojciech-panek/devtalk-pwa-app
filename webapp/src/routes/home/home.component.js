@@ -30,11 +30,11 @@ export class Home extends PureComponent {
       });
     }
 
-    // if (!prevProps.canShowPromptButton && canShowPromptButton && isUserAnonymous) {
-    //   this.game.updateLauncher({
-    //     canShowPromptButton,
-    //   });
-    // }
+    if (!prevProps.canShowPromptButton && canShowPromptButton && isUserAnonymous) {
+      this.game.updateLauncher({
+        canShowPromptButton,
+      });
+    }
   }
 
   startGame = () => {
@@ -45,7 +45,7 @@ export class Home extends PureComponent {
       anonymousPlayer: isUserAnonymous,
       loginViaGoogle: signInViaGoogle,
       state: gameData.toJS(),
-      // callPwaPrompt,
+      callPwaPrompt,
     });
   };
 

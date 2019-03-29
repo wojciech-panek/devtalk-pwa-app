@@ -36,8 +36,14 @@ function* startListeningForPwaEvent() {
 
       if (event) {
         yield event.prompt();
-        const x = yield event.userChoice;
-        console.log(x);
+        event.userChoice
+          .then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the A2HS prompt');
+            } else {
+              console.log('User dismissed the A2HS prompt');
+            }
+          });
       }
     }
   } catch (e) {
@@ -48,7 +54,7 @@ function* startListeningForPwaEvent() {
 export function* watchPwa() {
   try {
     yield all([
-      // takeLatest(PwaTypes.START_LISTENING_FOR_PWA_EVENT, startListeningForPwaEvent),
+      takeLatest(PwaTypes.START_LISTENING_FOR_PWA_EVENT, startListeningForPwaEvent),
     ]);
   } catch (error) {
     /* istanbul ignore next */
