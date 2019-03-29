@@ -36,18 +36,13 @@ function* startListeningForPwaEvent() {
 
       if (event) {
         yield event.prompt();
-        const userChoice = yield event.userChoice;
+        yield event.userChoice;
 
-        if (userChoice.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt');
-        } else {
-          console.log('User dismissed the A2HS prompt');
-        }
         yield put(PwaActions.pwaPromptUserChoice());
       }
     }
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    reportError(error);
   }
 }
 

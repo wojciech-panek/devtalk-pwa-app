@@ -1,6 +1,7 @@
 import { Application } from 'pixi.js';
 import { ifElse, equals } from 'ramda';
 
+import { isInStandaloneMode } from '../../../theme/media';
 import { Background } from './elements/background';
 import { Warehouse } from './elements/warehouse';
 import { UserInterface } from './ui/userInterface';
@@ -81,7 +82,9 @@ export class Game {
   }
 
   updateLauncher({ canShowPromptButton }) {
-    this.launcher.showInstallButton(canShowPromptButton);
+    if (!this.isPWA) {
+      this.launcher.showInstallButton(canShowPromptButton);
+    }
   }
 
   get htmlElement() {
@@ -114,6 +117,10 @@ export class Game {
 
   get state() {
     return this._state;
+  }
+
+  get isPWA() {
+    return isInStandaloneMode();
   }
 
   get ticker() {

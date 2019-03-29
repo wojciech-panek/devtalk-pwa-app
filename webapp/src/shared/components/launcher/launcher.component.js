@@ -4,7 +4,6 @@ import launchBackground from '../../../images/game/launch.jpg';
 import gameLogo from '../../../images/game/game-logo.png';
 import Button from './button';
 import Background from './background';
-import { isInStandaloneMode } from '../../../theme/media';
 
 
 export class Launcher {
@@ -50,13 +49,11 @@ export class Launcher {
 
   showInstallButton(show) {
     if (show) {
-      console.warn('this.installButtonContainer.children:', this.installButtonContainer.children);
       if (this.installButtonContainer.children.length === 0) {
         this.createInstallButton();
       }
       this.installButtonContainer.visible = true;
     } else {
-      console.warn('this.installButtonContainer.children in else:', this.installButtonContainer.children);
       this.installButtonContainer.visible = false;
     }
   }
@@ -85,9 +82,5 @@ export class Launcher {
 
   get callPwaPrompt() {
     return this._callPwaPrompt;
-  }
-
-  get isPWA() {
-    return isInStandaloneMode();
   }
 }

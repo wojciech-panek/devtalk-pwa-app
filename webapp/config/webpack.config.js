@@ -501,7 +501,7 @@ module.exports = function(webpackEnv) {
       ),
       new WebpackPwaManifest({
         'inject': true,
-        'fingerprints': true,
+        'fingerprints': false,
         'ios': false,
         'publicPath': null,
         'includeDirectory': true,
