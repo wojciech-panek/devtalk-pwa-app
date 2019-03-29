@@ -48,7 +48,7 @@ function* startListeningForPwaEvent() {
 export function* watchPwa() {
   try {
     yield all([
-      takeLatest(PwaTypes.START_LISTENING_FOR_PWA_EVENT, startListeningForPwaEvent),
+      // takeLatest(PwaTypes.START_LISTENING_FOR_PWA_EVENT, startListeningForPwaEvent),
     ]);
   } catch (error) {
     /* istanbul ignore next */

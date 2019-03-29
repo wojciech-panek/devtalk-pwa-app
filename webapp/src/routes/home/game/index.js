@@ -22,13 +22,13 @@ export class Game {
       height: this.height,
     });
     this._loginViaGoogle = loginViaGoogle;
-    this._callPwaPrompt = callPwaPrompt;
+    // this._callPwaPrompt = callPwaPrompt;
     this._state = state;
 
     this.htmlElement.append(this._app.renderer.view);
     this.launcher = new Launcher({
       loginViaGoogle: this.loginViaGoogle,
-      callPwaPrompt: this.callPwaPrompt,
+      // callPwaPrompt: this.callPwaPrompt,
       containerSize: {
         width: this.width,
         height: this.height,
@@ -40,6 +40,9 @@ export class Game {
       () => this.showLauncher(),
       () => this.showGame()
     )(anonymousPlayer);
+
+
+    this.listenForPwaEvent();
   }
 
   showLauncher() {
@@ -80,9 +83,22 @@ export class Game {
     }
   }
 
-  updateLauncher({ canShowPromptButton }) {
-    this.launcher.showInstallButton(canShowPromptButton);
+  updateLauncher({ showInstallButton, pwaEvent }) {
+    console.warn('pwaEvent:', pwaEvent);
+    this.launcher.setCallPwaPrompt(pwaEvent);
+    this.launcher.showInstallButton(showInstallButton);
   }
+
+  listenForPwaEvent() {
+    window.addEventListener('beforeinstallprompt', (event) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      event.preventDefault();
+      // Stash the event so it can be triggered later.
+      console.warn('beforeinstallprompt Event');
+
+      this.updateLauncher({ showInstallButton: true, pwaEvent: event });
+    });
+  };
 
   get htmlElement() {
     return this._htmlElement;

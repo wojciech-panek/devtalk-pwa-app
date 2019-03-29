@@ -8,21 +8,21 @@ import reportError from '../../shared/utils/reportError';
 
 
 function* registerServiceWorker() {
-  try {
-    // navigator.serviceWorker.register('sw.index.js');
-    // runtime.register();
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .then(function (registration) {
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }).catch(function (err) {
-          console.log('ServiceWorker registration failed: ', err);
-        });
-    }
-  } catch (error) {
-    yield reportError(error);
+  // try {
+  // navigator.serviceWorker.register('sw.index.js');
+  // runtime.register();
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .register('/sw.js', { scope: '.' })
+      .then(function (registration) {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }).catch(function (err) {
+        console.log('ServiceWorker registration failed: ', err);
+      });
   }
+  // } catch (error) {
+  //   yield reportError(error);
+  // }
 }
 
 function* initializeFirebaseApp() {

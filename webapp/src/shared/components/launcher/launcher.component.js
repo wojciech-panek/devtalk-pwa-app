@@ -52,7 +52,7 @@ export class Launcher {
       const { width, height } = this.containerSize;
       const installButton = new Button({
         text: 'Install application',
-        onClick: this.callPwaPrompt,
+        onClick: this.callPwaPromptAction.bind(this),
       });
 
       installButton.stage.x = width / 2;
@@ -60,6 +60,26 @@ export class Launcher {
 
       this.stage.addChild(installButton.stage);
     }
+  }
+
+  setCallPwaPrompt(value) {
+    this.callPwaPrompt = value;
+  };
+
+  callPwaPromptAction() {
+    const self = this;
+    this.callPwaPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    this.callPwaPrompt.userChoice
+      .then(function (choiceResult) {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt');
+        } else {
+          console.log('User dismissed the A2HS prompt');
+        }
+
+        self.callPwaPrompt(null);
+      });
   }
 
   get stage() {
@@ -72,6 +92,10 @@ export class Launcher {
 
   get callPwaPrompt() {
     return this._callPwaPrompt;
+  }
+
+  set callPwaPrompt(value) {
+    this._callPwaPrompt = value;
   }
 
   get isPWA() {
