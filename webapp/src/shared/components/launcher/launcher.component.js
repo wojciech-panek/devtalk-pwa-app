@@ -51,24 +51,28 @@ export class Launcher {
   showInstallButton(show) {
     if (show) {
       console.warn('this.installButtonContainer.children:', this.installButtonContainer.children);
-      if (this.installButtonContainer.children.length > 0) {
-        const { width, height } = this.containerSize;
-        const installButton = new Button({
-          text: 'Install application',
-          onClick: this.callPwaPrompt,
-        });
-
-        installButton.stage.x = width / 2;
-        installButton.stage.y = height / 2 + 70;
-
-        this.installButtonContainer.addChild(installButton);
+      if (this.installButtonContainer.children.length === 0) {
+        this.createInstallButton();
       }
       this.installButtonContainer.visible = true;
-      this.stage.addChild(this.installButtonContainer);
     } else {
       console.warn('this.installButtonContainer.children in else:', this.installButtonContainer.children);
       this.installButtonContainer.visible = false;
     }
+  }
+
+  createInstallButton() {
+    const { width, height } = this.containerSize;
+    const installButton = new Button({
+      text: 'Install application',
+      onClick: this.callPwaPrompt,
+    });
+
+    installButton.stage.x = width / 2;
+    installButton.stage.y = height / 2 + 70;
+
+    this.installButtonContainer.addChild(installButton.stage);
+    this.stage.addChild(this.installButtonContainer);
   }
 
   get stage() {

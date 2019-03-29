@@ -512,11 +512,11 @@ module.exports = function(webpackEnv) {
         'orientation': 'portrait',
         'display': 'standalone',
         'start_url': '/',
-        'background_color': '#ffffff',
-        'theme_color': '#ffffff',
+        'background_color': '#32ae60',
+        'theme_color': '#6B4B3A',
         'icons': [
           {
-            src: path.resolve('src/images/favicon.png'),
+            src: path.resolve('src/images/game/game-logo.png'),
             sizes: [96, 128, 144, 192, 256, 384, 512], // 144, 192, 512 sizes are required
             ios: false,
           },
