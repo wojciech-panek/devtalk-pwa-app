@@ -3,7 +3,6 @@ import { reducer as localesReducer, LocalesRecord } from './locales/locales.redu
 import { reducer as maintainersReducer, MaintainersRecord } from './maintainers/maintainers.redux';
 import { reducer as userAuthReducer, UserAuthRecord } from './userAuth/userAuth.redux';
 import { reducer as gameReducer, GameRecord } from './game/game.redux';
-import { reducer as pwaReducer } from './pwa/pwa.redux';
 //<-- IMPORT MODULE REDUCER -->
 
 export const records = [
@@ -19,7 +18,6 @@ export default function createReducer() {
     locales: localesReducer,
     userAuth: userAuthReducer,
     game: gameReducer,
-    pwa: pwaReducer,
     //<-- INJECT MODULE REDUCER -->
   });
 }

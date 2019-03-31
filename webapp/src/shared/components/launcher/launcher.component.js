@@ -2,7 +2,7 @@ import { Sprite, Texture, Container } from 'pixi.js';
 
 import launchBackground from '../../../images/game/launch.jpg';
 import gameLogo from '../../../images/game/game-logo.png';
-import Button from './button';
+import Button, { DEFAULT_BUTTON_HEIGHT, VERTICAL_OFFSET } from './button';
 import Background from './background';
 import { isInStandaloneMode } from '../../../theme/media';
 
@@ -16,6 +16,7 @@ export class Launcher {
       text: 'Login via Google',
       onClick: loginViaGoogle,
     });
+    this.installButtonContainer = new Container();
     this.background = new Background({
       image: launchBackground,
     });
@@ -24,6 +25,18 @@ export class Launcher {
     this.stage.addChild(this.background.stage, this.loginButton.stage);
 
     this.addLogo();
+
+    this.listenForPwaEvent();
+  }
+
+  listenForPwaEvent() {
+    window.addEventListener('beforeinstallprompt', (event) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      event.preventDefault();
+      // Stash the event so it can be triggered later.
+      this.callPwaPrompt = event;
+      this.showInstallButton(true);
+    });
   }
 
   addLogo() {
@@ -49,25 +62,32 @@ export class Launcher {
 
   showInstallButton(show) {
     if (show) {
-      const { width, height } = this.containerSize;
-      const installButton = new Button({
-        text: 'Install application',
-        onClick: this.callPwaPromptAction.bind(this),
-      });
-
-      installButton.stage.x = width / 2;
-      installButton.stage.y = height / 2 + 70;
-
-      this.stage.addChild(installButton.stage);
+      if (this.installButtonContainer.children.length === 0) {
+        this.createInstallButton();
+      }
+      this.installButtonContainer.visible = true;
+    } else {
+      this.installButtonContainer.visible = false;
     }
   }
 
-  setCallPwaPrompt(value) {
-    this.callPwaPrompt = value;
-  };
+  createInstallButton() {
+    const { width, height } = this.containerSize;
+    const installButton = new Button({
+      text: 'Install application',
+      onClick: this.callPwaPromptAction.bind(this),
+    });
+
+    installButton.stage.x = width / 2;
+    installButton.stage.y = height / 2 + DEFAULT_BUTTON_HEIGHT + VERTICAL_OFFSET;
+
+    this.installButtonContainer.addChild(installButton.stage);
+    this.stage.addChild(this.installButtonContainer);
+  }
 
   callPwaPromptAction() {
     const self = this;
+
     this.callPwaPrompt.prompt();
     // Wait for the user to respond to the prompt
     this.callPwaPrompt.userChoice
@@ -77,8 +97,8 @@ export class Launcher {
         } else {
           console.log('User dismissed the A2HS prompt');
         }
-
-        self.callPwaPrompt(null);
+        self.showInstallButton(false);
+        self.callPwaPrompt = null;
       });
   }
 

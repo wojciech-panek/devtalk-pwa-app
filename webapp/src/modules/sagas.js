@@ -5,7 +5,6 @@ import { watchMaintainers } from './maintainers/maintainers.sagas';
 import { watchStartup } from './startup/startup.sagas';
 import { watchUserAuth } from './userAuth/userAuth.sagas';
 import { watchGame } from './game/game.sagas';
-import { watchPwa } from './pwa/pwa.sagas';
 //<-- IMPORT MODULE SAGA -->
 
 
@@ -16,7 +15,6 @@ export default function* rootSaga() {
       fork(watchStartup),
       fork(watchUserAuth),
       fork(watchGame),
-      fork(watchPwa),
     //<-- INJECT MODULE SAGA -->
     ]);
   } catch (e) {

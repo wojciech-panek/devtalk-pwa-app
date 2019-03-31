@@ -1,28 +1,13 @@
 import { takeLatest, all, put } from 'redux-saga/effects';
 import firebase from 'firebase/app';
-// import runtime from 'serviceworker-webpack-plugin/lib/runtime';
+import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
 import { StartupTypes, StartupActions } from '../startup';
-import { PwaActions } from '../pwa';
 import reportError from '../../shared/utils/reportError';
 
 
 function* registerServiceWorker() {
-  // try {
-  // navigator.serviceWorker.register('sw.index.js');
-  // runtime.register();
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker
-      .register('/sw.js', { scope: '.' })
-      .then(function (registration) {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }).catch(function (err) {
-        console.log('ServiceWorker registration failed: ', err);
-      });
-  }
-  // } catch (error) {
-  //   yield reportError(error);
-  // }
+  runtime.register();
 }
 
 function* initializeFirebaseApp() {
@@ -42,7 +27,6 @@ function* initializeFirebaseApp() {
 
 function* startup() {
   try {
-    yield put(PwaActions.startListeningForPwaEvent());
     yield put(StartupActions.initializeFirebaseApp());
     yield put(StartupActions.registerServiceWorker());
   } catch (error) {

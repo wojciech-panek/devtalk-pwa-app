@@ -9,19 +9,16 @@ import { compose } from 'ramda';
 import { Home } from './home.component';
 import { selectUserIsAnonymous, selectUserUid, UserAuthActions } from '../../modules/userAuth';
 import { selectUserGame } from '../../modules/game';
-import { PwaActions, selectCanShowPromptButton } from '../../modules/pwa';
 
 
 const mapStateToProps = createStructuredSelector({
   isUserAnonymous: selectUserIsAnonymous,
   userUid: selectUserUid,
   gameData: selectUserGame,
-  canShowPromptButton: selectCanShowPromptButton,
 });
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
   signInViaGoogle: UserAuthActions.signInViaGoogle,
-  callPwaPrompt: PwaActions.callPrompt,
 }, dispatch);
 
 export default compose(

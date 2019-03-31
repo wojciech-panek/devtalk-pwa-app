@@ -3,6 +3,9 @@ import { Text, Sprite, Texture, Container } from 'pixi.js';
 import button from '../../../../images/game/ui/button.png';
 
 
+export const DEFAULT_BUTTON_HEIGHT = 50;
+export const VERTICAL_OFFSET = 20;
+
 class Button {
   constructor({ text, onClick }) {
     this._stage = new Container();

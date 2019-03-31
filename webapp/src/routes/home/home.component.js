@@ -9,10 +9,8 @@ import { Container, GameWrapper } from './home.styles';
 export class Home extends PureComponent {
   static propTypes = {
     isUserAnonymous: PropTypes.bool.isRequired,
-    canShowPromptButton: PropTypes.bool.isRequired,
     userUid: PropTypes.string,
     signInViaGoogle: PropTypes.func.isRequired,
-    callPwaPrompt: PropTypes.func.isRequired,
     gameData: PropTypes.instanceOf(Map).isRequired,
   };
 
@@ -21,7 +19,7 @@ export class Home extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { isUserAnonymous, canShowPromptButton, gameData } = this.props;
+    const { isUserAnonymous, gameData } = this.props;
 
     if (!isUserAnonymous && prevProps.gameData.size === 0 && gameData.size > 0) {
       this.game.updateGame({
@@ -29,23 +27,16 @@ export class Home extends PureComponent {
         state: gameData.toJS(),
       });
     }
-
-    // if (!prevProps.canShowPromptButton && canShowPromptButton && isUserAnonymous) {
-    //   this.game.updateLauncher({
-    //     canShowPromptButton,
-    //   });
-    // }
   }
 
   startGame = () => {
-    const { isUserAnonymous, signInViaGoogle, callPwaPrompt, gameData } = this.props;
+    const { isUserAnonymous, signInViaGoogle, gameData } = this.props;
 
     this.game = new Game({
       htmlElement: this.pixiWrapperRef.current,
       anonymousPlayer: isUserAnonymous,
       loginViaGoogle: signInViaGoogle,
       state: gameData.toJS(),
-      // callPwaPrompt,
     });
   };
 
