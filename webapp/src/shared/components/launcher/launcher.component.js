@@ -26,7 +26,9 @@ export class Launcher {
 
     this.addLogo();
 
-    this.listenForPwaEvent();
+    if (!this.isPWA) {
+      this.listenForPwaEvent();
+    }
   }
 
   listenForPwaEvent() {
