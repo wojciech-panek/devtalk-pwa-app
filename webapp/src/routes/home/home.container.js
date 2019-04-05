@@ -8,7 +8,7 @@ import { compose } from 'ramda';
 
 import { Home } from './home.component';
 import { selectUserIsAnonymous, selectUserUid, UserAuthActions } from '../../modules/userAuth';
-import { selectUserGame } from '../../modules/game';
+import { selectUserGame, GameActions } from '../../modules/game';
 
 
 const mapStateToProps = createStructuredSelector({
@@ -19,6 +19,8 @@ const mapStateToProps = createStructuredSelector({
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
   signInViaGoogle: UserAuthActions.signInViaGoogle,
+  sellFood: GameActions.sellFood,
+  produceFood: GameActions.produceFood,
 }, dispatch);
 
 export default compose(

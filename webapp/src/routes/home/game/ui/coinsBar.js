@@ -2,17 +2,19 @@ import { Container } from 'pixi.js';
 import { RectangleBox } from './rectangleBox';
 import { Coin } from './coin';
 import { InterfaceText } from './interfaceText';
+import { GameState } from '../game.state';
+
 
 export class CoinsBar {
-  constructor({ rendererWidth, coins = 0 }) {
+  constructor({ rendererWidth }) {
     this._stage = new Container();
-
     this.coinsRectangle = new RectangleBox({
       x: rendererWidth / 2 + 10,
       y: 6,
       width: rendererWidth / 2 - 20,
       height: 39,
     });
+
     this.coin = new Coin({ x: rendererWidth - 49, y: 6, width: 39, height: 39 });
     this.coinsText = new InterfaceText({
       text: 'COINS',
@@ -26,7 +28,7 @@ export class CoinsBar {
       fillColor: '0x6B4B3A',
     });
     this.coinsAmountText = new InterfaceText({
-      text: coins,
+      text: GameState.reduxState.coins,
       anchorX: 1,
       anchorY: 0,
       x: rendererWidth - 49,
@@ -37,7 +39,13 @@ export class CoinsBar {
     });
 
     this.stage.addChild(this.coinsRectangle.stage, this.coinsText.stage, this.coinsAmountText.stage, this.coin.stage);
+
+    GameState.onReduxStateChange(this.handleReduxStateUpdate);
   }
+
+  handleReduxStateUpdate = () => {
+    this.coinsAmountText.setText(GameState.reduxState.coins);
+  };
 
   get stage() {
     return this._stage;

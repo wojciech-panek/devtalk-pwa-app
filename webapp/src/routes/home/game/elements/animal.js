@@ -1,65 +1,27 @@
 import { Container } from 'pixi.js';
 
-import { FENCES_INITIAL_Y, FENCES_ROWS, ANIMALS, FOOD } from '../game.constants';
+import { FENCES_INITIAL_Y, FENCES_ROWS, FOOD } from '../game.constants';
 import { AnimalLevel } from './animalLevel';
 import { AnimalHead } from './animalHead';
 import { FoodItem } from './foodItem';
 import { InterfaceText } from '../ui/interfaceText';
-import buffalo from '../../../../images/game/animals/animal-buffalo.png';
-import chicken from '../../../../images/game/animals/animal-chicken.png';
-import chick from '../../../../images/game/animals/animal-chick.png';
-import cow from '../../../../images/game/animals/animal-cow.png';
-import duck from '../../../../images/game/animals/animal-duck.png';
-import goat from '../../../../images/game/animals/animal-goat.png';
-import moose from '../../../../images/game/animals/animal-moose.png';
-import pig from '../../../../images/game/animals/animal-pig.png';
+import { GameState } from '../game.state';
 
-import foodBeef from '../../../../images/game/food/food-beef.png';
-import foodCheese from '../../../../images/game/food/food-cheese.png';
-import foodChicken from '../../../../images/game/food/food-chicken.png';
-import foodDuck from '../../../../images/game/food/food-duck.png';
-import foodEgg from '../../../../images/game/food/food-egg.png';
-import foodFrame from '../../../../images/game/food/food-frame.png';
-import foodHam from '../../../../images/game/food/food-ham.png';
-import foodMilk from '../../../../images/game/food/food-milk.png';
-import foodMoose from '../../../../images/game/food/food-moose.png';
-
-const textures = {
-  [ANIMALS.buffalo]: buffalo,
-  [ANIMALS.chicken]: chicken,
-  [ANIMALS.chick]: chick,
-  [ANIMALS.cow]: cow,
-  [ANIMALS.duck]: duck,
-  [ANIMALS.goat]: goat,
-  [ANIMALS.moose]: moose,
-  [ANIMALS.pig]: pig,
-};
-
-const foodTextures = {
-  [FOOD.beef]: foodBeef,
-  [FOOD.cheese]: foodCheese,
-  [FOOD.chicken]: foodChicken,
-  [FOOD.duck]: foodDuck,
-  [FOOD.egg]: foodEgg,
-  [FOOD.frame]: foodFrame,
-  [FOOD.ham]: foodHam,
-  [FOOD.milk]: foodMilk,
-  [FOOD.moose]: foodMoose,
-};
 
 export class Animal {
-  constructor({ rendererWidth, rendererHeight, type, foodType, positionNumber, amount, level, foodAmount,
-    foodMaxAmount }) {
+  constructor({ rendererWidth, rendererHeight, onSellFood, onProduceFood, positionNumber }) {
     this._stage = new Container();
-    this._positionNum = this.getPositionNumber(positionNumber);
+    this._positionNumber = this.getPositionNumber(positionNumber);
+    this._onSellFood = onSellFood;
+    this._onProduceFood = onProduceFood;
 
     this.stage.height = 89;
     this.stage.width = 92;
 
-    this.calculatePosition(rendererWidth, rendererHeight, this.positionNum);
+    this.calculatePosition(rendererWidth, rendererHeight, this.positionNumber);
 
     this.amount = new InterfaceText({
-      text: `${amount}`,
+      text: `${this.animalData.amount}`,
       anchorX: 0.5,
       anchorY: 0.5,
       x: this.isEven(positionNumber) ? -25 : 25,
@@ -70,17 +32,22 @@ export class Animal {
       fillColor: '0xFFFFFF',
     });
 
-    this.level = new AnimalLevel({ level: level, flip: !this.isEven(positionNumber) });
-    this.animalHead = new AnimalHead({ type: textures[type], flip: !this.isEven(positionNumber) });
+    this.level = new AnimalLevel({ positionNumber: this.positionNumber, flip: !this.isEven(positionNumber) });
+    this.animalHead = new AnimalHead({
+      type: this.animalData.type,
+      onClick: this.handleAnimalHeadClick,
+      flip: !this.isEven(positionNumber),
+    });
 
     this.foodItem = new FoodItem({
-      type: foodTextures[foodType],
+      onClick: this.handleFoodItemClick,
+      type: this.animalData.foodType,
       x: this.isEven(positionNumber) ? 38 : -82,
       y: -22,
     });
 
-    this.foodAmount = new InterfaceText({
-      text: `${foodAmount}/${foodMaxAmount}`,
+    this.foodAmountText = new InterfaceText({
+      text: `${this.animalData.foodAmount}/${this.animalData.foodMaxAmount}`,
       anchorX: 0.5,
       anchorY: 0.5,
       x: this.isEven(positionNumber) ? 60 : -60,
@@ -91,8 +58,11 @@ export class Animal {
       fillColor: '0xFFFFFF',
     });
 
-    this.stage.addChild(this.level.stage, this.amount.stage, this.animalHead.stage, this.foodItem.stage,
-      this.foodAmount.stage);
+    this.stage.addChild(
+      this.level.stage, this.amount.stage, this.animalHead.stage, this.foodItem.stage, this.foodAmountText.stage
+    );
+
+    GameState.onReduxStateChange(this.handleReduxStateUpdate);
   }
 
   getPositionNumber = positionNumber => {
@@ -122,11 +92,36 @@ export class Animal {
     this.stage.y = FENCES_INITIAL_Y + yOffset;
   };
 
+  handleReduxStateUpdate = () => {
+    this.amount.setText(`${this.animalData.amount}`);
+    this.foodAmountText.setText(`${this.animalData.foodAmount}/${this.animalData.foodMaxAmount}`);
+  };
+
+  handleFoodItemClick = () => {
+    this._onSellFood(this.food.type, this.food.cost, this.animalData.foodAmount, this.fieldIndex);
+  };
+
+  handleAnimalHeadClick = () => {
+    this._onProduceFood(this.food.type, this.fieldIndex);
+  };
+
   get stage() {
     return this._stage;
   }
 
-  get positionNum() {
-    return this._positionNum;
+  get fieldIndex() {
+    return GameState.reduxState.fields.findIndex((field) => field.position === this.positionNumber);
+  }
+
+  get positionNumber() {
+    return this._positionNumber;
+  }
+
+  get food() {
+    return FOOD[this.animalData.foodType];
+  }
+
+  get animalData() {
+    return GameState.reduxState.fields[this.fieldIndex];
   }
 }

@@ -6,13 +6,13 @@ export const NEW_GAME_DATA = {
   coins: 0,
   fields: [
     {
-      type: ANIMALS.chicken,
+      type: ANIMALS.chicken.type,
       position: 1,
       amount: 1,
       level: 1,
-      foodType: FOOD.egg,
+      foodType: FOOD.egg.type,
       foodAmount: 1,
-      foodMaxAmount: 1,
+      foodMaxAmount: 8,
     },
   ],
 };

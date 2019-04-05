@@ -24,4 +24,8 @@ export class InterfaceText {
   get style() {
     return this._style;
   }
+
+  setText(text) {
+    this._stage.text = text;
+  }
 }

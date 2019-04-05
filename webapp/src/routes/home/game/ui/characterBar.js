@@ -2,9 +2,11 @@ import { Container } from 'pixi.js';
 import { RectangleBox } from './rectangleBox';
 import { Character } from './character';
 import { InterfaceText } from './interfaceText';
+import { GameState } from '../game.state';
+
 
 export class CharacterBar {
-  constructor({ rendererWidth, level = 0 }) {
+  constructor({ rendererWidth }) {
     this._stage = new Container();
 
     this.characterRectangle = new RectangleBox({ x: 40, y: 6, width: rendererWidth / 2 - 50, height: 39 });
@@ -21,7 +23,7 @@ export class CharacterBar {
       fillColor: '0x6B4B3A',
     });
     this.userLevelText = new InterfaceText({
-      text: `LEVEL ${level}`,
+      text: `LEVEL ${GameState.reduxState.level}`,
       anchorX: 0,
       anchorY: 0,
       x: 80,
@@ -37,9 +39,15 @@ export class CharacterBar {
       this.userNameText.stage,
       this.userLevelText.stage,
     );
+
+    GameState.onReduxStateChange(this.handleReduxStateUpdate);
   }
 
   get stage() {
     return this._stage;
   }
+
+  handleReduxStateUpdate = () => {
+    this.userLevelText.setText(`LEVEL ${GameState.reduxState.level}`);
+  };
 }

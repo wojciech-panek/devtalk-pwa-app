@@ -8,10 +8,11 @@ import { FenceGroup } from './elements/fenceGroup';
 import { FoodFenceGroup } from './elements/foodFenceGroup';
 import { Animal } from './elements/animal';
 import { Launcher } from '../../../shared/components/launcher';
+import { GameState } from './game.state';
 
 
 export class Game {
-  constructor({ htmlElement, anonymousPlayer, loginViaGoogle, state }) {
+  constructor({ htmlElement, anonymousPlayer, actions }) {
     this._htmlElement = htmlElement;
     this._app = new Application({
       transparent: true,
@@ -21,12 +22,11 @@ export class Game {
       width: this.width,
       height: this.height,
     });
-    this._loginViaGoogle = loginViaGoogle;
-    this._state = state;
+    this._actions = actions;
 
     this.htmlElement.append(this._app.renderer.view);
     this.launcher = new Launcher({
-      loginViaGoogle: this.loginViaGoogle,
+      loginViaGoogle: this.actions.loginViaGoogle,
       containerSize: {
         width: this.width,
         height: this.height,
@@ -38,6 +38,8 @@ export class Game {
       () => this.showLauncher(),
       () => this.showGame()
     )(anonymousPlayer);
+
+    GameState.onReduxStateChange(this.handleReduxStateUpdate);
   }
 
   showLauncher() {
@@ -49,14 +51,9 @@ export class Game {
     this.warehouse = new Warehouse({ rendererWidth: this.width });
     this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
     this.foodFenceGroup = new FoodFenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
-    this.userInterface = new UserInterface({ rendererWidth: this.width, state: this.state });
+    this.userInterface = new UserInterface({ rendererWidth: this.width });
 
-    const animals = this.state.fields.map(({ position: positionNumber, ...other }) => new Animal({
-      rendererWidth: this.width,
-      rendererHeight: this.height,
-      positionNumber,
-      ...other,
-    }));
+    this._animals = GameState.reduxState.fields.map(this.createAnimal);
 
     this.stage.interactive = true;
     this.stage.addChild(this.background.stage);
@@ -64,19 +61,44 @@ export class Game {
     this.stage.addChild(this.fenceGroup.stage);
     this.stage.addChild(this.foodFenceGroup.stage);
     this.stage.addChild(this.userInterface.stage);
-    animals.forEach((field) => {
-      this.stage.addChild(field.stage);
+    this._animals.forEach((animal) => {
+      this.stage.addChild(animal.stage);
     });
   }
 
-  updateGame({ anonymousPlayer, state }) {
-    this.state = state;
-
+  updateGame({ anonymousPlayer }) {
     if (!anonymousPlayer) {
       this.stage.removeChild(this.launcher.stage);
       this.showGame();
     }
   }
+
+  handleReduxStateUpdate = () => {
+    const { fields } = GameState.reduxState;
+    const newAnimals = fields
+      .filter((animal) => !this._animals.some((existingAnimal) => existingAnimal.positionNumber === animal.position))
+      .map(this.createAnimal);
+    const removedAnimals = this._animals
+      .filter((existingAnimal) => !fields.some((animal) => existingAnimal.positionNumber === animal.position));
+
+    this._animals = this._animals.concat(newAnimals);
+    newAnimals.forEach((animal) => {
+      this.stage.addChild(animal.stage);
+    });
+
+    this._animals = this._animals.filter((animal) => removedAnimals.includes(animal));
+    removedAnimals.forEach((animal) => {
+      this.stage.removeChild(animal.stage);
+    });
+  };
+
+  createAnimal = ({ position: positionNumber }) => new Animal({
+    rendererWidth: this.width,
+    rendererHeight: this.height,
+    onSellFood: this.actions.sellFood,
+    onProduceFood: this.actions.produceFood,
+    positionNumber,
+  });
 
   get htmlElement() {
     return this._htmlElement;
@@ -94,16 +116,8 @@ export class Game {
     return this._app.stage;
   }
 
-  get loginViaGoogle() {
-    return this._loginViaGoogle;
-  }
-
-  set state(value) {
-    this._state = value;
-  }
-
-  get state() {
-    return this._state;
+  get actions() {
+    return this._actions;
   }
 
   get ticker() {

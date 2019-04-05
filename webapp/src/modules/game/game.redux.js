@@ -11,6 +11,9 @@ export const { Types: GameTypes, Creators: GameActions } = createActions({
   create: null,
   checkIfUserGameExists: ['uid'],
   gameCreated: null,
+  syncGameData: null,
+  sellFood: ['foodType', 'foodCost', 'foodAmount', 'fieldIndex'],
+  produceFood: ['foodType', 'fieldIndex'],
 }, { prefix: 'GAME_' });
 
 export const GameRecord = new Record({
@@ -21,6 +24,18 @@ export const INITIAL_STATE = new GameRecord();
 
 const setGameData = (state, { data }) => state.set('data', fromJS(data));
 
+const sellFood = (state, { foodCost, foodAmount, fieldIndex }) => state
+  .updateIn(['data', 'coins'], (coins) => coins + foodCost * foodAmount)
+  .updateIn(['data', 'fields', fieldIndex, 'foodAmount'], () => 0);
+
+const produceFood = (state, { fieldIndex }) => state
+  .updateIn(
+    ['data', 'fields', fieldIndex, 'foodAmount'],
+    (foodAmount) => Math.min(foodAmount + 1, state.getIn(['data', 'fields', fieldIndex, 'foodMaxAmount']))
+  );
+
 export const reducer = createReducer(INITIAL_STATE, {
   [GameTypes.SET_GAME_DATA]: setGameData,
+  [GameTypes.SELL_FOOD]: sellFood,
+  [GameTypes.PRODUCE_FOOD]: produceFood,
 }, { types: GameTypes });
