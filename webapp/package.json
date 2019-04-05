@@ -48,7 +48,6 @@
     "immutable": "^4.0.0-rc.12",
     "inquirer-directory": "^2.1.0",
     "intl": "^1.2.5",
-    "is-online": "^8.2.0",
     "isomorphic-fetch": "^2.2.1",
     "jest": "23.6.0",
     "jest-enzyme": "^7.0.1",

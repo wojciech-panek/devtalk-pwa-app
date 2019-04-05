@@ -1,5 +1,4 @@
 import { css } from 'styled-components';
-import isOnlineStatus from 'is-online';
 
 
 export const sizes = {
@@ -48,5 +47,3 @@ export const isDesktop = () => {
 
 export const isInStandaloneMode = () =>
   (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone);
-
-export const isOnline = () => (async () => await isOnlineStatus())();
