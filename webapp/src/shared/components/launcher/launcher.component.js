@@ -35,7 +35,7 @@ export class Launcher {
       event.preventDefault();
       // Stash the event so it can be triggered later.
       this.callPwaPrompt = event;
-      this.showInstallButton(true);
+      this.toggleInstallButton(true);
     });
   }
 
@@ -60,7 +60,7 @@ export class Launcher {
     this.background.stage.height = height;
   }
 
-  showInstallButton(show) {
+  toggleInstallButton(show) {
     if (show) {
       if (this.installButtonContainer.children.length === 0) {
         this.createInstallButton();
@@ -91,13 +91,8 @@ export class Launcher {
     this.callPwaPrompt.prompt();
     // Wait for the user to respond to the prompt
     this.callPwaPrompt.userChoice
-      .then(function (choiceResult) {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt');
-        } else {
-          console.log('User dismissed the A2HS prompt');
-        }
-        self.showInstallButton(false);
+      .then(() => {
+        self.toggleInstallButton(false);
         self.callPwaPrompt = null;
       });
   }
