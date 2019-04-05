@@ -17,6 +17,7 @@ const persistConfig = {
   key: 'root',
   storage: localForage,
   stateReconciler: autoMergeLevel2Immutable,
+  blacklist: ['startup'],
 };
 
 export default function configureStore(initialState = {}) {

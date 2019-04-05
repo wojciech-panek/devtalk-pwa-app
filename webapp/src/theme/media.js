@@ -44,3 +44,6 @@ export const isDesktop = () => {
   const width = getWindowWidth();
   return width >= sizes.desktop;
 };
+
+export const isInStandaloneMode = () =>
+  (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone);

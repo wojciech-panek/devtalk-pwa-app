@@ -1,10 +1,11 @@
-import { takeLatest, put, all, take } from 'redux-saga/effects';
+import { takeLatest, put, all, take, select } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import firebase from 'firebase';
 
 import reportError from '../../shared/utils/reportError';
 import { UserAuthTypes, UserAuthActions } from './userAuth.redux';
-import { StartupTypes } from '../startup';
+import { selectOnlineStatus, StartupTypes } from '../startup';
+
 
 
 function* signInViaGoogle() {
@@ -45,14 +46,18 @@ const listenForAuth = () => eventChannel((emitter) => {
 
 function* listenForFirebaseAuth() {
   try {
-    const listenForAuthChan = yield listenForAuth();
+    const isOnline = yield select(selectOnlineStatus);
 
-    while (true) { // eslint-disable-line
-      const { authenticated, user } = yield take(listenForAuthChan);
+    if (isOnline) {
+      const listenForAuthChan = yield listenForAuth();
 
-      if (authenticated) {
-        const { uid, isAnonymous } = user;
-        yield put(UserAuthActions.setUserData(uid, isAnonymous));
+      while (true) { // eslint-disable-line
+        const { authenticated, user } = yield take(listenForAuthChan);
+
+        if (authenticated) {
+          const { uid, isAnonymous } = user;
+          yield put(UserAuthActions.setUserData(uid, isAnonymous));
+        }
       }
     }
   } catch (error) {
@@ -65,6 +70,7 @@ export function* watchUserAuth() {
   try {
     yield all([
       takeLatest(StartupTypes.STARTUP, listenForFirebaseAuth),
+      takeLatest(StartupTypes.SET_ONLINE_STATUS, listenForFirebaseAuth),
       takeLatest(UserAuthTypes.SIGN_IN_VIA_GOOGLE, signInViaGoogle),
       takeLatest(UserAuthTypes.SIGN_OUT, signOutFromFirebase),
     ]);

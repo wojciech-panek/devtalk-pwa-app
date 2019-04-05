@@ -2,7 +2,6 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { IntlProvider, FormattedMessage } from 'react-intl';
-import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
 import { translationMessages, DEFAULT_LOCALE } from '../i18n';
 import { GlobalStyle } from '../theme/global';
@@ -21,7 +20,6 @@ export class App extends PureComponent {
   componentDidMount() {
     this.props.startup();
     this.props.setLanguage(this.getLanguage(this.props));
-    runtime.register();
   }
 
   componentDidUpdate(prevProps) {
