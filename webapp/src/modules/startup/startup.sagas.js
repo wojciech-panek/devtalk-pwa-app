@@ -13,6 +13,7 @@ function* registerServiceWorker() {
 
 function* initializeFirebaseApp() {
   try {
+    console.warn('initializeFirebaseApp:');
     firebase.initializeApp({
       apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
       authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -28,6 +29,7 @@ function* initializeFirebaseApp() {
 
 function* startup() {
   try {
+    console.warn('mysle ze mam neta:');
     if (isOnline()) {
       yield put(StartupActions.initializeFirebaseApp());
     }
