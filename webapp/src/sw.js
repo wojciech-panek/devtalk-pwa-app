@@ -26,11 +26,13 @@ self.addEventListener('fetch', (event) => {
     .match(request)
     .then((response) => {
       if (response) {
+        console.warn('request is in cache', request);
         return response;
       }
 
       return fetch(request)
         .then(resp => {
+          console.log('self.location.origin', self.location.origin);
           if (event.request.url.startsWith(self.location.origin)) {
             return caches.open(RUNTIME).then(cache => {
               cache.put(request, resp.clone());
