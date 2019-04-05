@@ -4,6 +4,7 @@ import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
 import { StartupTypes, StartupActions } from '../startup';
 import reportError from '../../shared/utils/reportError';
+import { isOnline } from '../../theme/media';
 
 
 function* registerServiceWorker() {
@@ -27,7 +28,9 @@ function* initializeFirebaseApp() {
 
 function* startup() {
   try {
-    yield put(StartupActions.initializeFirebaseApp());
+    if (isOnline()) {
+      yield put(StartupActions.initializeFirebaseApp());
+    }
     yield put(StartupActions.registerServiceWorker());
   } catch (error) {
     yield reportError(error);

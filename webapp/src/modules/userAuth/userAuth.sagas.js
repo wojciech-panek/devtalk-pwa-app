@@ -3,6 +3,7 @@ import { eventChannel } from 'redux-saga';
 import firebase from 'firebase';
 
 import reportError from '../../shared/utils/reportError';
+import { isOnline } from '../../theme/media';
 import { UserAuthTypes, UserAuthActions } from './userAuth.redux';
 import { StartupTypes } from '../startup';
 
@@ -45,14 +46,16 @@ const listenForAuth = () => eventChannel((emitter) => {
 
 function* listenForFirebaseAuth() {
   try {
-    const listenForAuthChan = yield listenForAuth();
+    if (isOnline()) {
+      const listenForAuthChan = yield listenForAuth();
 
-    while (true) { // eslint-disable-line
-      const { authenticated, user } = yield take(listenForAuthChan);
+      while (true) { // eslint-disable-line
+        const { authenticated, user } = yield take(listenForAuthChan);
 
-      if (authenticated) {
-        const { uid, isAnonymous } = user;
-        yield put(UserAuthActions.setUserData(uid, isAnonymous));
+        if (authenticated) {
+          const { uid, isAnonymous } = user;
+          yield put(UserAuthActions.setUserData(uid, isAnonymous));
+        }
       }
     }
   } catch (error) {
