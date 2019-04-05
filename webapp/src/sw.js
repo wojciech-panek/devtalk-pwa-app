@@ -20,26 +20,24 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Skip cross-origin requests, like those for Firebase.
-  if (event.request.url.startsWith(self.location.origin)) {
-    const { request } = event;
+  const { request } = event;
 
-    const response = caches
-      .match(request)
-      .then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
+  const response = caches
+    .match(request)
+    .then((response) => {
+      if (response) {
+        return response;
+      }
 
-        return caches.open(RUNTIME).then(cache => {
-          return fetch(event.request).then(response => {
-            // Put a copy of the response in the runtime cache.
-            return cache.put(event.request, response.clone()).then(() => {
-              return response;
+      return fetch(request)
+        .then(resp => {
+          if (event.request.url.startsWith(self.location.origin)) {
+            return caches.open(RUNTIME).then(cache => {
+              cache.put(request, resp.clone());
+              return resp;
             });
-          });
+          } else { return resp; };
         });
-      });
-    event.respondWith(response);
-  }
+    });
+  event.respondWith(response);
 });
