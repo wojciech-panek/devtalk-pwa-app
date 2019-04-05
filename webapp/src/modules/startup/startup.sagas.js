@@ -48,10 +48,14 @@ const isReachable = (url) => {
 };
 
 function* handleConnection() {
+  console.warn('handleConnection:');
   if (navigator.onLine) {
+    console.warn('navigator.onLine:', navigator.onLine);
     const isOnline = yield isReachable('https://apptension.com/');
+    console.warn('isOnline:', isOnline);
     yield put(StartupActions.setOnlineStatus(isOnline));
   } else {
+    console.warn('false:', false);
     yield put(StartupActions.setOnlineStatus(false));
   }
 }
