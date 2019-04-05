@@ -6,6 +6,7 @@ export const { Types: StartupTypes, Creators: StartupActions } = createActions({
   startup: null,
   initializeFirebaseApp: [],
   registerServiceWorker: [],
+  listenForOnlineSync: [],
   setOnlineStatus: ['isOnline'],
 }, { prefix: 'STARTUP_' });
 

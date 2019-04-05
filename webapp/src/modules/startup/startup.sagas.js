@@ -1,4 +1,5 @@
-import { takeLatest, all, put, select } from 'redux-saga/effects';
+import { takeLatest, all, put, select, take } from 'redux-saga/effects';
+import { eventChannel } from 'redux-saga';
 import firebase from 'firebase/app';
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
@@ -14,7 +15,7 @@ function* initializeFirebaseApp() {
   try {
     const isOnline = yield select(selectOnlineStatus);
 
-    if (isOnline) {
+    if (isOnline && !firebase.apps.length) {
       firebase.initializeApp({
         apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
         authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -29,42 +30,39 @@ function* initializeFirebaseApp() {
   }
 }
 
-const isReachable = (url) => {
-  /**
-   * Note: fetch() still "succeeds" for 404s on subdirectories,
-   * which is ok when only testing for domain reachability.
-   *
-   * Example:
-   *   https://google.com/noexist does not throw
-   *   https://noexist.com/noexist does throw
-   */
-  return fetch(url, { method: 'HEAD', mode: 'no-cors' })
-    .then((response) => {
-      return response && (response.ok || response.type === 'opaque');
-    })
-    .catch(() => {
-      return false;
-    });
-};
+const listenForOnlineSyncChannel = () => eventChannel((emitter) => {
+  const emitStatus = () => emitter(navigator.onLine);
 
-function* handleConnection() {
-  console.warn('handleConnection:');
-  if (navigator.onLine) {
-    console.warn('navigator.onLine:', navigator.onLine);
-    const isOnline = yield isReachable('https://apptension.com/');
-    console.warn('isOnline:', isOnline);
-    yield put(StartupActions.setOnlineStatus(isOnline));
-  } else {
-    console.warn('false:', false);
-    yield put(StartupActions.setOnlineStatus(false));
+  window.addEventListener('online', emitStatus);
+  window.addEventListener('offline', emitStatus);
+
+  return () => {
+    window.removeEventListener('online', emitStatus);
+    window.removeEventListener('navigator.onLine', emitStatus);
+  };
+});
+
+function* listenForOnlineSync() {
+  try {
+    const listenForOnlineSyncChan = yield listenForOnlineSyncChannel();
+
+    while (true) { // eslint-disable-line
+      const isOnline = yield take(listenForOnlineSyncChan);
+
+      yield put(StartupActions.setOnlineStatus(isOnline));
+    }
+  } catch (error) {
+    /* istanbul ignore next */
+    reportError(error);
   }
 }
 
 function* startup() {
   try {
-    window.addEventListener('online', handleConnection);
-    window.addEventListener('offline', handleConnection);
-
+    if (navigator) {
+      yield put(StartupActions.setOnlineStatus(navigator.onLine));
+    }
+    yield put(StartupActions.listenForOnlineSync());
     yield put(StartupActions.initializeFirebaseApp());
     yield put(StartupActions.registerServiceWorker());
   } catch (error) {
@@ -78,5 +76,6 @@ export function* watchStartup() {
     takeLatest(StartupTypes.INITIALIZE_FIREBASE_APP, initializeFirebaseApp),
     takeLatest(StartupTypes.SET_ONLINE_STATUS, initializeFirebaseApp),
     takeLatest(StartupTypes.REGISTER_SERVICE_WORKER, registerServiceWorker),
+    takeLatest(StartupTypes.LISTEN_FOR_ONLINE_SYNC, listenForOnlineSync),
   ]);
 }
