@@ -42,9 +42,9 @@ self.addEventListener('fetch', (event) => {
   const response = caches
     .match(request)
     .then((response) => {
-      if (response) {
-        return response;
-      }
+      // if (response) {
+      //   return response;
+      // }
 
       return fetch(request)
         .then(resp => {
@@ -53,9 +53,8 @@ self.addEventListener('fetch', (event) => {
               cache.put(request, resp.clone());
               return resp;
             });
-          } else {
-            return resp;
-          };
+          }
+          return resp;
         });
     });
   event.respondWith(response);
