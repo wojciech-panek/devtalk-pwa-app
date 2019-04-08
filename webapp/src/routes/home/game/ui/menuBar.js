@@ -1,6 +1,6 @@
 import { Container } from 'pixi.js';
-import { RectangleMenuBox } from './rectangleMenuBox';
 import { MENU_BAR_HOME, MENU_BAR_UPGRADE } from '../game.constants';
+import { MenuButton } from './menuButton';
 
 import homeIcon from '../../../../images/game/ui/homescreen_icon.png';
 import upgradeIcon from '../../../../images/game/ui/upgradescreen_icon.png';
@@ -11,15 +11,26 @@ const textures = {
 };
 
 export class MenuBar {
-  constructor({ rendererWidth }) {
+  constructor({ rendererWidth, renderedHeight }) {
     this._stage = new Container();
 
-    this.menuBoxHome = new RectangleMenuBox({ x: 0, y: 700, width: rendererWidth, height: 60, type: textures[MENU_BAR_HOME] });
-    this.menuBoxUpgrade = new RectangleMenuBox({ x: rendererWidth / 2, y: 700, width: rendererWidth, height: 60, type: textures[MENU_BAR_UPGRADE] });
+    this.menuBoxHome = new MenuButton({
+      x: 0,
+      y: renderedHeight - 70,
+      width: rendererWidth / 2,
+      height: 70,
+      type: textures[MENU_BAR_HOME],
+    });
 
-    this.stage.addChild(
-      this.menuBoxHome.stage, this.menuBoxUpgrade
-    );
+    this.menuBoxUpgrade = new MenuButton({
+      x: rendererWidth / 2,
+      y: renderedHeight - 70,
+      width: rendererWidth / 2,
+      height: 70,
+      type: textures[MENU_BAR_UPGRADE],
+    });
+
+    this.stage.addChild(this.menuBoxHome.stage, this.menuBoxUpgrade.stage);
   }
 
   get stage() {

@@ -1,12 +1,10 @@
 import { Graphics } from 'pixi.js';
-import { MenuButton } from './menuButton';
 
 export class RectangleMenuBox {
-  constructor({ x, y, width, height, type }) {
+  constructor({ x, y, width, height }) {
     this._stage = new Graphics();
 
-    this.drawRectangle(x, y, width, height, type);
-    this.menuButton = new MenuButton({ x: 40, y: 40, width: 40, height: 40, type: type });
+    this.drawRectangle(x, y, width, height);
   }
 
   drawRectangle = (x, y, width, height) => {
