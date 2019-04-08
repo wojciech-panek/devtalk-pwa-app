@@ -12,7 +12,7 @@ import rootSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const persistConfig = {
+export const persistConfig = {
   transforms: [immutableTransform({ records })],
   key: 'root',
   storage: localForage,

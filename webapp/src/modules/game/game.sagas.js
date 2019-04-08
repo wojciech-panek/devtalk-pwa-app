@@ -17,14 +17,16 @@ export function* findUserGame() {
   try {
     const userUid = yield select(selectUserUid);
 
-    const gameData = yield firebase
-      .firestore()
-      .collection(GAME_COLLECTION)
-      .doc(userUid)
-      .get();
+    const gameDataSnapshot = yield firebase
+      .database()
+      .ref(GAME_COLLECTION)
+      .child(userUid)
+      .once('value');
 
-    if (gameData.exists) {
-      yield put(GameActions.setGameData(gameData.data()));
+    const gameData = gameDataSnapshot.val();
+
+    if (gameData) {
+      yield put(GameActions.setGameData(gameData));
     } else {
       yield put(GameActions.findUserGameFail());
     }
@@ -38,12 +40,25 @@ export function* createNewGame() {
   const userUid = yield select(selectUserUid);
 
   yield firebase
-    .firestore()
-    .collection(GAME_COLLECTION)
-    .doc(userUid)
-    .set(NEW_GAME_DATA, { merge: true });
+    .database()
+    .ref(GAME_COLLECTION)
+    .child(userUid)
+    .set(NEW_GAME_DATA);
 
   yield put(GameActions.setGameData(NEW_GAME_DATA));
+}
+
+export function* syncGameData() {
+  const swRegistration = yield navigator.serviceWorker.ready;
+  swRegistration.sync.register('syncGameData');
+}
+
+export function* sellFood() {
+  yield put(GameActions.syncGameData());
+}
+
+export function* produceFood() {
+  yield put(GameActions.syncGameData());
 }
 
 export function* watchGame() {
@@ -51,6 +66,9 @@ export function* watchGame() {
     yield all([
       fork(registrySaga),
       takeLatest(UserAuthTypes.SET_USER_DATA, findUserGame),
+      takeLatest(GameTypes.SYNC_GAME_DATA, syncGameData),
+      takeLatest(GameTypes.SELL_FOOD, sellFood),
+      takeLatest(GameTypes.PRODUCE_FOOD, produceFood),
       takeLatest(GameTypes.FIND_USER_GAME_FAIL, createNewGame),
       takeLatest(GameTypes.CREATE, createNewGame),
     ]);

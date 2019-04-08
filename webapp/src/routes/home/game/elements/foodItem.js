@@ -1,9 +1,12 @@
 import { Texture, Sprite } from 'pixi.js';
 
+import { FOOD } from '../game.constants';
+
 
 export class FoodItem {
-  constructor({ type, x, y }) {
-    this._texture = this.loadTexture(type);
+  constructor({ onClick, type, x, y }) {
+    this._type = type;
+    this._texture = this.loadTexture(this.food.texture);
     this._stage = new Sprite(this.texture);
 
     this.stage.height = 45;
@@ -13,12 +16,21 @@ export class FoodItem {
     this.stage.y = y;
 
     this.stage.interactive = true;
+    this.stage.on('pointerdown', onClick);
   }
 
   loadTexture = type => Texture.from(type);
 
   get stage() {
     return this._stage;
+  }
+
+  get food() {
+    return FOOD[this._type];
+  }
+
+  get type() {
+    return this._type;
   }
 
   get texture() {

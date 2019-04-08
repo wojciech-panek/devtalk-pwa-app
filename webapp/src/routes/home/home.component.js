@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Map } from 'immutable';
 
 import { Game } from './game';
+import { GameState } from './game/game.state';
 import { Container, GameWrapper } from './home.styles';
 
 
@@ -11,6 +12,8 @@ export class Home extends PureComponent {
     isUserAnonymous: PropTypes.bool.isRequired,
     userUid: PropTypes.string,
     signInViaGoogle: PropTypes.func.isRequired,
+    sellFood: PropTypes.func.isRequired,
+    produceFood: PropTypes.func.isRequired,
     gameData: PropTypes.instanceOf(Map).isRequired,
   };
 
@@ -22,21 +25,27 @@ export class Home extends PureComponent {
     const { isUserAnonymous, gameData } = this.props;
 
     if (!isUserAnonymous && prevProps.gameData.size === 0 && gameData.size > 0) {
-      this.game.updateGame({
-        anonymousPlayer: isUserAnonymous,
-        state: gameData.toJS(),
-      });
+      this.game.updateGame({ anonymousPlayer: isUserAnonymous });
+    }
+
+    if (prevProps.gameData !== gameData) {
+      GameState.reduxState = gameData.toJS();
     }
   }
 
   startGame = () => {
-    const { isUserAnonymous, signInViaGoogle, gameData } = this.props;
+    const { isUserAnonymous, signInViaGoogle, sellFood, produceFood, gameData } = this.props;
 
+    GameState.reduxState = gameData.toJS();
     this.game = new Game({
       htmlElement: this.pixiWrapperRef.current,
       anonymousPlayer: isUserAnonymous,
-      loginViaGoogle: signInViaGoogle,
       state: gameData.toJS(),
+      actions: {
+        sellFood,
+        produceFood,
+        loginViaGoogle: signInViaGoogle,
+      },
     });
   };
 
