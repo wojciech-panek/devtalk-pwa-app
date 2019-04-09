@@ -66,6 +66,7 @@ export class Game {
     this._animals.forEach((animal) => {
       this.stage.addChild(animal.stage);
     });
+    this.stage.addChild(this.userInterface.stage);
   }
 
   updateGame({ anonymousPlayer }) {

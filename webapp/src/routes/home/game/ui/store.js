@@ -36,7 +36,6 @@ export class Store {
     this.amountBar = new StoreBar({ x, y: 270, width, height });
 
     this.closeButton = new CloseButton({ x, y, width });
-    this.zIndex = 99;
 
     this.stage.addChild(this.storeRectangle.stage, this.animalHead.stage, this.animalName.stage, this.amountBar.stage, this.closeButton.stage);
   }

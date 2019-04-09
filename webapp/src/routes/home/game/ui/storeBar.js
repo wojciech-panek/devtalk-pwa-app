@@ -19,7 +19,7 @@ export class StoreBar {
       font: 'Arial Black',
       fontSize: 14,
       fontWeight: 'normal',
-      fillColor: '0x000000',
+      fillColor: '0x7E6C62',
     });
 
     this.amount = new InterfaceText({
@@ -63,7 +63,7 @@ export class StoreBar {
   };
 
   drawButtonRectangle = (x, y, width, height) => {
-    this.stage.beginFill(0x000000, 1);
+    this.stage.beginFill(0x8C0B12, 1);
     this.stage.drawRoundedRect(x, y, width, height, 2 * UI_RADIUS);
     this.stage.endFill();
   };

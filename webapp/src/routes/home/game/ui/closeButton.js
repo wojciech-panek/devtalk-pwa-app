@@ -24,7 +24,7 @@ export class CloseButton {
   }
 
   drawButtonRectangle = (x, y, width, height) => {
-    this.stage.beginFill(0x000000, 1);
+    this.stage.beginFill(0x4A4646, 1);
     this.stage.drawRoundedRect(x, y, width, height, 2 * UI_RADIUS);
     this.stage.endFill();
   };

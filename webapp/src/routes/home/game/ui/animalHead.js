@@ -6,8 +6,8 @@ export class AnimalHead {
     this._texture = this.loadTexture(type);
     this._stage = new Sprite(this.texture);
 
-    this.stage.x = 10;
-    this.stage.y = 170;
+    this.stage.x = 20;
+    this.stage.y = 175;
 
     this.stage.height = 80;
     this.stage.width = 80;
