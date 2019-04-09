@@ -6,14 +6,14 @@ export class CloseButton {
   constructor({ x, y, width }) {
     this._stage = new Graphics();
 
-    this.drawButtonRectangle(x + width / 2 - 40, y + 200, 90, 40);
+    this.drawButtonRectangle(x + width / 2 - 40, y + 212, 90, 40);
 
     this.closeText = new InterfaceText({
       text: 'CLOSE',
       anchorX: 0,
       anchorY: 0,
       x: x + width / 2 - 20,
-      y: y + 213,
+      y: y + 225,
       font: 'Arial Black',
       fontSize: 12,
       fontWeight: 'normal',

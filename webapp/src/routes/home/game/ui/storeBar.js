@@ -4,14 +4,14 @@ import { Coin } from './coin';
 import { UI_RADIUS } from '../game.constants';
 
 export class StoreBar {
-  constructor({ x, y, width }) {
+  constructor({ x, y, width, height, name }) {
     this._stage = new Graphics();
 
     this.drawRectangle(x + 1, y, width - 2, 49);
     this.drawButtonRectangle(x + 240, y + 5, 90, 40);
 
     this.amountName = new InterfaceText({
-      text: 'AMOUNT',
+      text: name,
       anchorX: 0,
       anchorY: 0,
       x: x + 40,

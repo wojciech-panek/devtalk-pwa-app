@@ -7,7 +7,6 @@ import { FoodItem } from './foodItem';
 import { InterfaceText } from '../ui/interfaceText';
 import { GameState } from '../game.state';
 
-
 export class Animal {
   constructor({ rendererWidth, rendererHeight, onSellFood, onPoke, positionNumber }) {
     this._stage = new Container();
@@ -63,12 +62,35 @@ export class Animal {
       fillColor: '0xFFFFFF',
     });
 
+    this.buyAnimalButton = new RectangleBox({
+      x: this.isEven(positionNumber) ? -45 : 45,
+      y: 25,
+      width: 80,
+      height: 25,
+      radius: 2,
+      color: '0x256D13',
+    });
+
+    this.buyAnimalButtonText = new InterfaceText({
+      text: 'BUY',
+      anchorX: 0.5,
+      anchorY: 0.5,
+      x: this.isEven(positionNumber) ? -5 : 5,
+      y: 37,
+      font: 'Arial Black',
+      fontSize: 10,
+      fontWeight: 'bold',
+      fillColor: '0xFFFFFF',
+    });
+
     this.stage.addChild(
       this.amount.stage,
       this.animalProgress.stage,
       this.animalHead.stage,
       this.foodItem.stage,
       this.foodAmountText.stage,
+      this.buyAnimalButton.stage,
+      this.buyAnimalButtonText.stage,
     );
 
     GameState.onReduxStateChange(this.handleReduxStateUpdate);

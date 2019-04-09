@@ -33,11 +33,13 @@ export class Store {
       fillColor: '0x6B4B3A',
     });
 
-    this.amountBar = new StoreBar({ x, y: 270, width, height });
+    this.amountBar = new StoreBar({ x, y: 250, width, height, name: 'AMOUNT' });
+
+    this.productsBar = new StoreBar({ x, y: 305, width, height, name: 'PRODUCTS' });
 
     this.closeButton = new CloseButton({ x, y, width });
 
-    this.stage.addChild(this.storeRectangle.stage, this.animalHead.stage, this.animalName.stage, this.amountBar.stage, this.closeButton.stage);
+    this.stage.addChild(this.storeRectangle.stage, this.animalHead.stage, this.animalName.stage, this.amountBar.stage, this.productsBar.stage, this.closeButton.stage);
   }
 
   get stage() {
