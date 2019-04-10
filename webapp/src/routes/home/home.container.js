@@ -20,7 +20,7 @@ const mapStateToProps = createStructuredSelector({
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
   signInViaGoogle: UserAuthActions.signInViaGoogle,
   sellFood: GameActions.sellFood,
-  produceFood: GameActions.produceFood,
+  pokeAnimal: GameActions.pokeAnimal,
 }, dispatch);
 
 export default compose(

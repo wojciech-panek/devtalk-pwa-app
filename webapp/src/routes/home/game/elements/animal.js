@@ -1,19 +1,19 @@
 import { Container } from 'pixi.js';
 
-import { FENCES_INITIAL_Y, FENCES_ROWS, FOOD } from '../game.constants';
-import { AnimalLevel } from './animalLevel';
+import { FENCES_INITIAL_Y, FENCES_ROWS, FOOD, WAREHOUSE_LEVELS } from '../game.constants';
 import { AnimalHead } from './animalHead';
+import { AnimalProgress } from './animalProgress';
 import { FoodItem } from './foodItem';
 import { InterfaceText } from '../ui/interfaceText';
 import { GameState } from '../game.state';
 
 
 export class Animal {
-  constructor({ rendererWidth, rendererHeight, onSellFood, onProduceFood, positionNumber }) {
+  constructor({ rendererWidth, rendererHeight, onSellFood, onPoke, positionNumber }) {
     this._stage = new Container();
     this._positionNumber = this.getPositionNumber(positionNumber);
     this._onSellFood = onSellFood;
-    this._onProduceFood = onProduceFood;
+    this._onPoke = onPoke;
 
     this.stage.height = 89;
     this.stage.width = 92;
@@ -32,7 +32,12 @@ export class Animal {
       fillColor: '0xFFFFFF',
     });
 
-    this.level = new AnimalLevel({ positionNumber: this.positionNumber, flip: !this.isEven(positionNumber) });
+    this.animalProgress = new AnimalProgress({
+      startProductionTimestamp: this.animalData.startProductionTimestamp,
+      productionDuration: this.animalData.productionDuration,
+      pokeCount: this.animalData.pokeCount,
+      flip: !this.isEven(positionNumber),
+    });
     this.animalHead = new AnimalHead({
       type: this.animalData.type,
       onClick: this.handleAnimalHeadClick,
@@ -47,7 +52,7 @@ export class Animal {
     });
 
     this.foodAmountText = new InterfaceText({
-      text: `${this.animalData.foodAmount}/${this.animalData.foodMaxAmount}`,
+      text: `${this.animalData.foodAmount}/${this.warehouseData.foodMaxAmount}`,
       anchorX: 0.5,
       anchorY: 0.5,
       x: this.isEven(positionNumber) ? 60 : -60,
@@ -59,7 +64,11 @@ export class Animal {
     });
 
     this.stage.addChild(
-      this.level.stage, this.amount.stage, this.animalHead.stage, this.foodItem.stage, this.foodAmountText.stage
+      this.amount.stage,
+      this.animalProgress.stage,
+      this.animalHead.stage,
+      this.foodItem.stage,
+      this.foodAmountText.stage,
     );
 
     GameState.onReduxStateChange(this.handleReduxStateUpdate);
@@ -94,7 +103,10 @@ export class Animal {
 
   handleReduxStateUpdate = () => {
     this.amount.setText(`${this.animalData.amount}`);
-    this.foodAmountText.setText(`${this.animalData.foodAmount}/${this.animalData.foodMaxAmount}`);
+    this.foodAmountText.setText(`${this.animalData.foodAmount}/${this.warehouseData.foodMaxAmount}`);
+    this.animalProgress.startProductTimestamp = this.animalData.startProductionTimestamp;
+    this.animalProgress.productionDuration = this.animalData.productionDuration;
+    this.animalProgress.pokeCount = this.animalData.pokeCount;
   };
 
   handleFoodItemClick = () => {
@@ -102,7 +114,7 @@ export class Animal {
   };
 
   handleAnimalHeadClick = () => {
-    this._onProduceFood(this.food.type, this.fieldIndex);
+    this._onPoke(this.fieldIndex);
   };
 
   get stage() {
@@ -123,5 +135,9 @@ export class Animal {
 
   get animalData() {
     return GameState.reduxState.fields[this.fieldIndex];
+  }
+
+  get warehouseData() {
+    return WAREHOUSE_LEVELS[this.animalData.warehouseLevel];
   }
 }

@@ -2011,7 +2011,7 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@^6.2.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0, babel-runtime@^6.6.1:
+babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0, babel-runtime@^6.6.1:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -9323,6 +9323,13 @@ redux-persist@^5.10.0:
 redux-saga-tester@^1.0.381:
   version "1.0.381"
   resolved "https://registry.yarnpkg.com/redux-saga-tester/-/redux-saga-tester-1.0.381.tgz#9ea1348bb887aa67cbe40f33ba67f28b08177a83"
+
+redux-saga-ticker@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/redux-saga-ticker/-/redux-saga-ticker-1.0.1.tgz#7c31453b22c02276145be2549e321381581d7037"
+  integrity sha1-fDFFOyLAInYUW+JUnjITgVgdcDc=
+  dependencies:
+    babel-runtime "^6.18.0"
 
 redux-saga@^0.16.2:
   version "0.16.2"

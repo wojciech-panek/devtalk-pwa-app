@@ -89,6 +89,7 @@
     "redux-persist-transform-immutable": "^5.0.0",
     "redux-saga": "^0.16.2",
     "redux-saga-tester": "^1.0.381",
+    "redux-saga-ticker": "^1.0.1",
     "reduxsauce": "^1.0.1",
     "reselect": "^4.0.0",
     "resolve": "1.9.0",

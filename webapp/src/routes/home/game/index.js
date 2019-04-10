@@ -47,13 +47,15 @@ export class Game {
   }
 
   showGame() {
+    const { fields = [] } = GameState.reduxState;
+
     this.background = new Background({ width: this.width, height: this.height });
     this.warehouse = new Warehouse({ rendererWidth: this.width });
     this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
     this.foodFenceGroup = new FoodFenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
     this.userInterface = new UserInterface({ rendererWidth: this.width });
 
-    this._animals = GameState.reduxState.fields.map(this.createAnimal);
+    this._animals = fields.filter((animal) => animal.amount).map(this.createAnimal);
 
     this.stage.interactive = true;
     this.stage.addChild(this.background.stage);
@@ -76,9 +78,11 @@ export class Game {
   handleReduxStateUpdate = () => {
     const { fields } = GameState.reduxState;
     const newAnimals = fields
+      .filter((animal) => animal.amount)
       .filter((animal) => !this._animals.some((existingAnimal) => existingAnimal.positionNumber === animal.position))
       .map(this.createAnimal);
     const removedAnimals = this._animals
+      .filter((existingAnimal) => existingAnimal.animalData.amount)
       .filter((existingAnimal) => !fields.some((animal) => existingAnimal.positionNumber === animal.position));
 
     this._animals = this._animals.concat(newAnimals);
@@ -86,7 +90,7 @@ export class Game {
       this.stage.addChild(animal.stage);
     });
 
-    this._animals = this._animals.filter((animal) => removedAnimals.includes(animal));
+    this._animals = this._animals.filter((animal) => !removedAnimals.includes(animal));
     removedAnimals.forEach((animal) => {
       this.stage.removeChild(animal.stage);
     });
@@ -96,7 +100,7 @@ export class Game {
     rendererWidth: this.width,
     rendererHeight: this.height,
     onSellFood: this.actions.sellFood,
-    onProduceFood: this.actions.produceFood,
+    onPoke: this.actions.pokeAnimal,
     positionNumber,
   });
 
