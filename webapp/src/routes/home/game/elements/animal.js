@@ -5,6 +5,7 @@ import { AnimalHead } from './animalHead';
 import { AnimalProgress } from './animalProgress';
 import { FoodItem } from './foodItem';
 import { InterfaceText } from '../ui/interfaceText';
+import { RectangleBox } from '../ui/rectangleBox';
 import { GameState } from '../game.state';
 
 export class Animal {
@@ -37,6 +38,7 @@ export class Animal {
       pokeCount: this.animalData.pokeCount,
       flip: !this.isEven(positionNumber),
     });
+
     this.animalHead = new AnimalHead({
       type: this.animalData.type,
       onClick: this.handleAnimalHeadClick,

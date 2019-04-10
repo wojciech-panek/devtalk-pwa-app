@@ -53,7 +53,7 @@ export class Game {
     this.warehouse = new Warehouse({ rendererWidth: this.width });
     this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
     this.foodFenceGroup = new FoodFenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
-    this.userInterface = new UserInterface({ rendererWidth: this.width });
+    this.userInterface = new UserInterface({ rendererWidth: this.width, rendererHeight: this.height });
 
     this._animals = fields.filter((animal) => animal.amount).map(this.createAnimal);
 
@@ -62,7 +62,6 @@ export class Game {
     this.stage.addChild(this.warehouse.stage);
     this.stage.addChild(this.fenceGroup.stage);
     this.stage.addChild(this.foodFenceGroup.stage);
-    this.stage.addChild(this.userInterface.stage);
     this._animals.forEach((animal) => {
       this.stage.addChild(animal.stage);
     });

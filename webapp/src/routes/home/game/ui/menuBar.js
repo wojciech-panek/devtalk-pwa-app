@@ -11,12 +11,12 @@ const textures = {
 };
 
 export class MenuBar {
-  constructor({ rendererWidth, renderedHeight }) {
+  constructor({ rendererWidth, rendererHeight }) {
     this._stage = new Container();
 
     this.menuBoxHome = new MenuButton({
       x: 0,
-      y: renderedHeight - 70,
+      y: rendererHeight - 70,
       width: rendererWidth / 2,
       height: 70,
       type: textures[MENU_BAR_HOME],
@@ -24,7 +24,7 @@ export class MenuBar {
 
     this.menuBoxUpgrade = new MenuButton({
       x: rendererWidth / 2,
-      y: renderedHeight - 70,
+      y: rendererHeight - 70,
       width: rendererWidth / 2,
       height: 70,
       type: textures[MENU_BAR_UPGRADE],

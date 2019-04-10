@@ -5,7 +5,7 @@ import { MenuBar } from './menuBar';
 import { Store } from './store';
 
 export class UserInterface {
-  constructor({ rendererWidth, renderedHeight }) {
+  constructor({ rendererWidth, rendererHeight }) {
     this._stage = new Container();
 
     this.stage.y = 10;
@@ -15,12 +15,12 @@ export class UserInterface {
 
     this.store = new Store({
       x: rendererWidth * 0.05,
-      y: renderedHeight * 0.205,
+      y: rendererHeight * 0.205,
       width: rendererWidth * 0.9,
-      height: renderedHeight * 0.33,
+      height: rendererHeight * 0.33,
     });
 
-    this.menuBar = new MenuBar({ rendererWidth: rendererWidth, renderedHeight: renderedHeight });
+    this.menuBar = new MenuBar({ rendererWidth: rendererWidth, rendererHeight: rendererHeight });
 
     this.stage.addChild(this.characterBar.stage, this.coinsBar.stage, this.store.stage, this.menuBar.stage);
   }

@@ -39,7 +39,8 @@ export class Store {
 
     this.closeButton = new CloseButton({ x, y, width });
 
-    this.stage.addChild(this.storeRectangle.stage, this.animalHead.stage, this.animalName.stage, this.amountBar.stage, this.productsBar.stage, this.closeButton.stage);
+    this.stage.addChild(this.storeRectangle.stage, this.animalHead.stage, this.animalName.stage, this.amountBar.stage,
+      this.productsBar.stage, this.closeButton.stage);
   }
 
   get stage() {
