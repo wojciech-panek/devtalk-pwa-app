@@ -2,12 +2,12 @@ import { Texture, Sprite } from 'pixi.js';
 
 
 export class AnimalHead {
-  constructor({ type }) {
+  constructor({ x, y, type }) {
     this._texture = this.loadTexture(type);
     this._stage = new Sprite(this.texture);
 
-    this.stage.x = 20;
-    this.stage.y = 175;
+    this.stage.x = x;
+    this.stage.y = y;
 
     this.stage.height = 80;
     this.stage.width = 80;

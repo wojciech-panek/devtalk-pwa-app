@@ -8,7 +8,7 @@ export class StoreBar {
     this._stage = new Graphics();
 
     this.drawRectangle(x + 1, y, width - 2, 49);
-    this.drawButtonRectangle(x + 240, y + 5, 90, 40);
+    this.drawButtonRectangle(x * 13, y + 5, 90, 40);
 
     this.amountName = new InterfaceText({
       text: name,
@@ -38,7 +38,7 @@ export class StoreBar {
       text: '100',
       anchorX: 0,
       anchorY: 0,
-      x: x + 270,
+      x: x * 13 + 30,
       y: y + 17,
       font: 'Arial Black',
       fontSize: 12,
@@ -47,7 +47,7 @@ export class StoreBar {
     });
 
     this.coin = new Coin({
-      x: x + 295,
+      x: x * 13 + 55,
       y: y + 9,
       width: 30,
       height: 30,

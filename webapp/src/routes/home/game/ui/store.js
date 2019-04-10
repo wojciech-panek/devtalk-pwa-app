@@ -19,7 +19,11 @@ export class Store {
 
     this.storeRectangle = new StoreBox({ x, y, width, height });
 
-    this.animalHead = new AnimalHead({ type: textures[ANIMALS.buffalo] });
+    this.animalHead = new AnimalHead({
+      x: x + 5,
+      y: y + 10,
+      type: textures[ANIMALS.buffalo],
+    });
 
     this.animalName = new InterfaceText({
       text: 'ANIMAL NAME',

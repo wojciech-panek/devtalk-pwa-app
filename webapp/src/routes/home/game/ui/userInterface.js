@@ -15,9 +15,9 @@ export class UserInterface {
 
     this.store = new Store({
       x: rendererWidth * 0.05,
-      y: rendererHeight * 0.205,
+      y: 150,
       width: rendererWidth * 0.9,
-      height: rendererHeight * 0.33,
+      height: 265,
     });
 
     this.menuBar = new MenuBar({ rendererWidth: rendererWidth, rendererHeight: rendererHeight });
