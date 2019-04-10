@@ -1,6 +1,7 @@
 import { takeLatest, all, put, select, take } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import firebase from 'firebase/app';
+import 'firebase/messaging';
 import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
 import { StartupTypes, StartupActions, selectOnlineStatus } from '../startup';
@@ -24,6 +25,8 @@ function* initializeFirebaseApp() {
         storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
         messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
       });
+      firebase.messaging().usePublicVapidKey(process.env.REACT_APP_FIREBASE_VAPID_PUBLIC_KEY);
+      const token = firebase.messaging().getToken();
     }
   } catch (error) {
     yield reportError(error);
