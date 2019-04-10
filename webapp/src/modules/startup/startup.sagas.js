@@ -27,6 +27,7 @@ function* initializeFirebaseApp() {
       });
       firebase.messaging().usePublicVapidKey(process.env.REACT_APP_FIREBASE_VAPID_PUBLIC_KEY);
       const token = firebase.messaging().getToken();
+      console.log(token);
     }
   } catch (error) {
     yield reportError(error);
