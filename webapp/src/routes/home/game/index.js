@@ -53,7 +53,7 @@ export class Game {
     this.foodFenceGroup = new FoodFenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
     this.userInterface = new UserInterface({ rendererWidth: this.width });
 
-    this._animals = GameState.reduxState.fields.map(this.createAnimal);
+    this._animals = GameState.reduxState.fields.filter((animal) => animal.amount).map(this.createAnimal);
 
     this.stage.interactive = true;
     this.stage.addChild(this.background.stage);
@@ -76,9 +76,11 @@ export class Game {
   handleReduxStateUpdate = () => {
     const { fields } = GameState.reduxState;
     const newAnimals = fields
+      .filter((animal) => animal.amount)
       .filter((animal) => !this._animals.some((existingAnimal) => existingAnimal.positionNumber === animal.position))
       .map(this.createAnimal);
     const removedAnimals = this._animals
+      .filter((existingAnimal) => existingAnimal.animalData.amount)
       .filter((existingAnimal) => !fields.some((animal) => existingAnimal.positionNumber === animal.position));
 
     this._animals = this._animals.concat(newAnimals);

@@ -1,6 +1,7 @@
 import { Map, Record, fromJS } from 'immutable';
 
 import { createActions, createReducer } from '../utils/entityRegistry';
+import { WAREHOUSE_LEVELS } from '../../routes/home/game/game.constants';
 
 
 export const { Types: GameTypes, Creators: GameActions } = createActions({
@@ -31,7 +32,10 @@ const sellFood = (state, { foodCost, foodAmount, fieldIndex }) => state
 const produceFood = (state, { fieldIndex }) => state
   .updateIn(
     ['data', 'fields', fieldIndex, 'foodAmount'],
-    (foodAmount) => Math.min(foodAmount + 1, state.getIn(['data', 'fields', fieldIndex, 'foodMaxAmount']))
+    (foodAmount) => Math.min(
+      foodAmount + 1,
+      WAREHOUSE_LEVELS[state.getIn(['data', 'fields', fieldIndex, 'warehouseLevel'])].foodMaxAmount,
+    )
   );
 
 export const reducer = createReducer(INITIAL_STATE, {
