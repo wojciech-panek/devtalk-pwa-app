@@ -66,6 +66,18 @@ function* listenForFirebaseAuth() {
   }
 }
 
+
+function* setUserData({ uid }) {
+  try {
+    yield firebase.messaging().requestPermission();
+    const token = yield firebase.messaging().getToken();
+    yield firebase.database().ref(`notifications/${uid}/fcmToken`).set(token);
+  } catch (error) {
+    /* istanbul ignore next */
+    yield reportError(error);
+  }
+}
+
 export function* watchUserAuth() {
   try {
     yield all([
@@ -73,6 +85,7 @@ export function* watchUserAuth() {
       takeLatest(StartupTypes.SET_ONLINE_STATUS, listenForFirebaseAuth),
       takeLatest(UserAuthTypes.SIGN_IN_VIA_GOOGLE, signInViaGoogle),
       takeLatest(UserAuthTypes.SIGN_OUT, signOutFromFirebase),
+      takeLatest(UserAuthTypes.SET_USER_DATA, setUserData),
     ]);
   } catch (error) {
     /* istanbul ignore next */

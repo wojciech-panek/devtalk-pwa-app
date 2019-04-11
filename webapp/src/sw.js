@@ -72,3 +72,9 @@ self.addEventListener('sync', () => {
       .set(data.toJS());
   });
 });
+
+self.addEventListener('message', (x) => {
+  console.log('message', x);
+});
+
+
