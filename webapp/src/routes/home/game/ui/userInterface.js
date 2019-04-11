@@ -5,7 +5,7 @@ import { MenuBar } from './menuBar';
 import { Store } from './store';
 
 export class UserInterface {
-  constructor({ rendererWidth, rendererHeight }) {
+  constructor({ rendererWidth, rendererHeight, actions }) {
     this._stage = new Container();
 
     this.stage.y = 10;
@@ -14,10 +14,11 @@ export class UserInterface {
     this.coinsBar = new CoinsBar({ rendererWidth: rendererWidth });
 
     this.store = new Store({
+      actions: actions,
       x: rendererWidth * 0.05,
       y: 150,
       width: rendererWidth * 0.9,
-      height: 265,
+      height: 285,
     });
 
     this.menuBar = new MenuBar({ rendererWidth: rendererWidth, rendererHeight: rendererHeight });

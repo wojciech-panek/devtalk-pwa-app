@@ -1,16 +1,19 @@
 import { Container } from 'pixi.js';
 
-import { FENCES_INITIAL_Y, FENCES_ROWS, FOOD, WAREHOUSE_LEVELS } from '../game.constants';
+import { FENCES_INITIAL_Y, FENCES_ROWS, FENCES_BOTTOM_MARGIN, FOOD, WAREHOUSE_LEVELS } from '../game.constants';
 import { AnimalHead } from './animalHead';
 import { AnimalProgress } from './animalProgress';
+import { AnimalAmount } from './animalAmount';
+import { AnimalButton } from './animalButton';
 import { FoodItem } from './foodItem';
 import { InterfaceText } from '../ui/interfaceText';
-import { RectangleBox } from '../ui/rectangleBox';
-import { GameState } from '../game.state';
+import { GameState, states } from '../game.state';
 
 export class Animal {
   constructor({ rendererWidth, rendererHeight, onSellFood, onPoke, positionNumber }) {
     this._stage = new Container();
+    this._animalContent = new Container();
+    this._foodContent = new Container();
     this._positionNumber = this.getPositionNumber(positionNumber);
     this._onSellFood = onSellFood;
     this._onPoke = onPoke;
@@ -20,22 +23,13 @@ export class Animal {
 
     this.calculatePosition(rendererWidth, rendererHeight, this.positionNumber);
 
-    this.amount = new InterfaceText({
-      text: `${this.animalData.amount}`,
-      anchorX: 0.5,
-      anchorY: 0.5,
-      x: this.isEven(positionNumber) ? -25 : 25,
-      y: 0,
-      font: 'Arial Black',
-      fontSize: 12,
-      fontWeight: 'normal',
-      fillColor: '0xFFFFFF',
-    });
+    this.amount = new AnimalAmount({ flip: !this.isEven(positionNumber), positionNumber: this.positionNumber });
 
     this.animalProgress = new AnimalProgress({
       startProductionTimestamp: this.animalData.startProductionTimestamp,
       productionDuration: this.animalData.productionDuration,
       pokeCount: this.animalData.pokeCount,
+      positionNumber: this.positionNumber,
       flip: !this.isEven(positionNumber),
     });
 
@@ -64,38 +58,45 @@ export class Animal {
       fillColor: '0xFFFFFF',
     });
 
-    this.buyAnimalButton = new RectangleBox({
-      x: this.isEven(positionNumber) ? -45 : 45,
-      y: 25,
-      width: 80,
-      height: 25,
-      radius: 2,
-      color: '0x256D13',
-    });
-
-    this.buyAnimalButtonText = new InterfaceText({
+    this.buyAnimalButton = new AnimalButton({
+      flip: !this.isEven(positionNumber),
       text: 'BUY',
-      anchorX: 0.5,
-      anchorY: 0.5,
-      x: this.isEven(positionNumber) ? -5 : 5,
-      y: 37,
-      font: 'Arial Black',
-      fontSize: 10,
-      fontWeight: 'bold',
-      fillColor: '0xFFFFFF',
+      backgroundColor: 0x256D13,
+      visible: this.isBuyAnimalButtonVisible,
+      onClick: this.handleBuyClick,
     });
 
-    this.stage.addChild(
-      this.amount.stage,
+    this.upgradeAnimalButton = new AnimalButton({
+      flip: !this.isEven(positionNumber),
+      text: 'UPGRADE',
+      backgroundColor: 0x8C0B12,
+      visible: this.isUpgradeAnimalButtonVisible,
+      onClick: this.handleUpgradeClick,
+    });
+
+    this._foodContent.addChild(
       this.animalProgress.stage,
-      this.animalHead.stage,
       this.foodItem.stage,
       this.foodAmountText.stage,
+    );
+
+    this._animalContent.addChild(
+      this._foodContent,
+      this.amount.stage,
+      this.animalHead.stage,
+    );
+
+    this._foodContent.visible = this.isFoodVisible;
+    this._animalContent.visible = this.isAnimalVisible;
+
+    this.stage.addChild(
+      this._animalContent,
       this.buyAnimalButton.stage,
-      this.buyAnimalButtonText.stage,
+      this.upgradeAnimalButton.stage,
     );
 
     GameState.onReduxStateChange(this.handleReduxStateUpdate);
+    GameState.onStateChange(this.handleStateUpdate);
   }
 
   getPositionNumber = positionNumber => {
@@ -119,18 +120,29 @@ export class Animal {
 
     this.stage.x = this.isEven(positionNumber) ? firstColumnXPos : secondColumnXPos;
 
-    const yOffset =
-      this.calculateRow(positionNumber) * ((rendererHeight - FENCES_INITIAL_Y) / FENCES_ROWS + additionalOffset);
+    const yOffset = this.calculateRow(positionNumber) *
+      ((rendererHeight - FENCES_BOTTOM_MARGIN - FENCES_INITIAL_Y) / FENCES_ROWS + additionalOffset);
 
     this.stage.y = FENCES_INITIAL_Y + yOffset;
   };
 
   handleReduxStateUpdate = () => {
-    this.amount.setText(`${this.animalData.amount}`);
     this.foodAmountText.setText(`${this.animalData.foodAmount}/${this.warehouseData.foodMaxAmount}`);
     this.animalProgress.startProductTimestamp = this.animalData.startProductionTimestamp;
     this.animalProgress.productionDuration = this.animalData.productionDuration;
     this.animalProgress.pokeCount = this.animalData.pokeCount;
+
+    this.buyAnimalButton.visible = this.isBuyAnimalButtonVisible;
+    this.upgradeAnimalButton.visible = this.isUpgradeAnimalButtonVisible;
+    this._foodContent.visible = this.isFoodVisible;
+    this._animalContent.visible = this.isAnimalVisible;
+  };
+
+  handleStateUpdate = () => {
+    this.buyAnimalButton.visible = this.isBuyAnimalButtonVisible;
+    this.upgradeAnimalButton.visible = this.isUpgradeAnimalButtonVisible;
+    this._foodContent.visible = this.isFoodVisible;
+    this._animalContent.visible = this.isAnimalVisible;
   };
 
   handleFoodItemClick = () => {
@@ -140,6 +152,38 @@ export class Animal {
   handleAnimalHeadClick = () => {
     this._onPoke(this.fieldIndex);
   };
+
+  handleBuyClick = () => {
+    GameState.selectedAnimalPosition = this.positionNumber;
+    GameState.changeState(states.BUYING);
+  };
+
+  handleUpgradeClick = () => {
+    GameState.selectedAnimalPosition = this.positionNumber;
+    GameState.changeState(states.BUYING);
+  };
+
+  get isBuyAnimalButtonVisible() {
+    return (GameState.state === states.UPGRADING || GameState.state === states.BUYING)
+      && this.firstEmptyPosition === this.positionNumber;
+  }
+
+  get isUpgradeAnimalButtonVisible() {
+    return (GameState.state === states.UPGRADING || GameState.state === states.BUYING) && this.animalData.amount > 0;
+  }
+
+  get isAnimalVisible() {
+    return this.animalData.amount > 0;
+  }
+
+  get isFoodVisible() {
+    return GameState.state === states.HOME;
+  }
+
+  get firstEmptyPosition() {
+    const emptyPositions = GameState.reduxState.fields.filter((field) => !field.amount).map((field) => field.position);
+    return Math.min(...(emptyPositions || [-1]));
+  }
 
   get stage() {
     return this._stage;

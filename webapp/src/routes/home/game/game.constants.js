@@ -18,7 +18,8 @@ import animalPigTexture from '../../../images/game/animals/animal-pig.png';
 
 export const FENCES_COLUMNS = 2;
 export const FENCES_ROWS = 4;
-export const FENCES_INITIAL_Y = 215;
+export const FENCES_INITIAL_Y = 195;
+export const FENCES_BOTTOM_MARGIN = 50;
 export const UI_RADIUS = 10;
 
 export const ANIMALS = {

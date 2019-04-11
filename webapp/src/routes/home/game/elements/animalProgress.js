@@ -1,10 +1,12 @@
 import { Graphics, Container, Ticker } from 'pixi.js';
 
 import { isoToTimestamp } from '../../../../shared/utils/date';
+import { GameState } from '../game.state';
+import { WAREHOUSE_LEVELS } from '../game.constants';
 
 
 export class AnimalProgress {
-  constructor({ flip, startProductionTimestamp, productionDuration, pokeCount }) {
+  constructor({ flip, startProductionTimestamp, productionDuration, pokeCount, positionNumber }) {
     this._stage = new Container();
     this._backgroundCircle = new Graphics();
     this._innerCircle = new Graphics();
@@ -13,6 +15,7 @@ export class AnimalProgress {
     this._startProductTimestamp = startProductionTimestamp;
     this._productionDuration = productionDuration;
     this._pokeCount = pokeCount;
+    this._positionNumber = positionNumber;
 
     this.stage.x = flip ? 41 : -41;
     this.stage.y = 18;
@@ -47,6 +50,10 @@ export class AnimalProgress {
   };
 
   get progress() {
+    if (this.isWarehouseFull) {
+      return 1;
+    }
+
     const now = Date.now();
     return Math.min(
       ((now - isoToTimestamp(this.startProductTimestamp)) + this.pokeCount * 1000) / (this.productionDuration * 1000),
@@ -80,5 +87,24 @@ export class AnimalProgress {
 
   set pokeCount(value) {
     this._pokeCount = value;
+  }
+
+  get fieldIndex() {
+    return GameState.reduxState.fields.findIndex((field) => field.position === this.positionNumber);
+  }
+
+  get positionNumber() {
+    return this._positionNumber;
+  }
+
+  get animalData() {
+    return GameState.reduxState.fields[this.fieldIndex];
+  }
+
+  get isWarehouseFull() {
+    const foodAmount = this.animalData.foodAmount;
+    const warehouseCapacity = WAREHOUSE_LEVELS[this.animalData.warehouseLevel].foodMaxAmount;
+
+    return foodAmount === warehouseCapacity;
   }
 }

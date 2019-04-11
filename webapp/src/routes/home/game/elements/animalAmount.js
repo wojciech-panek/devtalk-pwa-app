@@ -3,7 +3,7 @@ import { InterfaceText } from '../ui/interfaceText';
 import { GameState } from '../game.state';
 
 
-export class AnimalLevel {
+export class AnimalAmount {
   constructor({ flip, positionNumber }) {
     this._stage = new Graphics();
     this._positionNumber = positionNumber;
@@ -13,8 +13,8 @@ export class AnimalLevel {
 
     this.drawCircle();
 
-    this.levelNumber = new InterfaceText({
-      text: `${this.animalData.level}`,
+    this.amount = new InterfaceText({
+      text: `${this.animalData.amount}`,
       anchorX: 0.5,
       anchorY: 0.5,
       x: 0,
@@ -24,7 +24,7 @@ export class AnimalLevel {
       fillColor: '0x6B4B3A',
     });
 
-    this.stage.addChild(this.levelNumber.stage);
+    this.stage.addChild(this.amount.stage);
 
     GameState.onReduxStateChange(this.handleReduxStateUpdate);
   }
@@ -41,7 +41,7 @@ export class AnimalLevel {
   }
 
   handleReduxStateUpdate = () => {
-    this.levelNumber.setText(`${this.animalData.level}`);
+    this.amount.setText(`${this.animalData.amount}`);
   };
 
   get stage() {

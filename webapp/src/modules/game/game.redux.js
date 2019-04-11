@@ -16,6 +16,8 @@ export const { Types: GameTypes, Creators: GameActions } = createActions({
   sellFood: ['foodType', 'foodCost', 'foodAmount', 'fieldIndex'],
   produceFood: ['foodType', 'fieldIndex', 'amount'],
   pokeAnimal: ['fieldIndex'],
+  buyAnimal: ['fieldIndex', 'cost'],
+  upgradeWarehouse: ['fieldIndex', 'cost'],
 }, { prefix: 'GAME_' });
 
 export const GameRecord = new Record({
@@ -57,9 +59,29 @@ const pokeAnimal = (state, { fieldIndex }) => state
     (pokeCount) => pokeCount + 1,
   );
 
+const buyAnimal = (state, { fieldIndex, cost }) => state
+  .updateIn(
+    ['data', 'fields', fieldIndex, 'amount'],
+    (amount) => amount + 1,
+  )
+  .updateIn(['data', 'coins'], (coins) => coins - cost)
+  .setIn(['data', 'fields', fieldIndex, 'startProductionTimestamp'], new Date().toISOString())
+  .setIn(['data', 'fields', fieldIndex, 'pokeCount'], 0);
+
+const upgradeWarehouse = (state, { fieldIndex, cost }) => state
+  .updateIn(
+    ['data', 'fields', fieldIndex, 'warehouseLevel'],
+    (warehouseLevel) => warehouseLevel + 1,
+  )
+  .updateIn(['data', 'coins'], (coins) => coins - cost)
+  .setIn(['data', 'fields', fieldIndex, 'startProductionTimestamp'], new Date().toISOString())
+  .setIn(['data', 'fields', fieldIndex, 'pokeCount'], 0);
+
 export const reducer = createReducer(INITIAL_STATE, {
   [GameTypes.SET_GAME_DATA]: setGameData,
   [GameTypes.SELL_FOOD]: sellFood,
   [GameTypes.POKE_ANIMAL]: pokeAnimal,
+  [GameTypes.BUY_ANIMAL]: buyAnimal,
+  [GameTypes.UPGRADE_WAREHOUSE]: upgradeWarehouse,
   [GameTypes.PRODUCE_FOOD]: produceFood,
 }, { types: GameTypes });

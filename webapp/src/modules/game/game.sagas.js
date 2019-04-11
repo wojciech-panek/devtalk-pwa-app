@@ -61,6 +61,14 @@ export function* sellFood() {
   yield put(GameActions.syncGameData());
 }
 
+export function* buyAnimal() {
+  yield put(GameActions.syncGameData());
+}
+
+export function* upgradeWarehouse() {
+  yield put(GameActions.syncGameData());
+}
+
 export function* runGameTicker() {
   const gameTicker = ticker(100);
   while (true) {
@@ -99,6 +107,8 @@ export function* watchGame() {
       takeLatest(UserAuthTypes.SET_USER_DATA, findUserGame),
       takeLatest(GameTypes.SYNC_GAME_DATA, syncGameData),
       takeLatest(GameTypes.SELL_FOOD, sellFood),
+      takeLatest(GameTypes.BUY_ANIMAL, buyAnimal),
+      takeLatest(GameTypes.UPGRADE_WAREHOUSE, upgradeWarehouse),
       takeLatest(GameTypes.FIND_USER_GAME_FAIL, createNewGame),
       takeLatest(GameTypes.CREATE, createNewGame),
     ]);

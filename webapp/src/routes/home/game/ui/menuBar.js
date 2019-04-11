@@ -1,14 +1,11 @@
 import { Container } from 'pixi.js';
-import { MENU_BAR_HOME, MENU_BAR_UPGRADE } from '../game.constants';
+
 import { MenuButton } from './menuButton';
+import { GameState, states } from '../game.state';
 
 import homeIcon from '../../../../images/game/ui/homescreen_icon.png';
 import upgradeIcon from '../../../../images/game/ui/upgradescreen_icon.png';
 
-const textures = {
-  [MENU_BAR_HOME]: homeIcon,
-  [MENU_BAR_UPGRADE]: upgradeIcon,
-};
 
 export class MenuBar {
   constructor({ rendererWidth, rendererHeight }) {
@@ -19,7 +16,9 @@ export class MenuBar {
       y: rendererHeight - 70,
       width: rendererWidth / 2,
       height: 70,
-      type: textures[MENU_BAR_HOME],
+      icon: homeIcon,
+      active: GameState.state === states.HOME,
+      onClick: this.handleHomeClick,
     });
 
     this.menuBoxUpgrade = new MenuButton({
@@ -27,11 +26,27 @@ export class MenuBar {
       y: rendererHeight - 70,
       width: rendererWidth / 2,
       height: 70,
-      type: textures[MENU_BAR_UPGRADE],
+      icon: upgradeIcon,
+      active: GameState.state === states.UPGRADING || GameState.state === states.BUYING,
+      onClick: this.handleUpgradeClick,
     });
 
     this.stage.addChild(this.menuBoxHome.stage, this.menuBoxUpgrade.stage);
+    GameState.onStateChange(this.handleStateUpdate);
   }
+
+  handleStateUpdate = () => {
+    this.menuBoxHome.active = GameState.state === states.HOME;
+    this.menuBoxUpgrade.active = GameState.state === states.UPGRADING || GameState.state === states.BUYING;
+  };
+
+  handleHomeClick = () => {
+    GameState.changeState(states.HOME);
+  };
+
+  handleUpgradeClick = () => {
+    GameState.changeState(states.UPGRADING);
+  };
 
   get stage() {
     return this._stage;
