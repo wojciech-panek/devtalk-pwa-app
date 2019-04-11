@@ -178,5 +178,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.0.2"
   }
 }

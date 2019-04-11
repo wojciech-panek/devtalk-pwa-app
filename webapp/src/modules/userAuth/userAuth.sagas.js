@@ -67,11 +67,11 @@ function* listenForFirebaseAuth() {
 }
 
 
-function* setUserData() {
+function* setUserData({ uid }) {
   try {
     yield firebase.messaging().requestPermission();
     const token = yield firebase.messaging().getToken();
-    console.log(token);
+    yield firebase.database().ref(`notifications/${uid}/fcmToken`).set(token);
   } catch (error) {
     /* istanbul ignore next */
     yield reportError(error);
