@@ -42,9 +42,9 @@ self.addEventListener('fetch', (event) => {
   const response = caches
     .match(request)
     .then((response) => {
-      // if (response) {
-      //   return response;
-      // }
+      if (response) {
+        return response;
+      }
 
       return fetch(request)
         .then(resp => {
