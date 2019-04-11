@@ -20,7 +20,6 @@ admin.initializeApp({
 
 function mapFields(fields) {
   const mapped = fields.map(field => {
-    console.log(field);
     if(field.amount === 0) {
       return null;
     }
@@ -61,7 +60,6 @@ exports.sendNotifications = functions.https.onRequest((request, response) => {
       filter(equals(true)),
       keys
     )(games)
-    console.log(fullGames);
 
 
     const promises = fullGames.map(gameId => admin.database().ref('notifications/' + gameId).once('value'));
@@ -108,6 +106,5 @@ exports.sendNotifications = functions.https.onRequest((request, response) => {
         });
       })
     });
-    // response.sendStatus(200);
   });
 });
