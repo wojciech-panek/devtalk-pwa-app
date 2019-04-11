@@ -1,35 +1,40 @@
 import { Texture, Sprite } from 'pixi.js';
 import fence from '../../../../images/game/environment/fence.png';
 import emptyFence from '../../../../images/game/environment/empty-fence.png';
+import { GameState } from '../game.state';
 
 
 export class Fence {
-  constructor({ column, position }) {
+  constructor({ column, x, y, positionNumber }) {
+    this._positionNumber = positionNumber;
     this._textureEmpty = Texture.from(emptyFence);
     this._textureFull = Texture.from(fence);
-    this._stage = new Sprite(this.textureEmpty);
+    this._stage = new Sprite(this.texture);
 
     this.stage.height = 89;
     this.stage.width = 92;
     this.stage.anchor.set(0.5, 0.5);
-    this.stage.x = position.x;
-    this.stage.y = position.y;
+    this.stage.x = x;
+    this.stage.y = y;
     if (this.isEven(column)) {
       this.flipHorizontally(this.stage);
     }
 
-    this.stage.interactive = true;
-    this.stage.on('pointerdown', this.onClick);
+    GameState.onReduxStateChange(this.handleReduxStateUpdate);
   }
 
-  onClick = () => {
-    this.stage.texture = this.textureFull;
+  handleReduxStateUpdate = () => {
+    this.stage.texture = this.texture;
   };
 
   isEven = num => num % 2;
 
   flipHorizontally(sprite) {
     sprite.scale.x *= -1;
+  }
+
+  get texture() {
+    return this.animalData.amount > 0 ? this.textureFull : this.textureEmpty;
   }
 
   get stage() {
@@ -42,5 +47,17 @@ export class Fence {
 
   get textureFull() {
     return this._textureFull;
+  }
+
+  get fieldIndex() {
+    return GameState.reduxState.fields.findIndex((field) => field.position === this.positionNumber);
+  }
+
+  get positionNumber() {
+    return this._positionNumber;
+  }
+
+  get animalData() {
+    return GameState.reduxState.fields[this.fieldIndex];
   }
 }

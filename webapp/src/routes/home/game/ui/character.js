@@ -5,7 +5,6 @@ import character1 from '../../../../images/game/environment/sprites/character/ch
 import character2 from '../../../../images/game/environment/sprites/character/character-sprite-2.png';
 import character3 from '../../../../images/game/environment/sprites/character/character-sprite-3.png';
 
-
 const delayFrames = times(() => character1, 5);
 
 export class Character {

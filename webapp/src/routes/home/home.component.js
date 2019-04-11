@@ -14,6 +14,8 @@ export class Home extends PureComponent {
     signInViaGoogle: PropTypes.func.isRequired,
     sellFood: PropTypes.func.isRequired,
     pokeAnimal: PropTypes.func.isRequired,
+    buyAnimal: PropTypes.func.isRequired,
+    upgradeWarehouse: PropTypes.func.isRequired,
     gameData: PropTypes.instanceOf(Map).isRequired,
   };
 
@@ -34,7 +36,9 @@ export class Home extends PureComponent {
   }
 
   startGame = () => {
-    const { isUserAnonymous, signInViaGoogle, sellFood, pokeAnimal, gameData } = this.props;
+    const {
+      isUserAnonymous, signInViaGoogle, sellFood, pokeAnimal, buyAnimal, upgradeWarehouse, gameData,
+    } = this.props;
 
     GameState.reduxState = gameData.toJS();
     this.game = new Game({
@@ -44,6 +48,8 @@ export class Home extends PureComponent {
       actions: {
         sellFood,
         pokeAnimal,
+        buyAnimal,
+        upgradeWarehouse,
         loginViaGoogle: signInViaGoogle,
       },
     });

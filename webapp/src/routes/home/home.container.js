@@ -21,6 +21,8 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   signInViaGoogle: UserAuthActions.signInViaGoogle,
   sellFood: GameActions.sellFood,
   pokeAnimal: GameActions.pokeAnimal,
+  buyAnimal: GameActions.buyAnimal,
+  upgradeWarehouse: GameActions.upgradeWarehouse,
 }, dispatch);
 
 export default compose(

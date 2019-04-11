@@ -6,7 +6,6 @@ import coin2 from '../../../../images/game/environment/sprites/coin/coin-sprite-
 import coin3 from '../../../../images/game/environment/sprites/coin/coin-sprite-3.png';
 import coin4 from '../../../../images/game/environment/sprites/coin/coin-sprite-4.png';
 
-
 const delayFrames = times(() => coin1, 20);
 
 export class Coin {
