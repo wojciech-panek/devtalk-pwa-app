@@ -29,7 +29,9 @@ export function* findUserGame() {
 
     const gameData = gameDataSnapshot.val();
 
-    if (!gameData) {
+    if (gameData) {
+      yield put(GameActions.setGameData(gameData));
+    } else {
       yield put(GameActions.findUserGameFail());
     }
   } catch (error) {

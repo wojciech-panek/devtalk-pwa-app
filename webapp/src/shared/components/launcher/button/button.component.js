@@ -11,7 +11,7 @@ class Button {
     this._stage = new Container();
     this.stage.interactive = true;
     this.stage.buttonMode = true;
-    this.stage.on('click', onClick);
+    this.stage.on('pointerdown', onClick);
 
     this.buttonTexture = Texture.from(button);
     this.box = new Sprite(this.buttonTexture);
