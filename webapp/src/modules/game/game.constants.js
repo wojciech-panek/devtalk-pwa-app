@@ -2,13 +2,12 @@ import { ANIMALS, FOOD } from '../../routes/home/game/game.constants';
 
 export const GAME_COLLECTION = 'games';
 export const NEW_GAME_DATA = {
-  level: 0,
-  coins: 0,
+  coins: 100,
   fields: [
     {
       type: ANIMALS.chicken.type,
       position: 1,
-      amount: 3,
+      amount: 0,
       warehouseLevel: 1,
       foodType: FOOD.egg.type,
       foodAmount: 0,
@@ -19,7 +18,7 @@ export const NEW_GAME_DATA = {
     {
       type: ANIMALS.chick.type,
       position: 2,
-      amount: 1,
+      amount: 0,
       warehouseLevel: 1,
       foodType: FOOD.chicken.type,
       foodAmount: 0,
@@ -30,7 +29,7 @@ export const NEW_GAME_DATA = {
     {
       type: ANIMALS.pig.type,
       position: 3,
-      amount: 1,
+      amount: 0,
       warehouseLevel: 1,
       foodType: FOOD.ham.type,
       foodAmount: 0,
@@ -41,7 +40,7 @@ export const NEW_GAME_DATA = {
     {
       type: ANIMALS.goat.type,
       position: 4,
-      amount: 1,
+      amount: 0,
       warehouseLevel: 1,
       foodType: FOOD.cheese.type,
       foodAmount: 0,
@@ -52,7 +51,7 @@ export const NEW_GAME_DATA = {
     {
       type: ANIMALS.cow.type,
       position: 5,
-      amount: 1,
+      amount: 0,
       warehouseLevel: 1,
       foodType: FOOD.milk.type,
       foodAmount: 0,

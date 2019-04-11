@@ -23,7 +23,7 @@ export class CharacterBar {
       fillColor: '0x6B4B3A',
     });
     this.userLevelText = new InterfaceText({
-      text: `LEVEL ${GameState.reduxState.level}`,
+      text: `LEVEL ${this.characterLevel}`,
       anchorX: 0,
       anchorY: 0,
       x: 80,
@@ -47,7 +47,11 @@ export class CharacterBar {
     return this._stage;
   }
 
+  get characterLevel () {
+    return GameState.reduxState.fields.filter((field) => field.amount > 0).length;
+  }
+
   handleReduxStateUpdate = () => {
-    this.userLevelText.setText(`LEVEL ${GameState.reduxState.level}`);
+    this.userLevelText.setText(`LEVEL ${this.characterLevel}`);
   };
 }
