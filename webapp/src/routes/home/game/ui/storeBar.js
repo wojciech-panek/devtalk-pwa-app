@@ -5,8 +5,9 @@ import { UI_RADIUS } from '../game.constants';
 import { GameState } from '../game.state';
 
 export class StoreBar {
-  constructor({ x, y, width, name, amount, price, onClick }) {
+  constructor({ x, y, width, name, amount, price, visible, onClick }) {
     this._stage = new Graphics();
+    this._stage.visible = visible;
 
     this._priceValue = price;
 
@@ -109,5 +110,9 @@ export class StoreBar {
 
   get isButtonDisabled() {
     return this._priceValue > GameState.reduxState.coins;
+  }
+
+  set visible(value) {
+    this._stage.visible = value;
   }
 }

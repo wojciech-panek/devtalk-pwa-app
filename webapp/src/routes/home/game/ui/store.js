@@ -10,13 +10,23 @@ import { ANIMALS, WAREHOUSE_LEVELS } from '../game.constants';
 
 
 export class Store {
-  constructor({ x, y, width, height, actions }) {
+  constructor({ actions, rendererWidth }) {
     this._stage = new Container();
     this._stage.visible = this.isVisible;
+    this.x = rendererWidth * 0.05;
+    this.y = 150;
+    this.width = rendererWidth * 0.9;
+    this.height = 285;
 
     this._actions = actions;
 
-    this.storeRectangle = new RectangleBox({ x, y, width, height, radius: 1 });
+    this.storeRectangle = new RectangleBox({
+      x: this.x,
+      y: this.y,
+      width: this.width,
+      height: this.rectangleBoxHeight,
+      radius: 1,
+    });
 
     this.animalHead = new AnimalHead({
       type: this.animalType,
@@ -24,15 +34,15 @@ export class Store {
       interactive: false,
     });
     this.animalHead.stage.anchor.set(0.5);
-    this.animalHead.stage.x = x + 35;
-    this.animalHead.stage.y = y + 50;
+    this.animalHead.stage.x = this.x + 35;
+    this.animalHead.stage.y = this.y + 50;
 
     this.animalNameText = new InterfaceText({
       text: this.animalName,
       anchorX: 0,
       anchorY: 0,
-      x: x + 85,
-      y: y + 40,
+      x: this.x + 85,
+      y: this.y + 40,
       font: 'Arial Black',
       fontSize: 16,
       fontWeight: 'normal',
@@ -40,27 +50,34 @@ export class Store {
     });
 
     this.amountBar = new StoreBar({
-      x,
+      x: this.x,
       y: 250,
-      width,
-      height,
+      width: this.width,
+      height: this.height,
       name: 'AMOUNT',
       amount: this.animalAmount,
       price: this.animalPrice,
+      visible: true,
       onClick: this.handleBuyAnimalClick,
     });
     this.warehouseBar = new StoreBar({
-      x,
+      x: this.x,
       y: 305,
-      width,
-      height,
+      width: this.width,
+      height: this.height,
       name: 'CAPACITY',
       amount: this.warehouseCapacity,
       price: this.warehousePrice,
+      visible: this.isWarehouseBarVisible,
       onClick: this.handleUpgradeWarehouseClick,
     });
 
-    this.closeButton = new CloseButton({ x, y, width, onClick: this.handleCloseClick });
+    this.closeButton = new CloseButton({
+      x: this.closeButtonX,
+      y: this.closeButtonY,
+      width: this.width,
+      onClick: this.handleCloseClick,
+    });
 
     this.stage.addChild(this.storeRectangle.stage, this.animalHead.stage, this.animalNameText.stage,
       this.amountBar.stage, this.warehouseBar.stage, this.closeButton.stage,
@@ -77,6 +94,10 @@ export class Store {
     this.warehouseBar.price = this.warehousePrice;
     this.animalNameText.setText(this.animalName);
     this.animalHead.type = this.animalType;
+    this.warehouseBar.visible = this.isWarehouseBarVisible;
+    this.storeRectangle.height = this.rectangleBoxHeight;
+    this.closeButton.x = this.closeButtonX;
+    this.closeButton.y = this.closeButtonY;
     this._stage.visible = this.isVisible;
   };
 
@@ -95,6 +116,33 @@ export class Store {
 
   get isVisible() {
     return GameState.state === states.BUYING;
+  }
+
+  get rectangleBoxHeight() {
+    if (this.isWarehouseBarVisible) {
+      return this.height;
+    }
+
+    return this.height - 55;
+  }
+
+  get closeButtonX() {
+    return this.x + this.width / 2 - 40;
+  }
+
+  get closeButtonY() {
+    if (this.isWarehouseBarVisible) {
+      return this.y + 232;
+    }
+    return this.y + 232 - 55;
+  }
+
+  get isWarehouseBarVisible() {
+    if (!this.animalData) {
+      return false;
+    }
+
+    return !!WAREHOUSE_LEVELS[this.animalData.warehouseLevel + 1] && this.animalAmount !== 0;
   }
 
   get stage() {

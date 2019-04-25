@@ -1,5 +1,6 @@
 import { Texture, Sprite } from 'pixi.js';
 import { ANIMALS } from '../game.constants';
+import { GameState, states } from '../game.state';
 
 
 export class AnimalHead {
@@ -35,6 +36,10 @@ export class AnimalHead {
   }
 
   handlePointerDown = (flip) => {
+    if (GameState.state === states.UPGRADING || GameState.state === states.BUYING) {
+      return;
+    }
+
     this.stage.scale.set(flip ? -0.35 : 0.35, 0.35);
     setTimeout(() => this.stage.scale.set(flip ? -0.33 : 0.33, 0.33), 200);
     this._onClick();

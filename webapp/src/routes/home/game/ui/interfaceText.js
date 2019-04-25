@@ -28,4 +28,12 @@ export class InterfaceText {
   setText(text) {
     this._stage.text = text;
   }
+
+  set x(x) {
+    this._stage.x = x;
+  }
+
+  set y(y) {
+    this._stage.y = y;
+  }
 }

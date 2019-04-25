@@ -109,9 +109,11 @@ export const FOOD = {
 };
 
 export const WAREHOUSE_LEVELS = {
-  1: { foodMaxAmount: 10, upgradeCost: 100 },
-  2: { foodMaxAmount: 20, upgradeCost: 200 },
-  3: { foodMaxAmount: 50, upgradeCost: 500 },
-  4: { foodMaxAmount: 100, upgradeCost: 1000 },
-  5: { foodMaxAmount: 200, upgradeCost: 2000 },
+  1: { foodMaxAmount: 10, upgradeCost: 200 },
+  2: { foodMaxAmount: 20, upgradeCost: 500 },
+  3: { foodMaxAmount: 50, upgradeCost: 1000 },
+  4: { foodMaxAmount: 100, upgradeCost: 2000 },
+  5: { foodMaxAmount: 200, upgradeCost: 5000 },
+  6: { foodMaxAmount: 500, upgradeCost: 10000 },
+  7: { foodMaxAmount: 1000, upgradeCost: 20000 },
 };

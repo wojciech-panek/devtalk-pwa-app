@@ -15,10 +15,7 @@ export class UserInterface {
 
     this.store = new Store({
       actions: actions,
-      x: rendererWidth * 0.05,
-      y: 150,
-      width: rendererWidth * 0.9,
-      height: 285,
+      rendererWidth: rendererWidth,
     });
 
     this.menuBar = new MenuBar({ rendererWidth: rendererWidth, rendererHeight: rendererHeight });
