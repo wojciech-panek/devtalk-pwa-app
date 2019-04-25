@@ -27,6 +27,7 @@ export class Home extends PureComponent {
     const { isUserAnonymous, gameData } = this.props;
 
     if (!isUserAnonymous && prevProps.gameData.size === 0 && gameData.size > 0) {
+      GameState.reduxState = gameData.toJS();
       this.game.updateGame({ anonymousPlayer: isUserAnonymous });
     }
 

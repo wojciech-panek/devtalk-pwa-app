@@ -126,10 +126,18 @@ export class Store {
   }
 
   get fieldIndex() {
+    if (!GameState.reduxState.fields) {
+      return -1;
+    }
+
     return GameState.reduxState.fields.findIndex((field) => field.position === GameState.selectedAnimalPosition);
   }
 
   get animalData() {
+    if (this.fieldIndex === -1) {
+      return null;
+    }
+
     return GameState.reduxState.fields[this.fieldIndex];
   }
 

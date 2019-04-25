@@ -5,7 +5,7 @@ import { UI_RADIUS } from '../game.constants';
 import { GameState } from '../game.state';
 
 export class StoreBar {
-  constructor({ x, y, width, height, name, amount, price, onClick }) {
+  constructor({ x, y, width, name, amount, price, onClick }) {
     this._stage = new Graphics();
 
     this._priceValue = price;

@@ -26,28 +26,30 @@ export class Animal {
     this.amount = new AnimalAmount({ flip: !this.isEven(positionNumber), positionNumber: this.positionNumber });
 
     this.animalProgress = new AnimalProgress({
-      startProductionTimestamp: this.animalData.startProductionTimestamp,
-      productionDuration: this.animalData.productionDuration,
-      pokeCount: this.animalData.pokeCount,
+      startProductionTimestamp: this.animalData ? this.animalData.startProductionTimestamp : null,
+      productionDuration: this.animalData ? this.animalData.productionDuration : null,
+      pokeCount: this.animalData ? this.animalData.pokeCount : 0,
       positionNumber: this.positionNumber,
       flip: !this.isEven(positionNumber),
     });
 
     this.animalHead = new AnimalHead({
-      type: this.animalData.type,
+      type: this.animalData ? this.animalData.type : null,
       onClick: this.handleAnimalHeadClick,
       flip: !this.isEven(positionNumber),
     });
 
     this.foodItem = new FoodItem({
       onClick: this.handleFoodItemClick,
-      type: this.animalData.foodType,
+      type: this.animalData ? this.animalData.foodType : null,
       x: this.isEven(positionNumber) ? 38 : -82,
       y: -22,
     });
 
+    const foodAmount = this.animalData ? this.animalData.foodAmount : '';
+    const foodMaxAmount = this.warehouseData ? this.warehouseData.foodMaxAmount : '';
     this.foodAmountText = new InterfaceText({
-      text: `${this.animalData.foodAmount}/${this.warehouseData.foodMaxAmount}`,
+      text: `${foodAmount}/${foodMaxAmount}`,
       anchorX: 0.5,
       anchorY: 0.5,
       x: this.isEven(positionNumber) ? 60 : -60,
@@ -127,7 +129,9 @@ export class Animal {
   };
 
   handleReduxStateUpdate = () => {
-    this.foodAmountText.setText(`${this.animalData.foodAmount}/${this.warehouseData.foodMaxAmount}`);
+    const foodAmount = this.animalData ? this.animalData.foodAmount : '';
+    const foodMaxAmount = this.warehouseData ? this.warehouseData.foodMaxAmount : '';
+    this.foodAmountText.setText(`${foodAmount}/${foodMaxAmount}`);
     this.animalProgress.startProductTimestamp = this.animalData.startProductionTimestamp;
     this.animalProgress.productionDuration = this.animalData.productionDuration;
     this.animalProgress.pokeCount = this.animalData.pokeCount;
@@ -181,6 +185,10 @@ export class Animal {
   }
 
   get firstEmptyPosition() {
+    if (!GameState.reduxState.fields) {
+      return -1;
+    }
+
     const emptyPositions = GameState.reduxState.fields.filter((field) => !field.amount).map((field) => field.position);
     return Math.min(...(emptyPositions || [-1]));
   }
@@ -190,6 +198,10 @@ export class Animal {
   }
 
   get fieldIndex() {
+    if (!GameState.reduxState.fields) {
+      return -1;
+    }
+
     return GameState.reduxState.fields.findIndex((field) => field.position === this.positionNumber);
   }
 
@@ -202,10 +214,18 @@ export class Animal {
   }
 
   get animalData() {
+    if (this.fieldIndex === -1) {
+      return null;
+    }
+
     return GameState.reduxState.fields[this.fieldIndex];
   }
 
   get warehouseData() {
+    if (!this.animalData) {
+      return null;
+    }
+
     return WAREHOUSE_LEVELS[this.animalData.warehouseLevel];
   }
 }

@@ -6,8 +6,12 @@ import { FOOD } from '../game.constants';
 export class FoodItem {
   constructor({ onClick, type, x, y }) {
     this._type = type;
-    this._texture = this.loadTexture(this.food.texture);
-    this._stage = new Sprite(this.texture);
+    this._stage = new Sprite();
+
+    if (this.food) {
+      this._texture = this.loadTexture(this.food.texture);
+      this.stage.texture = this._texture;
+    }
 
     this.stage.height = 45;
     this.stage.width = 46;

@@ -34,6 +34,9 @@ export class Fence {
   }
 
   get texture() {
+    if (!this.animalData) {
+      return null;
+    }
     return this.animalData.amount > 0 ? this.textureFull : this.textureEmpty;
   }
 
@@ -50,6 +53,9 @@ export class Fence {
   }
 
   get fieldIndex() {
+    if (!GameState.reduxState.fields) {
+      return -1;
+    }
     return GameState.reduxState.fields.findIndex((field) => field.position === this.positionNumber);
   }
 
@@ -58,6 +64,9 @@ export class Fence {
   }
 
   get animalData() {
+    if (this.fieldIndex === -1) {
+      return null;
+    }
     return GameState.reduxState.fields[this.fieldIndex];
   }
 }

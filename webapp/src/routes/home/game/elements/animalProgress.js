@@ -90,6 +90,10 @@ export class AnimalProgress {
   }
 
   get fieldIndex() {
+    if (!GameState.reduxState.fields) {
+      return -1;
+    }
+
     return GameState.reduxState.fields.findIndex((field) => field.position === this.positionNumber);
   }
 
@@ -98,10 +102,17 @@ export class AnimalProgress {
   }
 
   get animalData() {
+    if (this.fieldIndex === -1) {
+      return null;
+    }
     return GameState.reduxState.fields[this.fieldIndex];
   }
 
   get isWarehouseFull() {
+    if (!this.animalData) {
+      return false;
+    }
+
     const foodAmount = this.animalData.foodAmount;
     const warehouseCapacity = WAREHOUSE_LEVELS[this.animalData.warehouseLevel].foodMaxAmount;
 

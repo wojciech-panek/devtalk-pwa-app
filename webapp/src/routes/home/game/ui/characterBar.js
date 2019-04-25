@@ -47,7 +47,11 @@ export class CharacterBar {
     return this._stage;
   }
 
-  get characterLevel () {
+  get characterLevel() {
+    if (!GameState.reduxState.fields) {
+      return 0;
+    }
+
     return GameState.reduxState.fields.filter((field) => field.amount > 0).length;
   }
 

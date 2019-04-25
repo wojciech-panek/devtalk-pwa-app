@@ -41,7 +41,7 @@ export class AnimalAmount {
   }
 
   handleReduxStateUpdate = () => {
-    this.amount.setText(`${this.animalData.amount}`);
+    this.amount.setText(`${this.animalData ? this.animalData.amount : ''}`);
   };
 
   get stage() {
@@ -49,6 +49,10 @@ export class AnimalAmount {
   }
 
   get fieldIndex() {
+    if (!GameState.reduxState.fields) {
+      return -1;
+    }
+
     return GameState.reduxState.fields.findIndex((field) => field.position === this.positionNumber);
   }
 
@@ -57,6 +61,10 @@ export class AnimalAmount {
   }
 
   get animalData() {
+    if (this.fieldIndex === -1) {
+      return null;
+    }
+
     return GameState.reduxState.fields[this.fieldIndex];
   }
 }
