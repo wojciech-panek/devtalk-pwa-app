@@ -32,7 +32,8 @@ const sellFood = (state, { foodCost, foodAmount, fieldIndex }) => state
   .updateIn(['data', 'coins'], (coins) => coins + foodCost * foodAmount)
   .setIn(['data', 'fields', fieldIndex, 'foodAmount'], 0)
   .setIn(['data', 'fields', fieldIndex, 'startProductionTimestamp'], new Date().toISOString())
-  .setIn(['data', 'fields', fieldIndex, 'pokeCount'], 0);
+  .setIn(['data', 'fields', fieldIndex, 'pokeCount'], 0)
+  .setIn(['data', 'updateTimestamp'], new Date().toISOString());
 
 const produceFood = (state, { fieldIndex, amount }) => state
   .updateIn(
@@ -51,13 +52,15 @@ const produceFood = (state, { fieldIndex, amount }) => state
       return prevDate;
     }
     return new Date().toISOString();
-  });
+  })
+  .setIn(['data', 'updateTimestamp'], new Date().toISOString());
 
 const pokeAnimal = (state, { fieldIndex }) => state
   .updateIn(
     ['data', 'fields', fieldIndex, 'pokeCount'],
     (pokeCount) => pokeCount + 1,
-  );
+  )
+  .setIn(['data', 'updateTimestamp'], new Date().toISOString());
 
 const buyAnimal = (state, { fieldIndex, cost }) => state
   .updateIn(
@@ -66,7 +69,8 @@ const buyAnimal = (state, { fieldIndex, cost }) => state
   )
   .updateIn(['data', 'coins'], (coins) => coins - cost)
   .setIn(['data', 'fields', fieldIndex, 'startProductionTimestamp'], new Date().toISOString())
-  .setIn(['data', 'fields', fieldIndex, 'pokeCount'], 0);
+  .setIn(['data', 'fields', fieldIndex, 'pokeCount'], 0)
+  .setIn(['data', 'updateTimestamp'], new Date().toISOString());
 
 const upgradeWarehouse = (state, { fieldIndex, cost }) => state
   .updateIn(
@@ -75,7 +79,8 @@ const upgradeWarehouse = (state, { fieldIndex, cost }) => state
   )
   .updateIn(['data', 'coins'], (coins) => coins - cost)
   .setIn(['data', 'fields', fieldIndex, 'startProductionTimestamp'], new Date().toISOString())
-  .setIn(['data', 'fields', fieldIndex, 'pokeCount'], 0);
+  .setIn(['data', 'fields', fieldIndex, 'pokeCount'], 0)
+  .setIn(['data', 'updateTimestamp'], new Date().toISOString());
 
 export const reducer = createReducer(INITIAL_STATE, {
   [GameTypes.SET_GAME_DATA]: setGameData,

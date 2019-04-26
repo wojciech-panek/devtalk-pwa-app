@@ -73,8 +73,3 @@ self.addEventListener('sync', () => {
   });
 });
 
-self.addEventListener('message', (x) => {
-  console.log('message', x);
-});
-
-

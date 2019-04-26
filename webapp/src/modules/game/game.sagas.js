@@ -20,6 +20,7 @@ const registrySaga = createSaga({
 export function* findUserGame() {
   try {
     const userUid = yield select(selectUserUid);
+    const currentGame = yield select(selectUserGame);
 
     const gameDataSnapshot = yield firebase
       .database()
@@ -29,10 +30,17 @@ export function* findUserGame() {
 
     const gameData = gameDataSnapshot.val();
 
-    if (gameData) {
-      yield put(GameActions.setGameData(gameData));
-    } else {
+    if (!gameData) {
       yield put(GameActions.findUserGameFail());
+    }
+
+    const gameDataTimestamp = isoToTimestamp(gameData.updateTimestamp);
+    const currentGameDataTimestamp = isoToTimestamp(currentGame.get('updateTimestamp'));
+    if (gameData && (isNaN(currentGameDataTimestamp) || gameDataTimestamp > currentGameDataTimestamp)) {
+      yield put(GameActions.setGameData(gameData));
+    }
+    if (gameData && (isNaN(currentGameDataTimestamp) || gameDataTimestamp < currentGameDataTimestamp)) {
+      yield put(GameActions.syncGameData());
     }
   } catch (error) {
     /* istanbul ignore next */
