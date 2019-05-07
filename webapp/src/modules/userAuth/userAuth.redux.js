@@ -8,7 +8,8 @@ export const {
   setUserData: ['uid', 'isAnonymous'],
   clearUserData: null,
   signOut: null,
-  signInViaGoogle: null,
+  signIn: ['email', 'password', 'formik'],
+  createUser: ['email', 'password', 'formik'],
   listenForFirebaseAuth: null,
 }, { prefix: 'USER_AUTH_' });
 

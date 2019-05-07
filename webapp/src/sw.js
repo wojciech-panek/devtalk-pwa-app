@@ -63,13 +63,15 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('sync', () => {
   getStoredState(persistConfig).then((state) => {
     const userUid = selectUserUid(state);
-    const data = selectUserGame(state);
+    const data = selectUserGame(state).toJS();
 
-    firebase
-      .database()
-      .ref(GAME_COLLECTION)
-      .child(userUid)
-      .set(data.toJS());
+    if (Object.keys(data).length) {
+      firebase
+        .database()
+        .ref(GAME_COLLECTION)
+        .child(userUid)
+        .set(data);
+    }
   });
 });
 

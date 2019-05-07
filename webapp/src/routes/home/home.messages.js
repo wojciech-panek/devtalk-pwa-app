@@ -11,4 +11,16 @@ export default defineMessages({
     id: 'home.welcome',
     defaultMessage: 'Hello World!',
   },
+  logIn: {
+    id: 'home.logIn',
+    defaultMessage: 'Log in',
+  },
+  newGame: {
+    id: 'home.newGame',
+    defaultMessage: 'New game',
+  },
+  install: {
+    id: 'home.install',
+    defaultMessage: 'Install application',
+  },
 });

@@ -5,17 +5,38 @@ import firebase from 'firebase';
 import reportError from '../../shared/utils/reportError';
 import { UserAuthTypes, UserAuthActions } from './userAuth.redux';
 import { selectOnlineStatus, StartupTypes } from '../startup';
+import loginFormMessages from '../../routes/home/loginForm/loginForm.messages';
+import newGameFormMessages from '../../routes/home/newGameForm/newGameForm.messages';
 
 
 
-function* signInViaGoogle() {
+function* signIn({ email, password, formik }) {
   try {
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
-    const { user: { uid, isAnonymous } } = yield firebase.auth().signInWithPopup(googleProvider);
-
+    const { user: { uid, isAnonymous } } = yield firebase.auth().signInWithEmailAndPassword(email, password);
     yield put(UserAuthActions.setUserData(uid, isAnonymous));
   } catch (error) {
     yield reportError(error);
+    formik.setErrors({ email: loginFormMessages.emailInvalidError, password: loginFormMessages.passwordInvalidError });
+  } finally {
+    formik.setSubmitting(false);
+  }
+}
+
+function* createUser({ email, password, formik }) {
+  try {
+    const { user: { uid, isAnonymous } } = yield firebase.auth().createUserWithEmailAndPassword(email, password);
+    yield put(UserAuthActions.setUserData(uid, isAnonymous));
+  } catch (error) {
+    if (error.code && error.code === 'auth/email-already-in-use') {
+      formik.setErrors({ email: newGameFormMessages.emailExistsError });
+    } else if (error.code && error.code === 'auth/weak-password') {
+      formik.setErrors({ password: newGameFormMessages.passwordWeakError });
+    } else {
+      formik.setErrors({ email: newGameFormMessages.emailUnknownError });
+    }
+    yield reportError(error);
+  } finally {
+    formik.setSubmitting(false);
   }
 }
 
@@ -83,7 +104,8 @@ export function* watchUserAuth() {
     yield all([
       takeLatest(StartupTypes.STARTUP, listenForFirebaseAuth),
       takeLatest(StartupTypes.SET_ONLINE_STATUS, listenForFirebaseAuth),
-      takeLatest(UserAuthTypes.SIGN_IN_VIA_GOOGLE, signInViaGoogle),
+      takeLatest(UserAuthTypes.SIGN_IN, signIn),
+      takeLatest(UserAuthTypes.CREATE_USER, createUser),
       takeLatest(UserAuthTypes.SIGN_OUT, signOutFromFirebase),
       takeLatest(UserAuthTypes.SET_USER_DATA, setUserData),
     ]);

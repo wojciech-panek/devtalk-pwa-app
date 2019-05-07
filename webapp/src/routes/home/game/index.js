@@ -1,5 +1,4 @@
-import { Application } from 'pixi.js';
-import { ifElse, equals } from 'ramda';
+import { Application, Container } from 'pixi.js';
 
 import { Background } from './elements/background';
 import { Warehouse } from './elements/warehouse';
@@ -7,12 +6,12 @@ import { UserInterface } from './ui/userInterface';
 import { FenceGroup } from './elements/fenceGroup';
 import { FoodFenceGroup } from './elements/foodFenceGroup';
 import { Animal } from './elements/animal';
-import { Launcher } from '../../../shared/components/launcher';
-import { GameState } from './game.state';
+import { Launcher } from './ui/launcher';
+import { GameState, states } from './game.state';
 
 
 export class Game {
-  constructor({ htmlElement, anonymousPlayer, actions }) {
+  constructor({ htmlElement, actions }) {
     this._htmlElement = htmlElement;
     this._app = new Application({
       transparent: true,
@@ -22,29 +21,35 @@ export class Game {
       width: this.width,
       height: this.height,
     });
+    this._app.renderer.plugins.accessibility.destroy();
     this._actions = actions;
 
     this.htmlElement.append(this._app.renderer.view);
+
     this.launcher = new Launcher({
-      loginViaGoogle: this.actions.loginViaGoogle,
+      visible: this.isLauncherVisible,
       containerSize: {
         width: this.width,
         height: this.height,
       },
     });
 
-    ifElse(
-      equals(true),
-      () => this.showLauncher(),
-      () => this.showGame()
-    )(anonymousPlayer);
-  }
+    this._content = new Container();
+    this._content.visible = this.isGameVisible;
+    this._gameInitialized = false;
 
-  showLauncher() {
     this.stage.addChild(this.launcher.stage);
+    this.stage.addChild(this._content);
+
+    GameState.onStateChange(this.handleStateUpdate);
+    GameState.onReduxStateChange(this.handleReduxStateUpdate);
+
+    if (this.isGameVisible) {
+      this.createGame();
+    }
   }
 
-  showGame() {
+  createGame() {
     const { fields = [] } = GameState.reduxState;
 
     this.background = new Background({ width: this.width, height: this.height });
@@ -59,22 +64,17 @@ export class Game {
 
     this._animals = fields.map(this.createAnimal);
 
-    this.stage.interactive = true;
-    this.stage.addChild(this.background.stage);
-    this.stage.addChild(this.warehouse.stage);
-    this.stage.addChild(this.fenceGroup.stage);
-    this.stage.addChild(this.foodFenceGroup.stage);
+    this._content.interactive = true;
+    this._content.addChild(this.background.stage);
+    this._content.addChild(this.warehouse.stage);
+    this._content.addChild(this.fenceGroup.stage);
+    this._content.addChild(this.foodFenceGroup.stage);
     this._animals.forEach((animal) => {
-      this.stage.addChild(animal.stage);
+      this._content.addChild(animal.stage);
     });
-    this.stage.addChild(this.userInterface.stage);
-  }
+    this._content.addChild(this.userInterface.stage);
 
-  updateGame({ anonymousPlayer }) {
-    if (!anonymousPlayer) {
-      this.stage.removeChild(this.launcher.stage);
-      this.showGame();
-    }
+    this._gameInitialized = true;
   }
 
   createAnimal = ({ position: positionNumber }) => new Animal({
@@ -84,6 +84,25 @@ export class Game {
     onPoke: this.actions.pokeAnimal,
     positionNumber,
   });
+
+  handleStateUpdate = () => {
+    this.launcher.visible = this.isLauncherVisible;
+    this._content.visible = this.isGameVisible;
+  };
+
+  handleReduxStateUpdate = () => {
+    if (!this._gameInitialized && GameState.reduxState.fields) {
+      this.createGame();
+    }
+  };
+
+  get isLauncherVisible() {
+    return GameState.state === states.NOT_LOGGED_IN;
+  }
+
+  get isGameVisible() {
+    return GameState.state !== states.NOT_LOGGED_IN;
+  }
 
   get htmlElement() {
     return this._htmlElement;

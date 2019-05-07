@@ -3,6 +3,7 @@ import machina from 'machina';
 
 
 export const states = {
+  NOT_LOGGED_IN: 'notLoggedIn',
   HOME: 'home',
   UPGRADING: 'upgrading',
   BUYING: 'buying',
@@ -15,8 +16,12 @@ class GameStateClass {
     this._selectedAnimalPosition = -1;
 
     this._state = new machina.Fsm({
-      initialState: states.HOME,
+      initialState: states.NOT_LOGGED_IN,
       states: {
+        [states.NOT_LOGGED_IN]: {
+          _onEnter: () => this._stateEventEmitter.emit('notLoggedInStateEnter'),
+          _onExit: () => this._stateEventEmitter.emit('notLoggedInStateExit'),
+        },
         [states.HOME]: {
           _onEnter: () => this._stateEventEmitter.emit('homeStateEnter'),
           _onExit: () => this._stateEventEmitter.emit('homeStateExit'),
@@ -63,6 +68,8 @@ class GameStateClass {
   onReduxStateChange = (callback) => this._reduxStateEventEmitter.on('reduxStateChange', callback);
   onStateChange = (callback) => this._state.on('transition', callback);
 
+  onNotLoggedInStateEnter = (callback) => this._stateEventEmitter.on('notLoggedInStateEnter', callback);
+  onNotLoggedInStateExit = (callback) => this._stateEventEmitter.on('notLoggedInStateExit', callback);
   onHomeStateEnter = (callback) => this._stateEventEmitter.on('homeStateEnter', callback);
   onHomeStateExit = (callback) => this._stateEventEmitter.on('homeStateExit', callback);
   onUpgradingStateEnter = (callback) => this._stateEventEmitter.on('upgradingStateEnter', callback);

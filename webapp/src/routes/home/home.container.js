@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'ramda';
 
 import { Home } from './home.component';
-import { selectUserIsAnonymous, selectUserUid, UserAuthActions } from '../../modules/userAuth';
+import { selectUserIsAnonymous, selectUserUid } from '../../modules/userAuth';
 import { selectUserGame, GameActions } from '../../modules/game';
 
 
@@ -18,7 +18,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
-  signInViaGoogle: UserAuthActions.signInViaGoogle,
   sellFood: GameActions.sellFood,
   pokeAnimal: GameActions.pokeAnimal,
   buyAnimal: GameActions.buyAnimal,
