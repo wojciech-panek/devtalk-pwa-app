@@ -31,4 +31,20 @@ export class Coin {
   get texture() {
     return this._texture;
   }
+
+  set x(value) {
+    this.stage.x = value;
+  }
+
+  set y(value) {
+    this.stage.y = value;
+  }
+
+  set width(value) {
+    this.stage.width = value;
+  }
+
+  set height(value) {
+    this.stage.height = value;
+  }
 }

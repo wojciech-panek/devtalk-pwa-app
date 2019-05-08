@@ -3,15 +3,15 @@ import emptyFoodFence from '../../../../images/game/food/food-frame.png';
 
 
 export class FoodFence {
-  constructor({ column, position }) {
+  constructor({ column, x, y }) {
     this._textureEmpty = Texture.from(emptyFoodFence);
     this._stage = new Sprite(this.textureEmpty);
 
     this.stage.height = 39;
     this.stage.width = 39;
 
-    this.stage.x = position.x;
-    this.stage.y = position.y;
+    this.stage.x = x;
+    this.stage.y = y;
     if (this.isEven(column)) {
       this.constructor.flipHorizontally(this.stage);
     }
@@ -29,5 +29,13 @@ export class FoodFence {
 
   get textureEmpty() {
     return this._textureEmpty;
+  }
+
+  set x(value) {
+    this.stage.x = value;
+  }
+
+  set y(value) {
+    this.stage.y = value;
   }
 }

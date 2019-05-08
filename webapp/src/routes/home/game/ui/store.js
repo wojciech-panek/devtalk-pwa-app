@@ -10,12 +10,12 @@ import { ANIMALS, WAREHOUSE_LEVELS } from '../game.constants';
 
 
 export class Store {
-  constructor({ actions, rendererWidth }) {
+  constructor({ actions, containerSize }) {
     this._stage = new Container();
     this._stage.visible = this.isVisible;
-    this.x = rendererWidth * 0.05;
+    this.x = containerSize.width * 0.05;
     this.y = 150;
-    this.width = rendererWidth * 0.9;
+    this.width = containerSize.width * 0.9;
     this.height = 285;
 
     this._actions = actions;
@@ -191,5 +191,20 @@ export class Store {
 
   get actions() {
     return this._actions;
+  }
+
+  set containerSize(value) {
+    this.x = value.width * 0.05;
+    this.width = value.width * 0.9;
+
+    this.storeRectangle.x = this.x;
+    this.storeRectangle.width = this.width;
+    this.animalNameText.x = this.x + 85;
+    this.amountBar.x = this.x;
+    this.amountBar.width = this.width;
+    this.warehouseBar.x = this.x;
+    this.warehouseBar.width = this.width;
+    this.closeButton.x = this.closeButtonX;
+    this.closeButton.y = this.closeButtonY;
   }
 }

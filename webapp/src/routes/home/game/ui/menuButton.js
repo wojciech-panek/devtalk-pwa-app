@@ -47,6 +47,26 @@ export class MenuButton {
     this.setBackground();
   }
 
+  set x(value) {
+    this._stage.x = value;
+  }
+
+  set y(value) {
+    this._stage.y = value;
+  }
+
+  set width(value) {
+    this._width = value;
+    this.icon.x = (value) / 2;
+    this.setBackground();
+  }
+
+  set height(value) {
+    this._height = value;
+    this.icon.x = (value) / 2 - 5;
+    this.setBackground();
+  }
+
   get active() {
     return this._active;
   }

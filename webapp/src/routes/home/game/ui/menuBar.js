@@ -8,13 +8,13 @@ import upgradeIcon from '../../../../images/game/ui/upgradescreen_icon.png';
 
 
 export class MenuBar {
-  constructor({ rendererWidth, rendererHeight }) {
+  constructor({ containerSize }) {
     this._stage = new Container();
 
     this.menuBoxHome = new MenuButton({
       x: 0,
-      y: rendererHeight - 70,
-      width: rendererWidth / 2,
+      y: containerSize.height - 70,
+      width: containerSize.width / 2,
       height: 70,
       icon: homeIcon,
       active: GameState.state === states.HOME,
@@ -22,9 +22,9 @@ export class MenuBar {
     });
 
     this.menuBoxUpgrade = new MenuButton({
-      x: rendererWidth / 2,
-      y: rendererHeight - 70,
-      width: rendererWidth / 2,
+      x: containerSize.width / 2,
+      y: containerSize.height - 70,
+      width: containerSize.width / 2,
       height: 70,
       icon: upgradeIcon,
       active: GameState.state === states.UPGRADING || GameState.state === states.BUYING,
@@ -50,5 +50,14 @@ export class MenuBar {
 
   get stage() {
     return this._stage;
+  }
+
+  set containerSize(value) {
+    this.menuBoxHome.y = value.height - 70;
+    this.menuBoxHome.width = value.width / 2;
+
+    this.menuBoxUpgrade.x = value.width / 2;
+    this.menuBoxUpgrade.y = value.height - 70;
+    this.menuBoxUpgrade.width = value.width / 2;
   }
 }

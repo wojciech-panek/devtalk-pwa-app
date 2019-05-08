@@ -26,6 +26,11 @@ export class RectangleBox {
     return this._stage;
   }
 
+  set width(width) {
+    this._width = width;
+    this.drawRoundedRectangle();
+  }
+
   set height(height) {
     this._height = height;
     this.drawRoundedRectangle();

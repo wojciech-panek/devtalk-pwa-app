@@ -23,4 +23,8 @@ export default defineMessages({
     id: 'home.install',
     defaultMessage: 'Install application',
   },
+  toBigText: {
+    id: 'home.toBigText',
+    defaultMessage: 'This experience is not prepared for your device. <br/><br/> Please try using your mobile phone.',
+  },
 });

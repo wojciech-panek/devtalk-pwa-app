@@ -34,4 +34,8 @@ export const InterfaceBox = styled.div`
   background-color: #FBF8E7;
   border: 2px solid #6B4B3A;
   border-radius: 10px;
+  min-width: 250px;
+  max-width: 250px;
+  font-family: 'Arial';
+  text-align: center;
 `;

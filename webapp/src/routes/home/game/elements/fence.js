@@ -69,4 +69,12 @@ export class Fence {
     }
     return GameState.reduxState.fields[this.fieldIndex];
   }
+
+  set x(value) {
+    this.stage.x = value;
+  }
+
+  set y(value) {
+    this.stage.y = value;
+  }
 }

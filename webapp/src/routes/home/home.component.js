@@ -1,7 +1,7 @@
 import React, { PureComponent, createRef, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Map } from 'immutable';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 import { Game } from './game';
 import { GameState, states } from './game/game.state';
@@ -13,11 +13,13 @@ import { renderWhenTrue } from '../../shared/utils/rendering';
 import messages from './home.messages';
 
 
+export const MAX_GAME_WIDTH = 768;
+export const MAX_GAME_HEIGHT = 1024;
+
 export class Home extends PureComponent {
   static propTypes = {
     isUserAnonymous: PropTypes.bool.isRequired,
     userUid: PropTypes.string,
-    createUser: PropTypes.func.isRequired,
     sellFood: PropTypes.func.isRequired,
     pokeAnimal: PropTypes.func.isRequired,
     buyAnimal: PropTypes.func.isRequired,
@@ -29,12 +31,14 @@ export class Home extends PureComponent {
     showInstallButton: false,
     showNewGameForm: false,
     showLoginForm: false,
+    showToBigDialog: this.isToBig,
   };
 
   componentDidMount() {
     this.startGame();
 
     window.addEventListener('beforeinstallprompt', this.handleInstallPrompt);
+    window.addEventListener('resize', this.handleResize);
   }
 
   componentDidUpdate(prevProps) {
@@ -51,6 +55,11 @@ export class Home extends PureComponent {
 
   componentWillUnmount() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  get isToBig() {
+    return window.innerWidth > MAX_GAME_WIDTH || window.innerHeight > MAX_GAME_HEIGHT;
   }
 
   handleInstallPrompt = (event) => {
@@ -76,12 +85,32 @@ export class Home extends PureComponent {
 
   handleBackClick = () => this.setState({ showLoginForm: false, showNewGameForm: false });
 
+  handleResize = () => {
+    if (this.isToBig && GameState.state !== states.TO_BIG) {
+      GameState.changeState(states.TO_BIG);
+    }
+
+    if (!this.isToBig && GameState.state === states.TO_BIG && this.props.isUserAnonymous) {
+      GameState.changeState(states.NOT_LOGGED_IN);
+    }
+
+    if (!this.isToBig && GameState.state === states.TO_BIG && !this.props.isUserAnonymous) {
+      GameState.changeState(states.HOME);
+    }
+
+    this.setState({ showToBigDialog: this.isToBig });
+  };
+
   startGame = () => {
     const {
       isUserAnonymous, sellFood, pokeAnimal, buyAnimal, upgradeWarehouse, gameData,
     } = this.props;
 
-    if (!isUserAnonymous && GameState.state === states.NOT_LOGGED_IN) {
+    if (this.isToBig && GameState.state !== states.TO_BIG) {
+      GameState.changeState(states.TO_BIG);
+    }
+
+    if (!this.isToBig && !isUserAnonymous && GameState.state === states.NOT_LOGGED_IN) {
       GameState.changeState(states.HOME);
     }
 
@@ -132,9 +161,19 @@ export class Home extends PureComponent {
     </Interface>
   ));
 
+  renderToBigDialog = renderWhenTrue(() => (
+    <Interface>
+      <InterfaceBox>
+        <FormattedHTMLMessage {...messages.toBigText} />
+      </InterfaceBox>
+    </Interface>
+  ));
+
   render = () => (
     <Container>
-      {this.renderInterface(this.props.isUserAnonymous)}
+      {this.renderInterface(this.props.isUserAnonymous && !this.state.showToBigDialog)}
+
+      {this.renderToBigDialog(this.state.showToBigDialog)}
 
       <GameWrapper ref={this.pixiWrapperRef} />
     </Container>

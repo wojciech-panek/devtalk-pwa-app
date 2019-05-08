@@ -19,15 +19,15 @@ export class Launcher {
 
   addLogo() {
     const logoAsset = Texture.from(gameLogo);
-    const logo = new Sprite(logoAsset);
+    this.logo = new Sprite(logoAsset);
 
-    logo.width = 400 / 2;
-    logo.height = 350 / 2;
-    logo.anchor.set(0.5, 0);
-    logo.x = this.containerSize.width / 2;
-    logo.y = 30;
+    this.logo.width = 400 / 2;
+    this.logo.height = 350 / 2;
+    this.logo.anchor.set(0.5, 0);
+    this.logo.x = this.containerSize.width / 2;
+    this.logo.y = 30;
 
-    this.stage.addChild(logo);
+    this.stage.addChild(this.logo);
   }
 
   setupElements() {
@@ -55,5 +55,14 @@ export class Launcher {
 
   get containerSize() {
     return this._containerSize;
+  }
+
+  set containerSize(value) {
+    this._containerSize = value;
+
+    this.background.width = this.containerSize.width;
+    this.background.height = this.containerSize.height;
+
+    this.logo.x = this.containerSize.width / 2;
   }
 }

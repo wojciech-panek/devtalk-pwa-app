@@ -2,12 +2,10 @@ import { Texture, Sprite } from 'pixi.js';
 import background from '../../../../images/game/environment/background.png';
 
 export class Background {
-  constructor({ width, height }) {
+  constructor({ containerSize }) {
     this._texture = Texture.from(background);
     this._stage = new Sprite(this.texture);
-
-    this.stage.width = width;
-    this.stage.height = height;
+    this.containerSize = containerSize;
   }
 
   get stage() {
@@ -16,5 +14,16 @@ export class Background {
 
   get texture() {
     return this._texture;
+  }
+
+  set containerSize(value) {
+    this._containerSize = value;
+
+    this.stage.width = this.containerSize.width;
+    this.stage.height = this.containerSize.height;
+  }
+
+  get containerSize() {
+    return this._containerSize;
   }
 }

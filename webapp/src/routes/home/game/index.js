@@ -47,20 +47,19 @@ export class Game {
     if (this.isGameVisible) {
       this.createGame();
     }
+
+    window.addEventListener('resize', this.handleResize);
   }
 
   createGame() {
     const { fields = [] } = GameState.reduxState;
+    const containerSize = { width: this.width, height: this.height };
 
-    this.background = new Background({ width: this.width, height: this.height });
-    this.warehouse = new Warehouse({ rendererWidth: this.width });
-    this.fenceGroup = new FenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
-    this.foodFenceGroup = new FoodFenceGroup({ rendererWidth: this.width, rendererHeight: this.height });
-    this.userInterface = new UserInterface({
-      rendererWidth: this.width,
-      rendererHeight: this.height,
-      actions: this.actions,
-    });
+    this.background = new Background({ containerSize });
+    this.warehouse = new Warehouse({ containerSize });
+    this.fenceGroup = new FenceGroup({ containerSize });
+    this.foodFenceGroup = new FoodFenceGroup({ containerSize });
+    this.userInterface = new UserInterface({ containerSize, actions: this.actions });
 
     this._animals = fields.map(this.createAnimal);
 
@@ -78,30 +77,52 @@ export class Game {
   }
 
   createAnimal = ({ position: positionNumber }) => new Animal({
-    rendererWidth: this.width,
-    rendererHeight: this.height,
+    containerSize: { width: this.width, height: this.height },
     onSellFood: this.actions.sellFood,
     onPoke: this.actions.pokeAnimal,
     positionNumber,
   });
 
+  handleResize = () => {
+    this._app.renderer.resize(window.innerWidth, window.innerHeight);
+    const containerSize = { width: this.width, height: this.height };
+
+    this.launcher.containerSize = containerSize;
+
+    if (this._gameInitialized) {
+      this.background.containerSize = containerSize;
+      this.warehouse.containerSize = containerSize;
+      this.fenceGroup.containerSize = containerSize;
+      this.foodFenceGroup.containerSize = containerSize;
+      this.userInterface.containerSize = containerSize;
+
+      this._animals.forEach((animal) => {
+        animal.containerSize = containerSize;
+      });
+    }
+  };
+
   handleStateUpdate = () => {
     this.launcher.visible = this.isLauncherVisible;
     this._content.visible = this.isGameVisible;
+
+    if (this.isGameVisible && !this._gameInitialized && GameState.reduxState.fields) {
+      this.createGame();
+    }
   };
 
   handleReduxStateUpdate = () => {
-    if (!this._gameInitialized && GameState.reduxState.fields) {
+    if (this.isGameVisible && !this._gameInitialized && GameState.reduxState.fields) {
       this.createGame();
     }
   };
 
   get isLauncherVisible() {
-    return GameState.state === states.NOT_LOGGED_IN;
+    return GameState.state === states.NOT_LOGGED_IN || GameState.state === states.TO_BIG;
   }
 
   get isGameVisible() {
-    return GameState.state !== states.NOT_LOGGED_IN;
+    return GameState.state !== states.NOT_LOGGED_IN && GameState.state !== states.TO_BIG;
   }
 
   get htmlElement() {

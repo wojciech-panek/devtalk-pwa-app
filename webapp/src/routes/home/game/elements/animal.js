@@ -10,18 +10,19 @@ import { InterfaceText } from '../ui/interfaceText';
 import { GameState, states } from '../game.state';
 
 export class Animal {
-  constructor({ rendererWidth, rendererHeight, onSellFood, onPoke, positionNumber }) {
+  constructor({ containerSize, onSellFood, onPoke, positionNumber }) {
     this._stage = new Container();
     this._animalContent = new Container();
     this._foodContent = new Container();
     this._positionNumber = this.getPositionNumber(positionNumber);
     this._onSellFood = onSellFood;
     this._onPoke = onPoke;
+    this._containerSize = containerSize;
 
     this.stage.height = 89;
     this.stage.width = 92;
 
-    this.calculatePosition(rendererWidth, rendererHeight, this.positionNumber);
+    this.calculatePosition();
 
     this.amount = new AnimalAmount({ flip: !this.isEven(positionNumber), positionNumber: this.positionNumber });
 
@@ -115,15 +116,15 @@ export class Animal {
 
   calculateRow = positionNumber => Math.floor((positionNumber + (positionNumber - 1)) / FENCES_ROWS);
 
-  calculatePosition = (rendererWidth, rendererHeight, positionNumber) => {
+  calculatePosition = () => {
     const firstColumnXPos = 90;
-    const secondColumnXPos = rendererWidth - 90;
+    const secondColumnXPos = this.containerSize.width - 90;
     const additionalOffset = 10;
 
-    this.stage.x = this.isEven(positionNumber) ? firstColumnXPos : secondColumnXPos;
+    this.stage.x = this.isEven(this.positionNumber) ? firstColumnXPos : secondColumnXPos;
 
-    const yOffset = this.calculateRow(positionNumber) *
-      ((rendererHeight - FENCES_BOTTOM_MARGIN - FENCES_INITIAL_Y) / FENCES_ROWS + additionalOffset);
+    const yOffset = this.calculateRow(this.positionNumber) *
+      ((this.containerSize.height - FENCES_BOTTOM_MARGIN - FENCES_INITIAL_Y) / FENCES_ROWS + additionalOffset);
 
     this.stage.y = FENCES_INITIAL_Y + yOffset;
   };
@@ -227,5 +228,14 @@ export class Animal {
     }
 
     return WAREHOUSE_LEVELS[this.animalData.warehouseLevel];
+  }
+
+  set containerSize(value) {
+    this._containerSize = value;
+    this.calculatePosition();
+  }
+
+  get containerSize() {
+    return this._containerSize;
   }
 }

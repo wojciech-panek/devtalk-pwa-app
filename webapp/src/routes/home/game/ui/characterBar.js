@@ -6,10 +6,10 @@ import { GameState } from '../game.state';
 
 
 export class CharacterBar {
-  constructor({ rendererWidth }) {
+  constructor({ containerSize }) {
     this._stage = new Container();
 
-    this.characterRectangle = new RectangleBox({ x: 40, y: 6, width: rendererWidth / 2 - 50, height: 39 });
+    this.characterRectangle = new RectangleBox({ x: 40, y: 6, width: containerSize.width / 2 - 50, height: 39 });
     this.characterFace = new Character({ x: 10, y: 0 });
     this.userNameText = new InterfaceText({
       text: 'FARMER',
@@ -43,6 +43,10 @@ export class CharacterBar {
     GameState.onReduxStateChange(this.handleReduxStateUpdate);
   }
 
+  handleReduxStateUpdate = () => {
+    this.userLevelText.setText(`LEVEL ${this.characterLevel}`);
+  };
+
   get stage() {
     return this._stage;
   }
@@ -55,7 +59,7 @@ export class CharacterBar {
     return GameState.reduxState.fields.filter((field) => field.amount > 0).length;
   }
 
-  handleReduxStateUpdate = () => {
-    this.userLevelText.setText(`LEVEL ${this.characterLevel}`);
-  };
+  set containerSize(value) {
+    this.characterRectangle.width = value.width / 2 - 50;
+  }
 }

@@ -6,6 +6,9 @@ import { GameState } from '../game.state';
 
 export class StoreBar {
   constructor({ x, y, width, name, amount, price, visible, onClick }) {
+    this._x = x;
+    this._y = y;
+    this._width = width;
     this._stage = new Graphics();
     this._stage.visible = visible;
 
@@ -13,20 +16,20 @@ export class StoreBar {
 
     this._button = new Container();
     this._buttonGraphics = new Graphics();
-    this._button.x = x + width - 112;
-    this._button.y = y + 5;
+    this._button.x = this._x + this._width - 112;
+    this._button.y = this._y + 5;
     this._button.interactive = !this.isButtonDisabled;
     this._button.on('pointerdown', onClick);
 
-    this.drawRectangle(x + 1, y, width - 2, 49);
+    this.drawRectangle(this._x + 1, this._y, this._width - 2, 49);
     this.drawButtonRectangle();
 
-    this.amountName = new InterfaceText({
+    this._amountName = new InterfaceText({
       text: name,
       anchorX: 0,
       anchorY: 0.5,
-      x: x + 20,
-      y: y + 24.5,
+      x: this._x + 20,
+      y: this._y + 24.5,
       font: 'Arial Black',
       fontSize: 12,
       fontWeight: 'normal',
@@ -37,8 +40,8 @@ export class StoreBar {
       text: amount,
       anchorX: 0.5,
       anchorY: 0.5,
-      x: x + width - 110 - x * 2,
-      y: y + 24.5,
+      x: this._x + this._width - 110 - this._x * 2,
+      y: this._y + 24.5,
       font: 'Arial Black',
       fontSize: 12,
       fontWeight: 'normal',
@@ -49,26 +52,27 @@ export class StoreBar {
       text: this._priceValue,
       anchorX: 0.5,
       anchorY: 0.5,
-      x: x + width - 80,
-      y: y + 24.5,
+      x: this._x + this._width - 80,
+      y: this._y + 24.5,
       font: 'Arial Black',
       fontSize: 12,
       fontWeight: 'normal',
       fillColor: '0xffffff',
     });
 
-    this.coin = new Coin({
-      x: x + width - 60,
-      y: y + 9,
+    this._coin = new Coin({
+      x: this._x + this._width - 60,
+      y: this._y + 9,
       width: 30,
       height: 30,
     });
 
     this._button.addChild(this._buttonGraphics);
-    this.stage.addChild(this.amountName.stage, this._button, this._amount.stage, this._price.stage, this.coin.stage);
+    this.stage.addChild(this._amountName.stage, this._button, this._amount.stage, this._price.stage, this._coin.stage);
   }
 
   drawRectangle = (x, y, width, height) => {
+    this.stage.clear();
     this.stage.beginFill(0xffffff, 1);
     this.stage.drawRect(x, y, width, height);
     this.stage.endFill();
@@ -114,5 +118,37 @@ export class StoreBar {
 
   set visible(value) {
     this._stage.visible = value;
+  }
+
+  set x(value) {
+    this._x = value;
+    this._button.x = this._x + this._width - 112;
+    this._amountName.x = this._x + 20;
+    this._amount.x = this._x + this._width - 110 - this._x * 2;
+    this._price.x = this._x + this._width - 80;
+    this._coin.x = this._x + this._width - 60;
+
+    this.drawRectangle(this._x + 1, this._y, this._width - 2, 49);
+  }
+
+  set y(value) {
+    this._y = value;
+    this._button.y = this._y + 5;
+    this._amountName.y = this._y + 24.5;
+    this._amount.y = this._y + 24.5;
+    this._price.y = this._y + 24.5;
+    this._coin.y = this._y + 9;
+
+    this.drawRectangle(this._x + 1, this._y, this._width - 2, 49);
+  }
+
+  set width(value) {
+    this._width = value;
+    this._button.x = this._x + this._width - 112;
+    this._amount.x = this._x + this._width - 110 - this._x * 2;
+    this._price.x = this._x + this._width - 80;
+    this._coin.x = this._x + this._width - 60;
+
+    this.drawRectangle(this._x + 1, this._y, this._width - 2, 49);
   }
 }
