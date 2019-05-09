@@ -6,7 +6,7 @@ import { StoreBar } from './storeBar';
 import { CloseButton } from './closeButton';
 
 import { GameState, states } from '../game.state';
-import { ANIMALS, WAREHOUSE_LEVELS } from '../game.constants';
+import { ANIMALS, ANIMAL_COST_MODIFIER, WAREHOUSE_LEVELS } from '../game.constants';
 
 
 export class Store {
@@ -162,7 +162,8 @@ export class Store {
   }
 
   get animalPrice() {
-    return this.animalData ? ANIMALS[this.animalData.type].cost : '';
+    const cost = this.animalData ? ANIMALS[this.animalData.type].cost : 0;
+    return this.animalData ? cost + this.animalAmount * cost * ANIMAL_COST_MODIFIER : '';
   }
 
   get warehouseCapacity() {

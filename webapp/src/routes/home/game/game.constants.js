@@ -22,6 +22,8 @@ export const FENCES_INITIAL_Y = 195;
 export const FENCES_BOTTOM_MARGIN = 50;
 export const UI_RADIUS = 10;
 
+export const ANIMAL_COST_MODIFIER = 0.1;
+
 export const ANIMALS = {
   chicken: {
     type: 'chicken',
