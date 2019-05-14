@@ -22,6 +22,8 @@ const DEFAULT_SUPPORTED_BROWSERS_CONFIG = {
     browser: 'ie', versions: [11, 'edge'],
   }, {
     browser: 'edge',
+  }, {
+    browser: 'firefox',
   }],
   mobile: [{
     os: 'ios', minos: '9', browser: 'mobile safari',
@@ -29,6 +31,8 @@ const DEFAULT_SUPPORTED_BROWSERS_CONFIG = {
     os: 'ios', minos: '5.0', browser: 'chrome',
   }, {
     os: 'android', minos: '5.0', browser: 'chrome', minversion: 50,
+  }, {
+    browser: 'firefox',
   }],
 };
 
