@@ -84,7 +84,7 @@ export class Game {
   });
 
   handleResize = () => {
-    this._app.renderer.resize(window.innerWidth, window.innerHeight);
+    this._app.renderer.resize(this.width, this.height);
     const containerSize = { width: this.width, height: this.height };
 
     this.launcher.containerSize = containerSize;

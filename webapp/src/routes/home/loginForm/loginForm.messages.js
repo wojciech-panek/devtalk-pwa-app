@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   email: {
     id: 'loginForm.email',
-    defaultMessage: 'Email',
+    defaultMessage: 'email',
   },
   emailRequiredError: {
     id: 'loginForm.emailRequiredError',
@@ -21,7 +21,7 @@ export default defineMessages({
   },
   password: {
     id: 'loginForm.password',
-    defaultMessage: 'Password',
+    defaultMessage: 'password',
   },
   passwordRequiredError: {
     id: 'loginForm.passwordRequiredError',

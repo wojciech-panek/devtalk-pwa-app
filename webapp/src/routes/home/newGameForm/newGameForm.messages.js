@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   email: {
     id: 'newGameForm.email',
-    defaultMessage: 'Email',
+    defaultMessage: 'email',
   },
   emailRequiredError: {
     id: 'newGameForm.emailRequiredError',
@@ -25,7 +25,7 @@ export default defineMessages({
   },
   password: {
     id: 'newGameForm.password',
-    defaultMessage: 'Password',
+    defaultMessage: 'password',
   },
   passwordRequiredError: {
     id: 'newGameForm.passwordRequiredError',
@@ -41,7 +41,7 @@ export default defineMessages({
   },
   confirmPassword: {
     id: 'newGameForm.email',
-    defaultMessage: 'Confirm password',
+    defaultMessage: 'confirm password',
   },
   confirmPasswordRequiredError: {
     id: 'newGameForm.confirmPasswordRequiredError',

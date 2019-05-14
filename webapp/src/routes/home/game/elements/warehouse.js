@@ -8,11 +8,11 @@ export class Warehouse {
     this._stage = new Sprite(this.texture);
     this._containerSize = containerSize;
 
-    this.stage.width = 74;
-    this.stage.height = 87;
+    this.stage.width = 60;
+    this.stage.height = 70;
     this.stage.anchor.set(0.5, 0.5);
     this.stage.x = this.containerSize.width / 2;
-    this.stage.y = 110;
+    this.stage.y = 94;
 
     this.stage.interactive = true;
   }
