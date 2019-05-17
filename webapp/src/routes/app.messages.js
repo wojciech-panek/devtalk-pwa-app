@@ -5,6 +5,6 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   pageTitle: {
     id: 'app.pageTitle',
-    defaultMessage: 'Big Farm - Devtalk PWA',
+    defaultMessage: 'Farmtension',
   },
 });
