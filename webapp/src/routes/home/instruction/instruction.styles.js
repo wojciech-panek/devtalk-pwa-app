@@ -26,3 +26,11 @@ export const Box = styled.div`
   font-family: 'Arial';
   text-align: left;
 `;
+
+export const Icon = styled.img`
+    width: 30px;
+    height: 30px;
+    background-color: gray;
+    border-radius: 4px;
+    margin: 0 2px;
+`;

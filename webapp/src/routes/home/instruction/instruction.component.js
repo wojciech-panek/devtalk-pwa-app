@@ -5,9 +5,8 @@ import { compose } from 'ramda';
 import homeIcon from '../../../images/game/ui/homescreen_icon.png';
 import upgradeIcon from '../../../images/game/ui/upgradescreen_icon.png';
 
-import { Container, Box } from './instruction.styles';
+import { Container, Box, Icon } from './instruction.styles';
 import { Button } from './../../../theme/typography';
-import { Icon } from './components/icon';
 import messages from './instruction.messages';
 
 export const INSTRUCTION_READED = 'instruction_readed';
