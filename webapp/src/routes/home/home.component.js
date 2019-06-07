@@ -134,8 +134,6 @@ export class Home extends PureComponent {
   game = null;
   pixiWrapperRef = createRef();
 
-  checkIsInstructionNeeded = () => this.props.shouldDisplayInstruction;
-
   renderInstallButton = renderWhenTrue(() => (
     <Button onClick={this.handleInstallClick}><FormattedMessage {...messages.install} /></Button>
   ));
@@ -184,7 +182,7 @@ export class Home extends PureComponent {
 
       {this.renderToBigDialog(this.state.showToBigDialog)}
 
-      {this.renderInstruction(this.checkIsInstructionNeeded())}
+      {this.renderInstruction(this.props.shouldDisplayInstruction)}
 
       <GameWrapper ref={this.pixiWrapperRef} />
     </Container>
