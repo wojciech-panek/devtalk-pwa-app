@@ -9,6 +9,11 @@ export const selectShouldDisplayInstruction = createSelector(
   (state) => state.get('shouldDisplayInstruction', false)
 );
 
+export const selectIsInstructionReaded = createSelector(
+  selectGameDomain,
+  (state) => state.get('isInstructionReaded', false)
+);
+
 export const selectUserGame = createSelector(
   selectGameDomain,
   (state) => state.get('data', Map())
