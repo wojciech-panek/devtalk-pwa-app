@@ -5,7 +5,7 @@ import { compose } from 'ramda';
 import homeIcon from '../../../images/game/ui/homescreen_icon.png';
 import upgradeIcon from '../../../images/game/ui/upgradescreen_icon.png';
 
-import { Container, Box, Icon, Ul, Li, P } from './instruction.styles';
+import { Container, Box, Icon } from './instruction.styles';
 import { Button } from './../../../theme/typography';
 import messages from './instruction.messages';
 
