@@ -23,17 +23,17 @@ export const { Types: GameTypes, Creators: GameActions } = createActions({
 
 export const GameRecord = new Record({
   data: Map(),
-  userLoggedIn: fromJS(false),
+  shouldDisplayInstruction: fromJS(false),
 }, 'game');
 
 export const INITIAL_STATE = new GameRecord();
 
 const setGameData = (state, { data }) => state.merge({
   data: fromJS(data),
-  userLoggedIn: fromJS(true),
+  shouldDisplayInstruction: fromJS(true),
 });
 
-const hideInstruction = (state) => state.set('userLoggedIn', false);
+const hideInstruction = (state) => state.set('shouldDisplayInstruction', false);
 
 const sellFood = (state, { foodCost, foodAmount, fieldIndex }) => state
   .updateIn(['data', 'coins'], (coins) => coins + foodCost * foodAmount)

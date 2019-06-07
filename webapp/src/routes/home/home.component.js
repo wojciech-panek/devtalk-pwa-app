@@ -26,7 +26,7 @@ export class Home extends PureComponent {
     buyAnimal: PropTypes.func.isRequired,
     upgradeWarehouse: PropTypes.func.isRequired,
     gameData: PropTypes.instanceOf(Map).isRequired,
-    userLoggedIn: PropTypes.bool.isRequired,
+    shouldDisplayInstruction: PropTypes.bool.isRequired,
     hideInstruction: PropTypes.func.isRequired,
   };
 
@@ -134,7 +134,7 @@ export class Home extends PureComponent {
   game = null;
   pixiWrapperRef = createRef();
 
-  checkIsInstructionNeeded = () => this.props.userLoggedIn && !localStorage.getItem(INSTRUCTION_READED);
+  checkIsInstructionNeeded = () => this.props.shouldDisplayInstruction && !localStorage.getItem(INSTRUCTION_READED);
 
   renderInstallButton = renderWhenTrue(() => (
     <Button onClick={this.handleInstallClick}><FormattedMessage {...messages.install} /></Button>

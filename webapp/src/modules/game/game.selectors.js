@@ -4,9 +4,9 @@ import { Map } from 'immutable';
 
 export const selectGameDomain = state => state.game;
 
-export const selectUserLoggedIn = createSelector(
+export const selectShouldDisplayInstruction = createSelector(
   selectGameDomain,
-  (state) => state.get('userLoggedIn', false)
+  (state) => state.get('shouldDisplayInstruction', false)
 );
 
 export const selectUserGame = createSelector(
