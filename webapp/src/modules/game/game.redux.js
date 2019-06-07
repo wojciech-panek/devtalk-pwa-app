@@ -18,15 +18,22 @@ export const { Types: GameTypes, Creators: GameActions } = createActions({
   pokeAnimal: ['fieldIndex'],
   buyAnimal: ['fieldIndex', 'cost'],
   upgradeWarehouse: ['fieldIndex', 'cost'],
+  hideInstruction: null,
 }, { prefix: 'GAME_' });
 
 export const GameRecord = new Record({
   data: Map(),
+  userLoggedIn: fromJS(false),
 }, 'game');
 
 export const INITIAL_STATE = new GameRecord();
 
-const setGameData = (state, { data }) => state.set('data', fromJS(data));
+const setGameData = (state, { data }) => state.merge({
+  data: fromJS(data),
+  userLoggedIn: fromJS(true),
+});
+
+const hideInstruction = (state) => state.set('userLoggedIn', false);
 
 const sellFood = (state, { foodCost, foodAmount, fieldIndex }) => state
   .updateIn(['data', 'coins'], (coins) => coins + foodCost * foodAmount)
@@ -89,4 +96,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [GameTypes.BUY_ANIMAL]: buyAnimal,
   [GameTypes.UPGRADE_WAREHOUSE]: upgradeWarehouse,
   [GameTypes.PRODUCE_FOOD]: produceFood,
+  [GameTypes.HIDE_INSTRUCTION]: hideInstruction,
 }, { types: GameTypes });

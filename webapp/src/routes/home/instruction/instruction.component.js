@@ -14,8 +14,11 @@ export const INSTRUCTION_READED = 'instruction_readed';
 
 export class InstructionComponent extends PureComponent {
   static propTypes = {
+    hideInstruction: PropTypes.func.isRequired,
   };
   handleClose = () => {
+    localStorage.setItem(INSTRUCTION_READED, true);
+    this.props.hideInstruction();
   };
 
   render() {
