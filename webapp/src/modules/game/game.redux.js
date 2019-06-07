@@ -23,7 +23,7 @@ export const { Types: GameTypes, Creators: GameActions } = createActions({
 
 export const GameRecord = new Record({
   data: Map(),
-  shouldDisplayInstruction: fromJS(false),
+  shouldDisplayInstruction: false,
 }, 'game');
 
 export const INITIAL_STATE = new GameRecord();
