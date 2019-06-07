@@ -34,3 +34,9 @@ export const Icon = styled.img`
     border-radius: 4px;
     margin: 0 2px;
 `;
+
+export const Ul = styled.ul``;
+
+export const Li = styled.li``;
+
+export const P = styled.p``;

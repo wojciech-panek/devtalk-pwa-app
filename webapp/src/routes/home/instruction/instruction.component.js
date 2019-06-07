@@ -1,15 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { compose } from 'ramda';
 import homeIcon from '../../../images/game/ui/homescreen_icon.png';
 import upgradeIcon from '../../../images/game/ui/upgradescreen_icon.png';
 
-import { Container, Box, Icon } from './instruction.styles';
+import { Container, Box, Icon, Ul, Li, P } from './instruction.styles';
 import { Button } from './../../../theme/typography';
 import messages from './instruction.messages';
 
 export const INSTRUCTION_READED = 'instruction_readed';
+const getIcon = (name, value) => ({ [name]: <Icon src={value} /> });
 
 export class InstructionComponent extends PureComponent {
   static propTypes = {
@@ -24,18 +25,28 @@ export class InstructionComponent extends PureComponent {
     return (
       <Container>
         <Box>
-          <p>Welcome to Farmtension, a farm-themed PWA game made at Apptension’s DevTalks.</p>
-          <p>There are only a few rules to the game:</p>
-          <ul>
-            <li>you buy animals by clicking <Icon src={upgradeIcon} /></li>
-            <li>you return to your farm by clicking <Icon src={homeIcon} /></li>
-            <li>you sell eggs, meat, etc. by clicking on them.</li>
-          </ul>
-          <p>
-          When you earn enough money, you can upgrade your animals or buy new ones.<br /><br />
-          Have a good time farming with us!
-          </p>
-
+          <P>
+            <FormattedHTMLMessage {...messages.welcome} />
+          </P>
+          <P>
+            <FormattedHTMLMessage {...messages.rules} />
+          </P>
+          <Ul>
+            <Li><FormattedMessage {...messages.rule1} values={{
+              ...getIcon('upgradeIcon', upgradeIcon) }}
+            /></Li>
+            <Li><FormattedMessage {...messages.rule2} values={{
+              ...getIcon('homeIcon', homeIcon),
+            }}
+            /></Li>
+            <Li><FormattedMessage {...messages.rule3} /></Li>
+          </Ul>
+          <P>
+            <FormattedHTMLMessage {...messages.buyNew} />
+          </P>
+          <P>
+            <FormattedHTMLMessage {...messages.goodTime} />
+          </P>
           <Button onClick={this.handleClose} type="button">
             <FormattedMessage {...messages.button} />
           </Button>
