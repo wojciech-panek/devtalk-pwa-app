@@ -25,7 +25,6 @@ function* initializeFirebaseApp() {
         storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
         messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
       });
-      yield firebase.messaging().usePublicVapidKey(process.env.REACT_APP_FIREBASE_VAPID_PUBLIC_KEY);
     }
   } catch (error) {
     yield reportError(error);

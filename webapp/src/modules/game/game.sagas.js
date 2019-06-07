@@ -7,7 +7,7 @@ import { createSaga } from '../utils/entityRegistry';
 import { selectUserUid, UserAuthTypes } from '../userAuth';
 import { isoToTimestamp } from '../../shared/utils/date';
 import { GameTypes, GameActions } from './game.redux';
-import { selectUserGame } from './game.selectors';
+import { selectUserGame, selectIsInstructionReaded } from './game.selectors';
 import { GAME_COLLECTION, NEW_GAME_DATA } from './game.constants';
 import { WAREHOUSE_LEVELS } from '../../routes/home/game/game.constants';
 
@@ -29,6 +29,12 @@ export function* findUserGame() {
       .once('value');
 
     const gameData = gameDataSnapshot.val();
+
+    const isInstructionReaded = yield select(selectIsInstructionReaded);
+
+    if (!isInstructionReaded) {
+      yield put(GameActions.showInstruction());
+    }
 
     if (!gameData) {
       yield put(GameActions.findUserGameFail());

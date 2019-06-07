@@ -9,6 +9,7 @@ import { Container, GameWrapper, Interface, InterfaceBox } from './home.styles';
 import { Button } from '../../theme/typography';
 import { LoginForm } from './loginForm';
 import { NewGameForm } from './newGameForm';
+import { Instruction } from './instruction';
 import { renderWhenTrue } from '../../shared/utils/rendering';
 import messages from './home.messages';
 
@@ -25,6 +26,8 @@ export class Home extends PureComponent {
     buyAnimal: PropTypes.func.isRequired,
     upgradeWarehouse: PropTypes.func.isRequired,
     gameData: PropTypes.instanceOf(Map).isRequired,
+    shouldDisplayInstruction: PropTypes.bool.isRequired,
+    hideInstruction: PropTypes.func.isRequired,
   };
 
   state = {
@@ -169,11 +172,17 @@ export class Home extends PureComponent {
     </Interface>
   ));
 
+  renderInstruction = renderWhenTrue(() => (
+    <Instruction hideInstruction={this.props.hideInstruction} />
+  ));
+
   render = () => (
     <Container>
       {this.renderInterface(this.props.isUserAnonymous && !this.state.showToBigDialog)}
 
       {this.renderToBigDialog(this.state.showToBigDialog)}
+
+      {this.renderInstruction(this.props.shouldDisplayInstruction)}
 
       <GameWrapper ref={this.pixiWrapperRef} />
     </Container>

@@ -8,13 +8,14 @@ import { compose } from 'ramda';
 
 import { Home } from './home.component';
 import { selectUserIsAnonymous, selectUserUid } from '../../modules/userAuth';
-import { selectUserGame, GameActions } from '../../modules/game';
+import { selectUserGame, selectShouldDisplayInstruction, GameActions } from '../../modules/game';
 
 
 const mapStateToProps = createStructuredSelector({
   isUserAnonymous: selectUserIsAnonymous,
   userUid: selectUserUid,
   gameData: selectUserGame,
+  shouldDisplayInstruction: selectShouldDisplayInstruction,
 });
 
 export const mapDispatchToProps = (dispatch) => bindActionCreators({
@@ -22,6 +23,7 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators({
   pokeAnimal: GameActions.pokeAnimal,
   buyAnimal: GameActions.buyAnimal,
   upgradeWarehouse: GameActions.upgradeWarehouse,
+  hideInstruction: GameActions.hideInstruction,
 }, dispatch);
 
 export default compose(
