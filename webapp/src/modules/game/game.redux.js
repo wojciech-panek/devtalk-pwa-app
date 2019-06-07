@@ -28,10 +28,10 @@ export const GameRecord = new Record({
 
 export const INITIAL_STATE = new GameRecord();
 
-const setGameData = (state, { data }) => state.merge({
-  data: fromJS(data),
-  shouldDisplayInstruction: fromJS(true),
-});
+const setGameData = (state, { data }) => state.merge(fromJS({
+  data,
+  shouldDisplayInstruction: true,
+}));
 
 const hideInstruction = (state) => state.set('shouldDisplayInstruction', false);
 
