@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { compose } from 'ramda';
 import homeIcon from '../../../images/game/ui/homescreen_icon.png';
 import upgradeIcon from '../../../images/game/ui/upgradescreen_icon.png';
@@ -25,28 +25,28 @@ export class InstructionComponent extends PureComponent {
     return (
       <Container>
         <Box>
-          <P>
-            <FormattedHTMLMessage {...messages.welcome} />
-          </P>
-          <P>
-            <FormattedHTMLMessage {...messages.rules} />
-          </P>
-          <Ul>
-            <Li><FormattedMessage {...messages.rule1} values={{
+          <p>
+            <FormattedMessage {...messages.welcome} />
+          </p>
+          <p>
+            <FormattedMessage {...messages.rules} />
+          </p>
+          <ul>
+            <li><FormattedMessage {...messages.rule1} values={{
               ...getIcon('upgradeIcon', upgradeIcon) }}
-            /></Li>
-            <Li><FormattedMessage {...messages.rule2} values={{
+            /></li>
+            <li><FormattedMessage {...messages.rule2} values={{
               ...getIcon('homeIcon', homeIcon),
             }}
-            /></Li>
-            <Li><FormattedMessage {...messages.rule3} /></Li>
-          </Ul>
-          <P>
-            <FormattedHTMLMessage {...messages.buyNew} />
-          </P>
-          <P>
-            <FormattedHTMLMessage {...messages.goodTime} />
-          </P>
+            /></li>
+            <li><FormattedMessage {...messages.rule3} /></li>
+          </ul>
+          <p>
+            <FormattedMessage {...messages.buyNew} />
+          </p>
+          <p>
+            <FormattedMessage {...messages.goodTime} />
+          </p>
           <Button onClick={this.handleClose} type="button">
             <FormattedMessage {...messages.button} />
           </Button>
