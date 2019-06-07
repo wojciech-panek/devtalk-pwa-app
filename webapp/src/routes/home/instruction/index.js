@@ -1,1 +1,1 @@
-export { Instruction, INSTRUCTION_READED } from './instruction.component';
+export { Instruction } from './instruction.component';

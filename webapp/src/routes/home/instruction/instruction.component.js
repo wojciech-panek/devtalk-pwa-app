@@ -9,19 +9,14 @@ import { Container, Box, Icon } from './instruction.styles';
 import { Button } from './../../../theme/typography';
 import messages from './instruction.messages';
 
-export const INSTRUCTION_READED = 'instruction_readed';
 const getIcon = (name, value) => ({ [name]: <Icon src={value} /> });
 
 export class InstructionComponent extends PureComponent {
   static propTypes = {
     hideInstruction: PropTypes.func.isRequired,
   };
-  handleClose = () => {
-    localStorage.setItem(INSTRUCTION_READED, true);
-    this.props.hideInstruction();
-  };
-
   render() {
+    const { hideInstruction } = this.props;
     return (
       <Container>
         <Box>
@@ -47,7 +42,7 @@ export class InstructionComponent extends PureComponent {
           <p>
             <FormattedMessage {...messages.goodTime} />
           </p>
-          <Button onClick={this.handleClose} type="button">
+          <Button onClick={hideInstruction} type="button">
             <FormattedMessage {...messages.button} />
           </Button>
         </Box>

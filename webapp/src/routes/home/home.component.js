@@ -9,7 +9,7 @@ import { Container, GameWrapper, Interface, InterfaceBox } from './home.styles';
 import { Button } from '../../theme/typography';
 import { LoginForm } from './loginForm';
 import { NewGameForm } from './newGameForm';
-import { Instruction, INSTRUCTION_READED } from './instruction';
+import { Instruction } from './instruction';
 import { renderWhenTrue } from '../../shared/utils/rendering';
 import messages from './home.messages';
 
@@ -134,7 +134,7 @@ export class Home extends PureComponent {
   game = null;
   pixiWrapperRef = createRef();
 
-  checkIsInstructionNeeded = () => this.props.shouldDisplayInstruction && !localStorage.getItem(INSTRUCTION_READED);
+  checkIsInstructionNeeded = () => this.props.shouldDisplayInstruction;
 
   renderInstallButton = renderWhenTrue(() => (
     <Button onClick={this.handleInstallClick}><FormattedMessage {...messages.install} /></Button>
